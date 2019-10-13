@@ -20,7 +20,7 @@ $router->get('/', function () use ($router) {
  - yêu cầu các bạn sau mỗi dòng code phải có chú thích vào
 
 -VD:
- //tạo để tài mới
+ - tạo để tài mới
  $router->get('detai',['uses'=>'detaiController@create']);
 */
 $router->group(['prefix'=>'api'],function() use ($router){
