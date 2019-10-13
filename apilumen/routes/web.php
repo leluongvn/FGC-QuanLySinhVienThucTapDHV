@@ -42,7 +42,11 @@ $router->group(['prefix'=>'api'],function() use ($router){
 
     //code phần doanh nghiệp
     $router->group(['prefix'=>'doanhnghiep'],function() use ($router){
-        //Đạt code
+        $router->get('show','DoanhNghiep\DoanhNghiepController@show');
+        $router->get('show/{id}','DoanhNghiep\DoanhNghiepController@showOne');
+        $router->post('/create','DoanhNghiep\DoanhNghiepController@create');
+        $router->put('update/{id}','DoanhNghiep\DoanhNghiepController@update');
+        $router->delete('delete/{id}','DoanhNghiep\DoanhNghiepController@delete');
 
     });
 
