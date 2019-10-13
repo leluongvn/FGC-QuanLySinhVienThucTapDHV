@@ -23,7 +23,7 @@ $router->get('/', function () use ($router) {
  //tạo để tài mới
  $router->get('detai',['uses'=>'detaiController@create']);
 */
-$router->group(['prefex'=>'api'],function() use ($router){
+$router->group(['prefix'=>'api'],function() use ($router){
 
     // code phần giáo viên
     $router->group(['prefix'=>'giaovien'],function() use ($router){
@@ -32,7 +32,11 @@ $router->group(['prefex'=>'api'],function() use ($router){
     });
     // code phần sinh viên
     $router->group(['prefix'=>'sinhvien'],function() use ($router){
-        // huy code
+        $router->get('get/all','SinhVien\SinhVienController@getAll');
+        $router->get('get/{id}','SinhVien\SinhVienController@getSingle');
+        $router->post('create','SinhVien\SinhVienController@create');
+        $router->put('update/{id}','SinhVien\SinhVienController@update');
+        $router->delete('delete/{id}','SinhVien\SinhVienController@delete');
 
     });
 

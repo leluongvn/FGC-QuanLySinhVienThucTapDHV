@@ -14,8 +14,20 @@ class CreateSinhvienTable extends Migration
     public function up()
     {
         Schema::create('sinhvien', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
+            $table->mediumIncrements('id');
+            $table->string('id_student',20)->unique();
+            $table->string('username',20)->unique();
+            $table->string('password',30);
+            $table->string('first_name',30);
+            $table->string('last_name',30);
+            $table->string('email',30)->nullable();
+            $table->boolean('gender')->nullable();
+            $table->string('address',255)->nullable();
+            $table->string('phone',11)->nullable();
+            $table->string('note',255)->nullable();
+            $table->smallInteger('shool_year')->nullable();
+            $table->mediumInteger('class_id');
+            $table->timestamps(); 
         });
     }
 
