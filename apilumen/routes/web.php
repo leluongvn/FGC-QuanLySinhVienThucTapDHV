@@ -53,6 +53,10 @@ $router->group(['prefix'=>'api'],function() use ($router){
     // code phần đề tài
     $router->group(['prefix'=>'detai'],function() use ($router){
         // Bá code
-        
+        $router->get('show',['uses'=>'DeTai\DetaiController@show','as'=>'admin.topic.show'] );
+        $router->get('showOne/{id:[0-9]+}',['uses'=>'DeTai\DetaiController@showOne','as'=>'admin.topic.showOne']);
+        $router->post('create', ['uses'=>'DeTai\DeTaiController@create','as'=>'admin.topic.create']);
+        $router->put('edit/{id:[0-9]+}', ['uses'=>'DeTai\DeTaiController@edit','as'=>'admin.topic.edit']);
+        $router->delete('delete/{id: [0-9]+}', ['uses'=>'DeTai\DetaiController@destroy','as'=>'admin.topic.destroy']);
     });
 });

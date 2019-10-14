@@ -13,8 +13,11 @@ class CreateDetaiTable extends Migration
      */
     public function up()
     {
-        Schema::create('detai', function (Blueprint $table) {
+        Schema::create('topic', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('name');
+            $table->text('description');
+            $table->integer('status');
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateDetaiTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('detai');
+        Schema::dropIfExists('topic');
     }
 }
