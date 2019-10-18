@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSinhvienTable extends Migration
+class CreatestudentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateSinhvienTable extends Migration
      */
     public function up()
     {
-        Schema::create('sinhvien', function (Blueprint $table) {
+        Schema::create('students', function (Blueprint $table) {
             $table->mediumIncrements('id');
             $table->string('id_student',20)->unique();
             $table->string('username',20)->unique();
@@ -38,6 +38,6 @@ class CreateSinhvienTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sinhvien');
+        Schema::dropIfExists('students');
     }
 }

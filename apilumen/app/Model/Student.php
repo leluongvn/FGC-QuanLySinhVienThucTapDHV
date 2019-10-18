@@ -2,10 +2,10 @@
 
 namespace App\Model;
 use Illuminate\Database\Eloquent\Model;
-class Sinhvien extends Model 
+class Student extends Model 
 {
 
-    protected $table = 'sinhvien';
+    protected $table = 'students';
     /**
      * The attributes that are mass assignable.
      *

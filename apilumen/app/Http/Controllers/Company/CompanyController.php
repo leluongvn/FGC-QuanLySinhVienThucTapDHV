@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\DoanhNghiep;
+namespace App\Http\Controllers\Company;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Model\Doanhnghiep;
+use App\Model\Company;
 
-class DoanhNghiepController extends Controller
+class CompanyController extends Controller
 {
 
     public function create(Request $request)
@@ -14,7 +14,7 @@ class DoanhNghiepController extends Controller
         $this->validate(
             $request,
             [
-                'name'        =>     'required|unique:enterprise,name',
+                'name'        =>     'required|unique:Company,name',
                 'phone'       =>     'required',
                 'address'     =>     'required',
                 'email'       =>     'required',
@@ -29,9 +29,9 @@ class DoanhNghiepController extends Controller
                 'introduce.required' => 'Bạn chưa nhập giới thiệu công ty',
             ]
         );
-        $doanhnghiep = Doanhnghiep::create($request->all());
+        $Company = Company::create($request->all());
 
-        return response()->json($doanhnghiep, 201);
+        return response()->json($Company, 201);
     }
     public function update($id, Request $request)
     {
@@ -52,22 +52,22 @@ class DoanhNghiepController extends Controller
                 'introduce.required' => 'Bạn chưa nhập giới thiệu công ty',
             ]
         );
-        $doanhnghiep = Doanhnghiep::findOrFail($id);
-        $doanhnghiep->update($request->all());
+        $Company = Company::findOrFail($id);
+        $Company->update($request->all());
 
-        return response()->json($doanhnghiep, 200);
+        return response()->json($Company, 200);
     }
     public function delete($id)
     {
-        Doanhnghiep::findOrFail($id)->delete();
+        Company::findOrFail($id)->delete();
         return response('Xóa thành công', 200);
     }
     public function show()
     {
-        return response()->json(Doanhnghiep::all());
+        return response()->json(Company::all());
     }
     public function showOne($id)
     {
-        return response()->json(Doanhnghiep::find($id));
+        return response()->json(Company::find($id));
     }
 }

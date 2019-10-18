@@ -4,9 +4,9 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DeTai extends Model
+class Topic extends Model
 {
-    protected $table = 'topic';
+    protected $table = 'topics';
 
     protected $fillable = ['name','description','status'];
 

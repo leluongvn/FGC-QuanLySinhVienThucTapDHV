@@ -26,37 +26,37 @@ $router->get('/', function () use ($router) {
 $router->group(['prefix'=>'api'],function() use ($router){
 
     // code phần giáo viên
-    $router->group(['prefix'=>'giaovien'],function() use ($router){
+    $router->group(['prefix'=>'teacher'],function() use ($router){
         // mại code
 
     });
     // code phần sinh viên
-    $router->group(['prefix'=>'sinhvien'],function() use ($router){
-        $router->get('get/all','SinhVien\SinhVienController@getAll');
-        $router->get('get/{id}','SinhVien\SinhVienController@getSingle');
-        $router->post('create','SinhVien\SinhVienController@create');
-        $router->put('update/{id}','SinhVien\SinhVienController@update');
-        $router->delete('delete/{id}','SinhVien\SinhVienController@delete');
+    $router->group(['prefix'=>'student'],function() use ($router){
+        $router->get('get/all','Student\StudentController@getAll');
+        $router->get('get/{id}','Student\StudentController@getSingle');
+        $router->post('create','Student\StudentController@create');
+        $router->put('update/{id}','Student\StudentController@update');
+        $router->delete('delete/{id}','Student\StudentController@delete');
 
     });
 
     //code phần doanh nghiệp
-    $router->group(['prefix'=>'doanhnghiep'],function() use ($router){
-        $router->get('show','DoanhNghiep\DoanhNghiepController@show');
-        $router->get('show/{id}','DoanhNghiep\DoanhNghiepController@showOne');
-        $router->post('/create','DoanhNghiep\DoanhNghiepController@create');
-        $router->put('update/{id}','DoanhNghiep\DoanhNghiepController@update');
-        $router->delete('delete/{id}','DoanhNghiep\DoanhNghiepController@delete');
+    $router->group(['prefix'=>'company'],function() use ($router){
+        $router->get('show','Company\CompanyController@show');
+        $router->get('show/{id}','Company\CompanyController@showOne');
+        $router->post('/create','Company\CompanyController@create');
+        $router->put('update/{id}','Company\CompanyController@update');
+        $router->delete('delete/{id}','Company\CompanyController@delete');
 
     });
 
     // code phần đề tài
-    $router->group(['prefix'=>'detai'],function() use ($router){
+    $router->group(['prefix'=>'topic'],function() use ($router){
         // Bá code
-        $router->get('show',['uses'=>'DeTai\DetaiController@show','as'=>'admin.topic.show'] );
-        $router->get('showOne/{id:[0-9]+}',['uses'=>'DeTai\DetaiController@showOne','as'=>'admin.topic.showOne']);
-        $router->post('create', ['uses'=>'DeTai\DeTaiController@create','as'=>'admin.topic.create']);
-        $router->put('edit/{id:[0-9]+}', ['uses'=>'DeTai\DeTaiController@edit','as'=>'admin.topic.edit']);
-        $router->delete('delete/{id: [0-9]+}', ['uses'=>'DeTai\DetaiController@destroy','as'=>'admin.topic.destroy']);
+        $router->get('show',['uses'=>'Topic\TopicController@show','as'=>'admin.topic.show'] );
+        $router->get('showOne/{id:[0-9]+}',['uses'=>'Topic\TopicController@showOne','as'=>'admin.topic.showOne']);
+        $router->post('create', ['uses'=>'Topic\TopicController@create','as'=>'admin.topic.create']);
+        $router->put('edit/{id:[0-9]+}', ['uses'=>'Topic\TopicController@edit','as'=>'admin.topic.edit']);
+        $router->delete('delete/{id: [0-9]+}', ['uses'=>'Topic\TopicController@destroy','as'=>'admin.topic.destroy']);
     });
 });

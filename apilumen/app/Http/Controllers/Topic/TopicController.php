@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\DeTai;
+namespace App\Http\Controllers\Topic;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Model\DeTai;
+use App\Model\Topic;
 
-class DeTaiController extends Controller
+class TopicController extends Controller
 {
 
     public function show() {
-        return response()->json(DeTai::all());
+        return response()->json(Topic::all());
     }
 
     public function showOne($id) {
-        return response()->json(DeTai::find($id));
+        return response()->json(Topic::find($id));
     }
 
     public function create(Request $request){
@@ -29,14 +29,14 @@ class DeTaiController extends Controller
                 'status.required'      => 'Bạn chưa nhập trạng thái',
             ]
         );
-        $data = DeTai::create($request->all());
-        return response()->json($data, 201);
+        $Topic = Topic::create($request->all());
+        return response()->json($Topic, 201);
     }
     public function edit($id, Request $request){
         $this->validate(
             $request,[
-                'name'        =>     'required',
-                'description'       =>     'required',
+                'name'       =>     'required',
+                'description'=>     'required',
                 'status'     =>     'required',
             ], [
                 'name.required'      => 'Bạn chưa nhập tên đề tài',
@@ -44,18 +44,18 @@ class DeTaiController extends Controller
                 'status.required'      => 'Bạn chưa nhập trạng thái',
             ]
         );
-        $data = DeTai::where('id',$id);
-        if($data->count()==0)
+        $Topic = Topic::where('id',$id);
+        if($Topic->count()==0)
             return response('Edit Failed', 200);
-        $data->update($request->all());
-        return response()->json($data->get(), 200);
+        $Topic->update($request->all());
+        return response()->json($Topic->get(), 200);
     }
 
     public function destroy($id){
-        $data = DeTai::where('id',$id);
-        if($data->count()==0)
+        $Topic = Topic::where('id',$id);
+        if($Topic->count()==0)
             return response('Delete Failed', 200);
-        $data->delete();
+        $Topic->delete();
         return response('Delete Successfully', 200);
     }
     
