@@ -25,11 +25,28 @@ $router->get('/', function () use ($router) {
 */
 $router->group(['prefix'=>'api'],function() use ($router){
 
-    // code phần giáo viên
-    $router->group(['prefix'=>'teacher'],function() use ($router){
-        // mại code
+    // code phần người hướng dẫn
+    $router->group(['prefix'=>'instructor'],function() use ($router){
+        $router->get('get', 'Instructor\InstructorController@showAllInstructor');
+        $router->get('get/{id}', 'Instructor\InstructorController@showOneInstructor');
+        $router->post('create', 'Instructor\InstructorController@create');
+        $router->put('update/{id}', 'Instructor\InstructorController@update');
+        $router->delete('delete/{id}', 'Instructor\InstructorController@delete');
 
     });
+
+    
+    // code phần giáo viên
+    $router->group(['prefix'=>'teacher'],function() use ($router){
+        $router->get('get', 'Teacher\TeacherController@showAllTeachers');
+        $router->get('get/{id}', 'Teacher\TeacherController@showOneTeachers');
+        $router->post('create', 'Teacher\TeacherController@create');
+        $router->put('update/{id}', 'Teacher\TeacherController@update');
+        $router->delete('delete/{id}', 'Teacher\TeacherController@delete');
+
+    });
+
+
     // code phần sinh viên
     $router->group(['prefix'=>'student'],function() use ($router){
         $router->get('get/all','Student\StudentController@getAll');
