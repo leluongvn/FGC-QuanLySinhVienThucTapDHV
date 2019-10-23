@@ -8,7 +8,12 @@ class Topic extends Model
 {
     protected $table = 'topics';
 
-    protected $fillable = ['name','description','status'];
+    protected $fillable = ['name','id_internship_time','creator','note'];
 
     public $timestamps=true;
+
+    public function internship_time()
+    {
+        return $this->belongsTo('App\Internship_Time');
+    }
 }
