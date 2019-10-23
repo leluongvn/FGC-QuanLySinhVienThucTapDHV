@@ -17,7 +17,7 @@ class CreateInstructorTable extends Migration
             $table->bigIncrements('id');
             $table->string('id_student_reg',20)->unique();
             $table->string('id_teacher',20)->unique();
-            $table->string('note',255);
+            $table->string('trangthai')->nullable();
             $table->timestamps();
         });
     }
