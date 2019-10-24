@@ -59,11 +59,11 @@ $router->group(['prefix'=>'api'],function() use ($router){
 
     //code phần doanh nghiệp
     $router->group(['prefix'=>'company'],function() use ($router){
-        $router->get('show','Company\CompanyController@show');
-        $router->get('show/{id}','Company\CompanyController@showOne');
-        $router->post('/create','Company\CompanyController@create');
-        $router->put('update/{id}','Company\CompanyController@update');
-        $router->delete('delete/{id}','Company\CompanyController@delete');
+        $router->get('/', ['uses' => 'Company\CompanyController@show']);
+        $router->get('/{id}', ['uses' => 'Company\CompanyController@showOne']);
+        $router->post('/', ['uses' => 'Company\CompanyController@create']);
+        $router->put('/{id}',['uses' => 'Company\CompanyController@update']);
+        $router->delete('/{id}',['uses' => 'Company\CompanyController@delete']);
 
     });
 

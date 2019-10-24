@@ -14,7 +14,7 @@ class CompanyController extends Controller
         $this->validate(
             $request,
             [
-                'name'        =>     'required|unique:Company,name',
+                'name'        =>     'required|unique:companies,name',
                 'phone'       =>     'required',
                 'address'     =>     'required',
                 'email'       =>     'required',
