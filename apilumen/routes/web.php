@@ -70,42 +70,42 @@ $router->group(['prefix'=>'api'],function() use ($router){
     // code phần đề tài
     $router->group(['prefix'=>'topic'],function() use ($router){
         // Bá code
-        $router->get('show',['uses'=>'Topic\TopicController@show','as'=>'admin.topic.show'] );
-        $router->get('showone/{id:[0-9]+}',['uses'=>'Topic\TopicController@showOne','as'=>'admin.topic.showOne']);
-        $router->post('create', ['uses'=>'Topic\TopicController@create','as'=>'admin.topic.create']);
-        $router->put('edit/{id:[0-9]+}', ['uses'=>'Topic\TopicController@edit','as'=>'admin.topic.edit']);
-        $router->delete('delete/{id: [0-9]+}', ['uses'=>'Topic\TopicController@destroy','as'=>'admin.topic.destroy']);
+        $router->get('/',['uses'=>'Topic\TopicController@show','as'=>'admin.topic.show'] );
+        $router->get('/{id:[0-9]+}',['uses'=>'Topic\TopicController@showOne','as'=>'admin.topic.showOne']);
+        $router->post('/', ['uses'=>'Topic\TopicController@create','as'=>'admin.topic.create']);
+        $router->put('/{id:[0-9]+}', ['uses'=>'Topic\TopicController@edit','as'=>'admin.topic.edit']);
+        $router->delete('/{id: [0-9]+}', ['uses'=>'Topic\TopicController@destroy','as'=>'admin.topic.destroy']);
     });
     //code phần viện
     $router->group(['prefix'=>'academy'], function () use ($router){
-        $router->get('show',['uses'=>'Academy\AcademyController@show','as'=>'admin.academy.show']);
-        $router->get('showone/{id:[0-9]+}',['uses'=>'Academy\AcademyController@showOne','as'=>'admin.academy.showOne']);
-        $router->post('create',['uses'=>'Academy\AcademyController@create','as'=>'admin.acdemy.create']);
-        $router->put('edit/{id:[0-9]+}', ['uses'=>'Academy\AcademyController@edit','as'=>'admin.academy.edit']);
-        $router->delete('delete/{id: [0-9]+}', ['uses'=>'Academy\AcademyController@destroy','as'=>'admin.academy.destroy']);
+        $router->get('/',['uses'=>'Academy\AcademyController@show','as'=>'admin.academy.show']);
+        $router->get('/{id:[0-9]+}',['uses'=>'Academy\AcademyController@showOne','as'=>'admin.academy.showOne']);
+        $router->post('/',['uses'=>'Academy\AcademyController@create','as'=>'admin.acdemy.create']);
+        $router->put('/{id:[0-9]+}', ['uses'=>'Academy\AcademyController@edit','as'=>'admin.academy.edit']);
+        $router->delete('/{id: [0-9]+}', ['uses'=>'Academy\AcademyController@destroy','as'=>'admin.academy.destroy']);
     });
     //code phần khoa
     $router->group(['prefix'=>'specialized'], function () use ($router){
-        $router->get('show',['uses'=>'Specialized\SpecializedController@show','as'=>'admin.specialized.show']);
-        $router->get('showone/{id:[0-9]+}',['uses'=>'Specialized\SpecializedController@showOne','as'=>'admin.specialized.showOne']);
-        $router->post('create',['uses'=>'Specialized\SpecializedController@create','as'=>'admin.specialized.create']);
-        $router->put('edit/{id:[0-9]+}', ['uses'=>'Specialized\SpecializedController@edit','as'=>'admin.specialized.edit']);
-        $router->delete('delete/{id: [0-9]+}', ['uses'=>'Specialized\SpecializedController@destroy','as'=>'admin.specialized.destroy']);
+        $router->get('/',['uses'=>'Specialized\SpecializedController@show','as'=>'admin.specialized.show']);
+        $router->get('/{id:[0-9]+}',['uses'=>'Specialized\SpecializedController@showOne','as'=>'admin.specialized.showOne']);
+        $router->post('/',['uses'=>'Specialized\SpecializedController@create','as'=>'admin.specialized.create']);
+        $router->put('/{id:[0-9]+}', ['uses'=>'Specialized\SpecializedController@edit','as'=>'admin.specialized.edit']);
+        $router->delete('/{id: [0-9]+}', ['uses'=>'Specialized\SpecializedController@destroy','as'=>'admin.specialized.destroy']);
     });
     //code phần khóa học
     $router->group(['prefix'=>'course'], function () use ($router){
-        $router->get('show',['uses'=>'Course\CourseController@show','as'=>'admin.course.show']);
-        $router->get('showone/{id:[0-9]+}',['uses'=>'Course\CourseController@showOne','as'=>'admin.course.showOne']);
-        $router->post('create',['uses'=>'Course\CourseController@create','as'=>'admin.course.create']);
-        $router->put('edit/{id:[0-9]+}', ['uses'=>'Course\CourseController@edit','as'=>'admin.course.edit']);
-        $router->delete('delete/{id: [0-9]+}', ['uses'=>'Course\CourseController@destroy','as'=>'admin.course.destroy']);
+        $router->get('/',['uses'=>'Course\CourseController@show','as'=>'admin.course.show']);
+        $router->get('/{id:[0-9]+}',['uses'=>'Course\CourseController@showOne','as'=>'admin.course.showOne']);
+        $router->post('/',['uses'=>'Course\CourseController@create','as'=>'admin.course.create']);
+        $router->put('/{id:[0-9]+}', ['uses'=>'Course\CourseController@edit','as'=>'admin.course.edit']);
+        $router->delete('/{id: [0-9]+}', ['uses'=>'Course\CourseController@destroy','as'=>'admin.course.destroy']);
     });
     //code phần loại thực tập
     $router->group(['prefix'=>'internship_type'], function () use ($router){
-        $router->get('show',['uses'=>'Internship_Type\Internship_TypeController@show','as'=>'admin.internship_type.show']);
-        $router->get('showone/{id:[0-9]+}',['uses'=>'Internship_Type\Internship_TypeController@showOne','as'=>'admin.internship_type.showOne']);
-        $router->post('create',['uses'=>'Internship_Type\Internship_TypeController@create','as'=>'admin.internship_type.create']);
-        $router->put('edit/{id:[0-9]+}', ['uses'=>'Internship_Type\Internship_TypeController@edit','as'=>'admin.internship_type.edit']);
-        $router->delete('delete/{id: [0-9]+}', ['uses'=>'Internship_Type\Internship_TypeController@destroy','as'=>'admin.internship_type.destroy']);
+        $router->get('/',['uses'=>'Internship_Type\Internship_TypeController@show','as'=>'admin.internship_type.show']);
+        $router->get('/{id:[0-9]+}',['uses'=>'Internship_Type\Internship_TypeController@showOne','as'=>'admin.internship_type.showOne']);
+        $router->post('/',['uses'=>'Internship_Type\Internship_TypeController@create','as'=>'admin.internship_type.create']);
+        $router->put('/{id:[0-9]+}', ['uses'=>'Internship_Type\Internship_TypeController@edit','as'=>'admin.internship_type.edit']);
+        $router->delete('/{id: [0-9]+}', ['uses'=>'Internship_Type\Internship_TypeController@destroy','as'=>'admin.internship_type.destroy']);
     });
 });
