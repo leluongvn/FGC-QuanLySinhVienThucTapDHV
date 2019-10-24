@@ -30,13 +30,17 @@ $router->group(['prefix'=>'api'],function() use ($router){
         // mại code
 
     });
+
     // code phần sinh viên
     $router->group(['prefix'=>'student'],function() use ($router){
-        $router->get('get/all','Student\StudentController@getAll');
-        $router->get('get/{id}','Student\StudentController@getSingle');
-        $router->post('create','Student\StudentController@create');
-        $router->put('update/{id}','Student\StudentController@update');
-        $router->delete('delete/{id}','Student\StudentController@delete');
+        $router->get('/','Student\StudentController@getAll');
+        $router->get('/{id}','Student\StudentController@getSingle');
+        $router->post('/','Student\StudentController@create');
+        $router->put('{id}','Student\StudentController@update');
+        $router->delete('{id}','Student\StudentController@delete');
+        // them sinh vien dang ky thuc tap
+        $router->post('create-register','Student\StudentRegisterController@create');
+
 
     });
 

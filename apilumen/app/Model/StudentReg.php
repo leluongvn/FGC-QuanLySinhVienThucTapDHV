@@ -2,17 +2,17 @@
 
 namespace App\Model;
 use Illuminate\Database\Eloquent\Model;
-class Student extends Model 
+class StudentReg extends Model 
 {
 
-    protected $table = 'students';
+    protected $table = 'student_regs';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'id_student','course_id','first_name','last_name','email','gender','address','phone','date_birth', 'class','note'
+        'student_id','internship_time_id','note'
     ];
 
     /**

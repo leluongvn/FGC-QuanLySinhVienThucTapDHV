@@ -14,19 +14,19 @@ class CreatestudentsTable extends Migration
     public function up()
     {
         Schema::create('students', function (Blueprint $table) {
-            $table->mediumIncrements('id');
-            $table->string('id_student',20)->unique();
-            $table->string('username',20)->unique();
-            $table->string('password',30);
-            $table->string('first_name',30);
-            $table->string('last_name',30);
-            $table->string('email',30)->nullable();
+            $table->increments('id');
+            $table->string('id_student',20);
+            $table->integer('course_id');
+            $table->string('first_name',255);
+            $table->string('last_name',255);
+            $table->string('email',255);
+            $table->string('password',255);
             $table->boolean('gender')->nullable();
+            $table->date('date_birth')->nullable();
+            $table->string('phone',12)->nullable();
             $table->string('address',255)->nullable();
-            $table->string('phone',11)->nullable();
-            $table->string('note',255)->nullable();
-            $table->smallInteger('shool_year')->nullable();
-            $table->mediumInteger('class_id');
+            $table->string('class',255);
+            $table->text('note')->nullable();
             $table->timestamps(); 
         });
     }
