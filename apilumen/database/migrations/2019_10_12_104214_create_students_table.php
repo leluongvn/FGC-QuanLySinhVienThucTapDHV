@@ -12,7 +12,7 @@ class CreatestudentsTable extends Migration
      * @return void
      */
     public function up()
-    {
+    {   
         Schema::create('students', function (Blueprint $table) {
             $table->increments('id');
             $table->string('id_student',20);
