@@ -94,15 +94,15 @@
       <nav-link :title="title.sv">
         <!-- item -->
         <li>
-          <a class="treeview-item" href="#">
+          <router-link class="treeview-item" to="/DKDoanhNghiep">
             <i class="icon fa fa-circle-o"></i>Đăng ký doanh nghiệp
-          </a>
+          </router-link>
         </li>
         <!-- item -->
         <li>
-          <a class="treeview-item" href="#">
+          <router-link class="treeview-item" to="/DKDeTai">
             <i class="icon fa fa-circle-o"></i>Đăng ký đề tài
-          </a>
+          </router-link>
         </li>
         <!-- item -->
         <li>
