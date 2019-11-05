@@ -22,7 +22,7 @@
       <nav-link :title="title.tldt">
         <!-- item -->
         <li>
-          <router-link class="treeview-item" to="#">
+          <router-link class="treeview-item" to="/QLThucTap">
             <i class="icon fa fa-circle-o"></i> Quản lý thực tập
           </router-link>
         </li>

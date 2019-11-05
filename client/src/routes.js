@@ -3,6 +3,7 @@ import QLSinhvien from './pages/TLDT/QLSinhVien.vue'
 import QLGiaoVien from './pages/TLDT/QLGiaoVien.vue'
 import QLDeTai from './pages/TLDT/QLDeTai.vue'
 import QLDoanhNghiep from './pages/TLDT/QLDoanhNghiep.vue'
+import QLThucTap from './pages/TLDT/QLThucTap.vue'
 import DKDeTai from './pages/SinhVien/TopicReg.vue'
 import DKDoanhNghiep from './pages/SinhVien/CompanyReg.vue'
 
@@ -36,7 +37,13 @@ const routes = [
     path: '/QLDoanhNghiep',
     name: 'QLDoanhNghiep',
     component: QLDoanhNghiep
-  },//Trợ Lý Dào tạo
+  },
+  {
+    path: '/QLThucTap',
+    name: 'QLThucTap',
+    component: QLThucTap
+  }
+  ,//sinh viên
   {
     path: '/DKDoanhNghiep',
     name: 'DKDoanhNghiep',

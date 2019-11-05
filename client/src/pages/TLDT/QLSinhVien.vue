@@ -382,7 +382,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less" scoped>
 .badge {
   border: 0;
   border-radius: 0;

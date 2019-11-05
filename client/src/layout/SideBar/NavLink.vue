@@ -4,7 +4,6 @@
     <a
       class="app-menu__item"
       :class="{active:bool}"
-      href="#"
       data-toggle="treeview"
       @click="show()"
     >
