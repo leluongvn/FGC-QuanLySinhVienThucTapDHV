@@ -761,14 +761,17 @@ export default {
                 response => {
                   // get body data
                   this.student = response.body;
-                   
-                  //   console.log(response.body);
+            
+                    console.log(response.body);
                 },
                 response => {
                   // error callback
                 }
               )
-              
+                   
+                    
+                   
+                        
           },
           
           response => {
@@ -796,7 +799,8 @@ export default {
                 response => {
                   // get body data
                   this.student = response.body;
-                  //   console.log(response.body);
+                  // this.mytable();
+                  console.log(response.body);
                 },
                 response => {
                   // error callback
