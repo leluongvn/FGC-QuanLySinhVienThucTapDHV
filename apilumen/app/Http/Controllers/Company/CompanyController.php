@@ -14,15 +14,14 @@ class CompanyController extends Controller
         $this->validate(
             $request,
             [
-                'name'        =>     'required|unique:companies,name',
+                'name'        =>     'required',
                 'phone'       =>     'required',
                 'address'     =>     'required',
                 'email'       =>     'required',
                 'introduce'   =>     'required',
             ],
             [
-                'name.required'      => 'Bạn chưa nhập tên doanh nghiệp',
-                'name.unique'        => 'Doanh nghiệp đã tồn tại',
+                'name.required'      => 'Bạn chưa nhập tên doanh nghiệp',                
                 'phone.required'     => 'Bạn chưa nhập sdt',
                 'address.required'   => 'Bạn chưa nhập địa chỉ',
                 'email.required'     => 'Bạn chưa nhập email',

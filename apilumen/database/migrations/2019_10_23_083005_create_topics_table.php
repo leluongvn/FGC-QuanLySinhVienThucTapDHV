@@ -20,6 +20,7 @@ class CreateTopicsTable extends Migration
             $table->foreign('id_internship_time')->references('id')->on('internship_time')->onDelete('cascade');
             $table->string('creator');
             $table->string('note')->nullable();
+            $table->integer('status');
             $table->timestamps();
         });
     }
