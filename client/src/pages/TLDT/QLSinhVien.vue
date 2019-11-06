@@ -453,7 +453,7 @@ export default {
       user: {
         id_student: "",    
         name: "",
-        password: "",
+        password: "123456",
         class: "",
         email: "",        
         date_birth: "",
