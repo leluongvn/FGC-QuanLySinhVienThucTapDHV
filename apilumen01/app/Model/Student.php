@@ -12,7 +12,7 @@ class Student extends Model
      * @var array
      */
     protected $fillable = [
-        'id_student','password','course_id','first_name','last_name','email','gender','address','phone','date_birth', 'class','note'
+        'id_student','name','password','class','email','date_birth','phone','note'
     ];
 
     /**
@@ -21,6 +21,6 @@ class Student extends Model
      * @var array
      */
     protected $hidden = [
-        //  'password'
+    
     ];
 }

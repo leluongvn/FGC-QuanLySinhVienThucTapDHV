@@ -16,11 +16,11 @@ class CreateTopicsTable extends Migration
         Schema::create('topics', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->bigInteger('id_internship_time');
-            // $table->bigInteger('id_internship_time')->unsigned();
-            // $table->foreign('id_internship_time')->references('id')->on('internship_time')->onDelete('cascade');
+            $table->bigInteger('id_internship_time')->unsigned();
+            $table->foreign('id_internship_time')->references('id')->on('internship_time')->onDelete('cascade');
             $table->string('creator');
             $table->string('note')->nullable();
+            $table->integer('status');
             $table->timestamps();
         });
     }

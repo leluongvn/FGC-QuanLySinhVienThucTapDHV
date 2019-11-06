@@ -20,15 +20,15 @@ class TopicController extends Controller
     public function create(Request $request){
         $this->validate(
             $request,[
-                'name'        =>     'required',
-                // 'id_internship_time' => 'required|exists:specialized,id',
+                'name'        =>     'required',                
                 'id_internship_time' => 'required',
                 'creator'        =>     'required',
+                'status'        =>     'required',
             ], [
                 'name.required'      => 'Bạn chưa nhập tên đề tài',
-                'id_internship_time.required'=>'Bạn chưa chọn loại thực tập',
-                // 'id_internship_time.exists' => 'Không tồn tại loại thực tập đã chọn',
-                'creator.required'      => 'Bạn chưa nhập tên người tạo'
+                'id_internship_time.required'=>'Bạn chưa chọn loại thực tập',                
+                'creator.required'      => 'Bạn chưa nhập tên người tạo',
+                'status.required'      => 'Bạn chưa nhập tên trạng thái'
             ]
         );
         $Topic = Topic::create($request->all());
@@ -37,15 +37,15 @@ class TopicController extends Controller
     public function edit($id, Request $request){
         $this->validate(
             $request,[
-                'name'        =>     'required',
-                // 'id_internship_time' => 'required|exists:specialized,id',
+                'name'        =>     'required',                
                 'id_internship_time' => 'required',
                 'creator'        =>     'required',
+                'status'        =>     'required',
             ], [
                 'name.required'      => 'Bạn chưa nhập tên đề tài',
-                'id_internship_time.required'=>'Bạn chưa chọn loại thực tập',
-                // 'id_internship_time.exists' => 'Không tồn tại loại thực tập đã chọn',
-                'creator.required'      => 'Bạn chưa nhập tên người tạo'
+                'id_internship_time.required'=>'Bạn chưa chọn loại thực tập',                
+                'creator.required'      => 'Bạn chưa nhập tên người tạo',
+                'status.required'      => 'Bạn chưa nhập tên trạng thái'
             ]
         );
         $Topic = Topic::where('id',$id);
