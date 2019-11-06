@@ -33,7 +33,7 @@ class TeacherController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
-            'id' => 'required',
+            
             'name' => 'required'
         ]);
 

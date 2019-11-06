@@ -28,22 +28,21 @@ class StudentController extends Controller
          * Thêm mới một sinh viên
          */
         $this->validate($request, [
-            'id_student' => 'required|unique:students|max:20|min:10',
-            'course_id'  => 'required',
-            'password'   => 'required|min:6',
-            'first_name' => 'required',
-            'last_name'  => 'required',
+            'id_student' => 'required|max:20|min:10',                        
+            'name' => 'required',
+            'class'  => 'required',
             'email'      => 'email',
+            'date_birth'  => 'required',
+            'phone'  => 'required',
         ],
         [
-            'id_student.required' => 'Vui lòng nhập mã sinh viên',
-            'id_student.unique'   => 'Mã sinh viên đã tồn tại',
+            'id_student.required' => 'Vui lòng nhập mã sinh viên',            
             'id_student.max'      => 'Độ dài mã sinh viên phải nhỏ hơn 20 ký tự',
             'id_student.min'      => 'Độ dài mã sinh viên phải lớn hơn 10 ký tự',
-            'id_course.required'  => 'Vui lòng lựa chọn khóa học',
-            'password.required'   => 'Vui lòng thêm mật khẩu',
-            'first_name.required' => 'Vui lòng nhập họ',
-            'last_name.required'  => 'Vui lòng nhập tên ',
+            'name.required'  => 'Vui lòng nhập tên',                             
+            'class.required' => 'Vui lòng nhập lớp',
+            'date_birth.required'  => 'Vui lòng nhập ngày sinh ',
+            'phone.required'  => 'Vui lòng nhập số điện thoại ',
             'email.email'         => 'Không phải email',
         ]);
         $Student = Student::create($request->all());
@@ -55,21 +54,21 @@ class StudentController extends Controller
          * Cập nhật một sinh viên theo id
          */
         $this->validate($request, [
-            'id_student' => 'required|max:20|min:10',
-            'course_id'  => 'required',
-            'password'   => 'required|min:6',
-            'first_name' => 'required',
-            'last_name'  => 'required',
+            'id_student' => 'required|max:20|min:10',                        
+            'name' => 'required',
+            'class'  => 'required',
             'email'      => 'email',
+            'date_birth'  => 'required',
+            'phone'  => 'required',
         ],
         [
-            'id_student.required' => 'Vui lòng nhập mã sinh viên',
+            'id_student.required' => 'Vui lòng nhập mã sinh viên',            
             'id_student.max'      => 'Độ dài mã sinh viên phải nhỏ hơn 20 ký tự',
             'id_student.min'      => 'Độ dài mã sinh viên phải lớn hơn 10 ký tự',
-            'id_course.required'  => 'Vui lòng lựa chọn khóa học',
-            'password.required'   => 'Vui lòng thêm mật khẩu',
-            'first_name.required' => 'Vui lòng nhập họ',
-            'last_name.required'  => 'Vui lòng nhập tên ',
+            'name.required'  => 'Vui lòng nhập tên',                             
+            'class.required' => 'Vui lòng nhập lớp',
+            'date_birth.required'  => 'Vui lòng nhập ngày sinh ',
+            'phone.required'  => 'Vui lòng nhập số điện thoại ',
             'email.email'         => 'Không phải email',
         ]);
         $Student = Student::where('id', $id)->first();
