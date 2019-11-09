@@ -22,7 +22,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(v,index) in student" :key="index">
+                <tr v-for="(v,index) in student" :key="index" id="data">
                   <td>{{v.id_student}}</td>                  
                   <td>{{v.name}}</td>
                   <td>{{v.date_birth}}</td>
@@ -33,7 +33,7 @@
                     <a href="#input" class="btn btn-edit" @click="getOne(v.id),showUpdate()">sửa</a>
                   </td>
                   <td>
-                    <button class="btn btn-delete" @click="delData(v.id)">Xóa</button>
+                    <button class="btn btn-delete" id="delete-button" @click="delData(v.id)">Xóa</button>
                   </td>
                 </tr>
               </tbody>
@@ -561,7 +561,7 @@ export default {
         
         } );
       },
-
+   
 
     //start modal
     showadd() {
@@ -611,13 +611,17 @@ export default {
                 response => {
                   // get body data
                   this.student = response.body;
-                   
+                  // this.student = this.nomeEvento;
                   //   console.log(response.body);
                 },
                 response => {
                   // error callback
                 }
               )
+              // location.reload();
+              this.$forceUpdate()
+               
+               
               
           },
           
