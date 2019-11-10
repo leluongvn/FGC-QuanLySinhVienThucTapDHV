@@ -27,6 +27,10 @@ Vue.use(Vuelidate)
 Vue.use(VueNoty)
 Vue.use(VModal)
 
+//custom api
+Vue.http.options.root = "http://localhost:8000/";
+
+//router
 const router = new VueRouter({
   routes
 })

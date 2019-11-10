@@ -11,16 +11,6 @@ class Student extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'id_student','name','password','class','email','date_birth','phone','note'
-    ];
+    protected $fillable = ['mssv','name','password','class','email','date_birth','phone','note'];
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = [
-    
-    ];
 }

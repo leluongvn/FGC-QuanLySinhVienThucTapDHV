@@ -1,5 +1,5 @@
 <template>
-  <div class="app-content">
+  <div>
     <app-title :title="title" />
   </div>
 </template>

@@ -17,10 +17,9 @@ class CreateTopicsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->bigInteger('id_internship_time')->unsigned();
-            $table->foreign('id_internship_time')->references('id')->on('internship_time')->onDelete('cascade');
             $table->string('creator');
-            $table->string('note')->nullable();
-            $table->integer('status');
+            $table->string('content');
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }

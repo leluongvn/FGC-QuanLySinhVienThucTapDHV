@@ -4,7 +4,14 @@
       <img style="width:40px;margin-bottom: 5px" src="../assets/logo.png" alt />
     </a>
     <!-- Sidebar toggle button-->
-    <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+    <a
+      class="app-sidebar__toggle"
+      @click="tonggle"
+      id="sidebar_toggle"
+      href="#"
+      data-toggle="sidebar"
+      aria-label="Hide Sidebar"
+    ></a>
     <!-- Navbar Right Menu-->
     <ul class="app-nav">
       <li class="app-search">
@@ -141,8 +148,27 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    tonggle() {
+      var element = document.getElementById("sidebar");
+      element.classList.toggle("hide_sidebar");
+
+      var element = document.getElementById("app-content");
+      element.classList.toggle("full_content");
+
+      var element = document.getElementById("app");
+      element.classList.toggle("sidenav-toggled");
+    }
+  }
+};
 </script>
 
-<style>
+<style lang="less" scoped>
+.hide_sidebar {
+  display: none;
+}
+.full_content {
+  margin-left: 0;
+}
 </style>

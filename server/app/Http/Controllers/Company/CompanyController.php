@@ -14,41 +14,38 @@ class CompanyController extends Controller
         $this->validate(
             $request,
             [
-                'name'        =>     'required',
-                'phone'       =>     'required',
-                'address'     =>     'required',
-                'email'       =>     'required',
-                'introduce'   =>     'required',
+                'name' => 'required',
+                'phone' => 'required',
+                'address' => 'required',
+                'email' => 'required'
             ],
             [
-                'name.required'      => 'Bạn chưa nhập tên doanh nghiệp',                
-                'phone.required'     => 'Bạn chưa nhập sdt',
-                'address.required'   => 'Bạn chưa nhập địa chỉ',
-                'email.required'     => 'Bạn chưa nhập email',
-                'introduce.required' => 'Bạn chưa nhập giới thiệu công ty',
+                'name.required' => 'Bạn chưa nhập tên doanh nghiệp',
+                'phone.required' => 'Bạn chưa nhập sdt',
+                'address.required' => 'Bạn chưa nhập địa chỉ',
+                'email.required' => 'Bạn chưa nhập email'
             ]
         );
         $Company = Company::create($request->all());
 
         return response()->json($Company, 201);
     }
+
     public function update($id, Request $request)
     {
         $this->validate(
             $request,
             [
-                'name'        =>     'required',
-                'phone'       =>     'required',
-                'address'     =>     'required',
-                'email'       =>     'required',
-                'introduce'   =>     'required',
+                'name' => 'required',
+                'phone' => 'required',
+                'address' => 'required',
+                'email' => 'required'
             ],
             [
-                'name.required'      => 'Bạn chưa nhập tên doanh nghiệp',
-                'phone.required'     => 'Bạn chưa nhập sdt',
-                'address.required'   => 'Bạn chưa nhập địa chỉ',
-                'email.required'     => 'Bạn chưa nhập email',
-                'introduce.required' => 'Bạn chưa nhập giới thiệu công ty',
+                'name.required' => 'Bạn chưa nhập tên doanh nghiệp',
+                'phone.required' => 'Bạn chưa nhập sdt',
+                'address.required' => 'Bạn chưa nhập địa chỉ',
+                'email.required' => 'Bạn chưa nhập email'
             ]
         );
         $Company = Company::findOrFail($id);
@@ -56,15 +53,18 @@ class CompanyController extends Controller
 
         return response()->json($Company, 200);
     }
+
     public function delete($id)
     {
         Company::findOrFail($id)->delete();
         return response('Xóa thành công', 200);
     }
+
     public function show()
     {
         return response()->json(Company::all());
     }
+
     public function showOne($id)
     {
         return response()->json(Company::find($id));

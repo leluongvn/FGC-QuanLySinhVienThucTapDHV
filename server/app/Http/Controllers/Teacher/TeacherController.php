@@ -9,33 +9,32 @@ use Illuminate\Http\Request;
 
 class TeacherController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function showAllTeachers()
     {
-        //
-    }
-
-    //
-
-    public function showAllTeachers(){
-        //dd("test");
         return response()->json(Teacher::all());
     }
 
-    public function showOneTeachers($id){
+    public function showOneTeachers($id)
+    {
         return response()->json(Teacher::find($id));
     }
 
     public function create(Request $request)
     {
         $this->validate($request, [
-            
-            'name' => 'required'
-        ]);
+            'msgv' => 'required|max:20|min:10',
+            'name' => 'required',
+            'email' => 'email',
+            'phone' => 'required',
+        ],
+            [
+                'msgv.required' => 'Vui lòng nhập mã giảng viên',
+                'msgv.max' => 'Độ dài mã giảng viên phải nhỏ hơn 20 ký tự',
+                'msgv.min' => 'Độ dài mã giảng viên phải lớn hơn 10 ký tự',
+                'name.required' => 'Vui lòng nhập tên',
+                'phone.required' => 'Vui lòng nhập số điện thoại ',
+                'email.email' => 'Không phải email',
+            ]);
 
         $teacher = Teacher::create($request->all());
 
@@ -44,6 +43,20 @@ class TeacherController extends Controller
 
     public function update($id, Request $request)
     {
+        $this->validate($request, [
+            'msgv' => 'required|max:20|min:10',
+            'name' => 'required',
+            'email' => 'email',
+            'phone' => 'required',
+        ],
+            [
+                'msgv.required' => 'Vui lòng nhập mã giảng viên',
+                'msgv.max' => 'Độ dài mã giảng viên phải nhỏ hơn 20 ký tự',
+                'msgv.min' => 'Độ dài mã giảng viên phải lớn hơn 10 ký tự',
+                'name.required' => 'Vui lòng nhập tên',
+                'phone.required' => 'Vui lòng nhập số điện thoại ',
+                'email.email' => 'Không phải email',
+            ]);
         $teacher = Teacher::findOrFail($id);
         $teacher->update($request->all());
 

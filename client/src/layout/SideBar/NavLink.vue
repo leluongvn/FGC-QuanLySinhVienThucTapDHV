@@ -1,5 +1,5 @@
 <template>
-  <li class="treeview">
+  <li class="treeview" :class="{active:bool}">
     <!-- menu -->
     <a
       class="app-menu__item"
@@ -12,7 +12,7 @@
       <i class="treeview-indicator fa fa-angle-right" :class="{rotate: bool}"></i>
     </a>
     <!-- item -->
-    <ul v-show="bool" class="treeview-menu" :class="{show: bool}">
+    <ul class="treeview-menu">
       <!-- option slot -->
       <slot></slot>
     </ul>
@@ -41,9 +41,6 @@ export default {
 </script>
 
 <style lang="less">
-.show {
-  max-height: 100vh;
-}
 .rotate {
   -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);

@@ -8,9 +8,7 @@ class Teacher extends Model
 {
     public $timestamps = false;
 
-    protected $table='teacher';
-    protected $fillable = [
-        'id_subject', 'name','password', 'email','phone','introduce'
-    ];
+    protected $table='teachers';
+    protected $fillable = ['magv','id_subject', 'name','password', 'email','phone','introduce'];
 
 }

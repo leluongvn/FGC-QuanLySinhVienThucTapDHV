@@ -7,6 +7,9 @@ import QLThucTap from './pages/TLDT/QLThucTap.vue'
 import DKDeTai from './pages/SinhVien/TopicReg.vue'
 import DKDoanhNghiep from './pages/SinhVien/CompanyReg.vue'
 
+import InterTime from './components/InternshipTime.vue'
+import StudentReg from './components/StudentReg.vue'
+
 const routes = [
   {
     path: '/',
@@ -29,11 +32,6 @@ const routes = [
     component: QLDeTai
   },
   {
-    path: '/QLSinhVien',
-    name: 'QLSinhVien',
-    component: QLSinhvien
-  },
-  {
     path: '/QLDoanhNghiep',
     name: 'QLDoanhNghiep',
     component: QLDoanhNghiep
@@ -41,7 +39,20 @@ const routes = [
   {
     path: '/QLThucTap',
     name: 'QLThucTap',
-    component: QLThucTap
+    component: QLThucTap,
+    redirect:'/QLThucTap/1',
+    children:[
+      {
+        path:':id',
+        name:'index',
+        component: InterTime
+      },
+      {
+        path:'reg/:id',
+        name:'index',
+        component: StudentReg
+      }
+    ]
   }
   ,//sinh viên
   {

@@ -16,9 +16,7 @@ class CreateInternshipTypeTable extends Migration
         Schema::create('internship_type', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->bigInteger('id_specialized')->unsigned();
-            $table->foreign('id_specialized')->references('id')->on('specialized')->onDelete('cascade');
-            $table->string('note')->nullable();
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }

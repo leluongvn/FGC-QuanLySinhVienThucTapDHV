@@ -1,8 +1,10 @@
 <template>
-  <div id="app">
+  <div id="app" class="app sidebar-mini rtl">
     <nav-bar />
     <side-bar />
-    <router-view></router-view>
+    <div class="app-content" id="app-content">
+      <router-view />
+    </div>
   </div>
 </template>
 

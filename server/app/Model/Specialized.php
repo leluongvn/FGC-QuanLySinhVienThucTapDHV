@@ -16,11 +16,6 @@ class Specialized extends Model
     {
         return $this->belongsTo('App\Academy');
     }
-    
-    public function course()
-    {
-        return $this->hasMany('App\Course');
-    }
 
     public function internship_type()
     {
