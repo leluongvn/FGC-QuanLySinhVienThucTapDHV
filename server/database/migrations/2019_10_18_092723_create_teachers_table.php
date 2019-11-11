@@ -20,7 +20,7 @@ class CreateTeachersTable extends Migration
             $table->string('name',255);
             $table->string('password',255);                        
             $table->string('email');
-            $table->integer('phone');
+            $table->string('phone');
             $table->text('introduce')->nullable();
             $table->string('note')->nullable();
             $table->timestamps();

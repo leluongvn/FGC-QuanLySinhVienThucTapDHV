@@ -13,7 +13,7 @@
             <a href="#" class="btn btn-add" title="Thêm mới" @click="showadd()">+</a>
           </h4>
           <p class="card-category">Xem thông tin, thêm, sửa, xóa giáo viên</p>
-
+        
           <div class="card-body table-full-width table-responsive">
             <table class="table table-hover table-striped" id="example">
               <thead>
@@ -23,18 +23,22 @@
               </thead>
               <tbody>
                 <tr v-for="(v,index) in teacher" :key="index">
-                  <td>{{v.msgv}}</td>
+                  <!-- <td>{{v.msgv}}</td> -->
                   <td>{{v.name}}</td>                                    
                   <td>{{v.email}}</td>
                   <td>{{v.phone}}</td>
                   <td>{{v.introduce}}</td>
+                  <!-- <td>
+                    <a href="#" id="show" class="btn btn-add" >ok</a> 
+                  
+                  </td> -->
                   <td>
                     <div class="row">
                       <div class="col-md-6">
-                        <a href="#input" class="" @click="getOne(v.id),showUpdate()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                        <a href="#input" title="Sửa" class="" @click="getOne(v.id),showUpdate()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                       </div>
                       <div class="col-md-6">
-                        <a href="#" class="" @click="delData(v.id)"><i style="color:red;" class="fa fa-trash" aria-hidden="true"></i></a>
+                        <a href="#" title="Xóa" class="" @click="delData(v.id)"><i style="color:red;" class="fa fa-trash" aria-hidden="true"></i></a>
                       </div>
                     </div>
                     
@@ -66,6 +70,7 @@
                       width="50%"
                       type="text"
                       class="form-control"
+                     
                       v-model.trim="$v.user.msgv.$model"
                       :class="{
                     'is-invalid': $v.user.msgv.$error, 'is-valid':!$v.user.msgv.$invalid }"
@@ -107,14 +112,15 @@
                   <!--Mã bộ môn-->
                   <div class="col-md-6">
                     <p class="mg-top-10">Bộ môn:</p>
-                    <input
-                      width="50%"
-                      type="text"
-                      class="form-control"
+                    <select size="3" class="form-control"
                       v-model.trim="$v.user.id_subject.$model"
                       :class="{
-                    'is-invalid': $v.user.id_subject.$error, 'is-valid':!$v.user.id_subject.$invalid }"
-                    />
+                    'is-invalid': $v.user.id_subject.$error, 'is-valid':!$v.user.id_subject.$invalid }">
+                      <option value="1">Hệ thống thông tin</option>
+                      <option value="2">Khoa học máy tính</option>
+                      <option value="3">Mạng máy tính</option>
+                    </select>
+                    
                     <div class="valid-feedback">Bộ môn hợp lệ!</div>
                     <div class="invalid-feedback">
                       <span v-if="!$v.user.id_subject.required">Yêu cầu bạn nhập Bộ môn!</span>
@@ -289,14 +295,15 @@
                   <!--Mã bộ môn-->
                   <div class="col-md-6">
                     <p class="mg-top-10">Bộ môn:</p>
-                    <input
-                      width="50%"
-                      type="text"
-                      class="form-control"
+                    <select size="3" class="form-control"
                       v-model.trim="$v.userUpdate.id_subject.$model"
                       :class="{
-                    'is-invalid': $v.userUpdate.id_subject.$error, 'is-valid':!$v.userUpdate.id_subject.$invalid }"
-                    />
+                    'is-invalid': $v.userUpdate.id_subject.$error, 'is-valid':!$v.userUpdate.id_subject.$invalid }">
+                      <option value="1">Hệ thống thông tin</option>
+                      <option value="2">Khoa học máy tính</option>
+                      <option value="3">Mạng máy tính</option>
+                    </select>
+                    
                     <div class="valid-feedback">Bộ môn hợp lệ!</div>
                     <div class="invalid-feedback">
                       <span v-if="!$v.userUpdate.id_subject.required">Yêu cầu bạn nhập Bộ môn!</span>
@@ -413,6 +420,8 @@
             
           </div>
         </modal>
+
+        
       </div>
     </div>
   </div>
@@ -433,7 +442,7 @@ import datatables from "datatables";
 import $ from "jquery";
 
 const tableColumns = [
-  "Mã gv",
+  // "Mã gv",
   "Họ tên",
   "Email",
   "Số điện thoại",
@@ -452,6 +461,7 @@ export default {
         columns: [...tableColumns]
       },
       teacher: [],
+      
       user: {
         msgv: "",
         name: "",
@@ -574,6 +584,7 @@ export default {
     hideUpdate() {
       this.$modal.hide("modalUpdate");
     },
+    
     //enad modal
     //show password
     toggleShowPassword() {
@@ -693,7 +704,10 @@ export default {
         }
       );
     }
+
   }
+
+  
 };
 </script>
 <style>
@@ -804,5 +818,9 @@ html {
 }
 .add-modal {
   margin: 20px;
+}
+
+input::placeholder {
+  font-style: italic;
 }
 </style>

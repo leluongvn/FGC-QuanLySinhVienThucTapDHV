@@ -21,7 +21,7 @@ class CreatestudentsTable extends Migration
             $table->string('class',255);
             $table->string('email',255)->nullable();
             $table->date('date_birth');
-            $table->integer('phone')->nullable();
+            $table->string('phone')->nullable();
             $table->text('note')->nullable();
             $table->timestamps(); 
         });
