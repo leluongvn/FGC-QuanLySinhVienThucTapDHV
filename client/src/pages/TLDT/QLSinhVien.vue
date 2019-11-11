@@ -10,7 +10,7 @@
         >
           <h4 class="card-title">
             Quản lý sinh viên
-            <a href="#" @click="showadd()">Thêm mới</a>
+            <a href="#" class="btn btn-add" title="Thêm mới" @click="showadd()">+</a>
           </h4>
           <p class="card-category">Xem thông tin, thêm, sửa, xóa sinh viên</p>
 
@@ -30,11 +30,17 @@
                   <td>{{v.email}}</td>
                   <td>{{v.phone}}</td>
                   <td>
-                    <a href="#input" class="btn btn-edit" @click="getOne(v.id),showUpdate()">sửa</a>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <a href="#input" class="  " @click="getOne(v.id),showUpdate()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                      </div>
+                      <div class="col-md-6">
+                        <a href="#" class="" @click="delData(v.id)"><i style="color:red;" class="fa fa-trash" aria-hidden="true"></i></a>
+                      </div>
+                    </div>
+                    
                   </td>
-                  <td>
-                    <button class="btn btn-delete" @click="delData(v.id)">Xóa</button>
-                  </td>
+                  
                 </tr>
               </tbody>
             </table>
@@ -55,7 +61,7 @@
               <div class="col-md-7">
                 <div class="row">
                   <!--ma sinh vien-->
-                  <div class="col-md-4">
+                  <div class="col-md-5">
                     <p class="mg-top-10">Mã sinh viên:</p>
                     <input
                       width="50%"
@@ -81,7 +87,7 @@
                     </div>
                   </div>
                   <!--name-->
-                  <div class="col-md-4">
+                  <div class="col-md-7">
                     <p class="mg-top-10">Họ tên:</p>
                     <input
                       width="50%"
@@ -96,26 +102,11 @@
                       <span v-if="!$v.user.name.required">Yêu cầu nhập thông tin họ tên!</span>
                     </div>
                   </div>
-                  <!--Lớp-->
-                  <div class="col-md-4">
-                    <p class="mg-top-10">Lớp:</p>
-                    <input
-                      width="50%"
-                      type="text"
-                      class="form-control"
-                      v-model.trim="$v.user.class.$model"
-                      :class="{
-                'is-invalid': $v.user.class.$error, 'is-valid':!$v.user.class.$invalid }"
-                    />
-                    <div class="valid-feedback">Lớp học hợp lệ!</div>
-                    <div class="invalid-feedback">
-                      <span v-if="!$v.user.class.required">Yêu cầu nhập thông tin lớp học!</span>
-                    </div>
-                  </div>
+                  
                 </div>
                 <div class="row">
                   <!--Ngay sinh-->
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <p class="mg-top-10">Ngày sinh::</p>
                     <input
                       width="50%"
@@ -131,7 +122,7 @@
                     </div>
                   </div>
                   <!--phone-->
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <p class="mg-top-10">Số điện thoại:</p>
                     <input
                       width="50%"
@@ -139,11 +130,27 @@
                       class="form-control"
                       v-model.trim="$v.user.phone.$model"
                       :class="{
-                    'is-invalid': $v.user.phone.$error, 'is-valid':!$v.user.phone.$invalid }"
+                     'is-invalid': $v.user.phone.$error, 'is-valid':!$v.user.phone.$invalid }"
                     />
                     <div class="valid-feedback">Số điện thoại hợp lệ!</div>
                     <div class="invalid-feedback">
                       <span v-if="!$v.user.phone.required">Yêu cầu bạn nhập số điện thoại!</span>
+                    </div>
+                  </div>
+                  <!--Lớp-->
+                  <div class="col-md-4">
+                    <p class="mg-top-10">Lớp:</p>
+                    <input
+                      width="50%"
+                      type="text"
+                      class="form-control"
+                      v-model.trim="$v.user.class.$model"
+                      :class="{
+                      'is-invalid': $v.user.class.$error, 'is-valid':!$v.user.class.$invalid }"
+                    />
+                    <div class="valid-feedback">Lớp học hợp lệ!</div>
+                    <div class="invalid-feedback">
+                      <span v-if="!$v.user.class.required">Yêu cầu nhập thông tin lớp học!</span>
                     </div>
                   </div>
                 </div>
@@ -209,20 +216,21 @@
                     class="form-control"
                     v-model.trim="$v.user.note.$model"
                     :class="{
-                'is-invalid': $v.user.note.$error, 'is-valid':!$v.user.note.$invalid }"
+                    'is-invalid': $v.user.note.$error, 'is-valid':!$v.user.note.$invalid }"
                   />
                   <div class="valid-feedback">ghi chú có thể bỏ trống</div>
                 </div>
+                <div class="row">
+                   
+                    
+                        <button @click="addData()" class="btn-modal-add">Thêm mới</button>
+                      
+                                                                           
+                </div>
+                 
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-7"></div>
-              <div class="col-md-5">
-                <a @click="addData()" class="btn-modal-add">Thêm mới</a>
-
-                <!-- <a href="#table" @click="putData" class="btn-modal-add">Cập nhật</a> -->
-              </div>
-            </div>
+            
           </div>
         </modal>
 
@@ -236,7 +244,7 @@
               <div class="col-md-7">
                 <div class="row">
                   <!--ma sinh vien-->
-                  <div class="col-md-4">
+                  <div class="col-md-5">
                     <p class="mg-top-10">Mã sinh viên:</p>
                     <input
                       width="50%"
@@ -262,7 +270,7 @@
                     </div>
                   </div>
                   <!--name-->
-                  <div class="col-md-4">
+                  <div class="col-md-7">
                     <p class="mg-top-10">Họ tên:</p>
                     <input
                       width="50%"
@@ -277,26 +285,11 @@
                       <span v-if="!$v.userUpdate.name.required">Yêu cầu nhập thông tin họ tên!</span>
                     </div>
                   </div>
-                  <!--Lớp-->
-                  <div class="col-md-4">
-                    <p class="mg-top-10">Lớp:</p>
-                    <input
-                      width="50%"
-                      type="text"
-                      class="form-control"
-                      v-model.trim="$v.userUpdate.class.$model"
-                      :class="{
-                'is-invalid': $v.userUpdate.class.$error, 'is-valid':!$v.userUpdate.class.$invalid }"
-                    />
-                    <div class="valid-feedback">Lớp học hợp lệ!</div>
-                    <div class="invalid-feedback">
-                      <span v-if="!$v.userUpdate.class.required">Yêu cầu nhập thông tin lớp học!</span>
-                    </div>
-                  </div>
+                  
                 </div>
                 <div class="row">
                   <!--Ngay sinh-->
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <p class="mg-top-10">Ngày sinh::</p>
                     <input
                       width="50%"
@@ -312,7 +305,7 @@
                     </div>
                   </div>
                   <!--phone-->
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <p class="mg-top-10">Số điện thoại:</p>
                     <input
                       width="50%"
@@ -325,6 +318,22 @@
                     <div class="valid-feedback">Số điện thoại hợp lệ!</div>
                     <div class="invalid-feedback">
                       <span v-if="!$v.userUpdate.phone.required">Yêu cầu bạn nhập số điện thoại!</span>
+                    </div>
+                  </div>
+                  <!--Lớp-->
+                  <div class="col-md-4">
+                    <p class="mg-top-10">Lớp:</p>
+                    <input
+                      width="50%"
+                      type="text"
+                      class="form-control"
+                      v-model.trim="$v.userUpdate.class.$model"
+                      :class="{
+                    'is-invalid': $v.userUpdate.class.$error, 'is-valid':!$v.userUpdate.class.$invalid }"
+                    />
+                    <div class="valid-feedback">Lớp học hợp lệ!</div>
+                    <div class="invalid-feedback">
+                      <span v-if="!$v.userUpdate.class.required">Yêu cầu nhập thông tin lớp học!</span>
                     </div>
                   </div>
                 </div>
@@ -390,20 +399,16 @@
                     class="form-control"
                     v-model.trim="$v.userUpdate.note.$model"
                     :class="{
-                'is-invalid': $v.userUpdate.note.$error, 'is-valid':!$v.userUpdate.note.$invalid }"
+                  'is-invalid': $v.userUpdate.note.$error, 'is-valid':!$v.userUpdate.note.$invalid }"
                   />
                   <div class="valid-feedback">ghi chú có thể bỏ trống</div>
                 </div>
+                <div class="row">
+                  <button  @click="putData()" class="btn-modal-add">Cập nhật</button>
+                </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-7"></div>
-              <div class="col-md-5">
-                <a href="#table" @click="putData()" class="btn-modal-add">Cập nhật</a>
-
-                <!-- <a href="#table" @click="putData" class="btn-modal-add">Cập nhật</a> -->
-              </div>
-            </div>
+           
           </div>
         </modal>
       </div>
@@ -432,8 +437,7 @@ const tableColumns = [
   "lớp",
   "Email",
   "Số điện thoại",
-  "",
-  ""
+  "Thao tác"
 ];
 
 export default {
@@ -555,7 +559,7 @@ export default {
         $("#example").dataTable();
       });
     },
-
+   
     //start modal
     showadd() {
       this.$modal.show("modalAdd");
@@ -588,6 +592,7 @@ export default {
         this.$http.delete("api/student/" + id).then(
           response => {
             this.$noty.success("Đã xóa thành công một sinh viên!");
+            
             //   console.log(response);
             this.$http.get("api/student").then(
               response => {
@@ -600,6 +605,7 @@ export default {
                 // error callback
               }
             );
+            // this.$router.go("api/student");
           },
 
           response => {
@@ -607,6 +613,7 @@ export default {
             // error callback
           }
         );
+        
     },
     //add row table
     addData() {
@@ -690,6 +697,9 @@ export default {
 </script>
 
 <style>
+a{
+    text-decoration: none;
+}
 .addGv {
   margin-left: auto;
   margin-right: auto;
@@ -706,18 +716,18 @@ export default {
   border-color: cadetblue;
 }
 .btn-modal-add:hover {
-  background-color: darkgrey;
+  background-color: cornflowerblue;
   padding: 10px 50px;
   margin-top: 20px;
   font-size: 13px;
   color: white;
   border-radius: 15px;
-  border-color: darkgrey;
+  border-color: cornflowerblue;
 }
 .btn-edit {
   background-color: dodgerblue;
   padding: 3px 10px;
-  font-size: 13px;
+  font-size: 30px;
   color: white;
   border-radius: 15px;
   border-color: dodgerblue;

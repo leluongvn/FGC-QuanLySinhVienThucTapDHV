@@ -21,8 +21,8 @@ class CreateInternshipTimeTable extends Migration
             $table->date('end_time');
             $table->date('start_topic')->nullable();
             $table->date('end_topic')->nullable();
-            $table->date('start_time')->nullable();
-            $table->date('end_time')->nullable();
+            $table->date('start_company')->nullable();
+            $table->date('end_company')->nullable();
             $table->string('note')->nullable();
             $table->timestamps();
         });
