@@ -47,15 +47,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     });
 
 
-    // code phần sinh viên
-    $router->group(['prefix' => 'student'], function () use ($router) {
-        $router->get('/', 'Student\StudentController@getAll');
-        $router->get('/{id}', 'Student\StudentController@getSingle');
-        $router->post('/', 'Student\StudentController@create');
-        $router->put('{id}', 'Student\StudentController@update');
-        $router->delete('{id}', 'Student\StudentController@delete');
-        // them sinh vien dang ky thuc tap
-        $router->post('create-register', 'Student\StudentRegisterController@create');
+    // code phần doanh nghiệp
+    $router->group(['prefix' => 'company'], function () use ($router) {
+        $router->get('/', 'Company\CompanyController@show');
+        $router->get('/{id}', 'Company\CompanyController@showOne');
+        $router->post('/', 'Company\CompanyController@create');
+        $router->put('{id}', 'Company\CompanyController@update');
+        $router->delete('{id}', 'Company\CompanyController@delete');
+        
     });
 
     //đăng ký sinh viên
@@ -69,6 +68,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         // sinh vien dang ky thuc tap
         $router->get('reg/{id}', 'Student\StudentRegisterController@getAll');
         $router->post('reg', 'Student\StudentRegisterController@create');
+
+        // them sinh vien dang ky thuc tap
+        $router->post('create-register', 'Student\StudentRegisterController@create');
     });
 
     // code phần đề tài
