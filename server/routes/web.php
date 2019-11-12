@@ -119,10 +119,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     });
 //    thời gian thực tập
     $router->group(['prefix' => 'internship_time'], function () use ($router) {
-        $router->get('/{id}', ['uses' => 'Internship\Internship_TimeController@show', 'as' => 'admin.internship_type.show']);
-        $router->get('/{id:[0-9]+}', ['uses' => 'Internship\Internship_TimeController@showOne', 'as' => 'admin.internship_type.showOne']);
-        $router->post('/', ['uses' => 'Internship\Internship_TimeController@create', 'as' => 'admin.internship_type.create']);
-        $router->put('/{id:[0-9]+}', ['uses' => 'Internship\Internship_TimeController@edit', 'as' => 'admin.internship_type.edit']);
-        $router->delete('/{id: [0-9]+}', ['uses' => 'Internship\Internship_TimeController@destroy', 'as' => 'admin.internship_type.destroy']);
+        $router->get('/{id}', ['uses' => 'Internship\Internship_TimeController@show']);
+        $router->get('/{type:[0-9]+}/{time:[0-9]+}', ['uses' => 'Internship\Internship_TimeController@showOne']);
+        $router->post('/', ['uses' => 'Internship\Internship_TimeController@create']);
+        $router->put('/{id:[0-9]+}', ['uses' => 'Internship\Internship_TimeController@edit']);
+        $router->delete('/{type:[0-9]+}/{time:[0-9]+}', ['uses' => 'Internship\Internship_TimeController@destroy']);
     });
 });

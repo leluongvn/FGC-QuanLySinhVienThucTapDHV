@@ -21,9 +21,15 @@ class Internship_TimeController extends Controller
         return response()->json($data);
     }
 
-    public function showOne($id)
+    public function showOne($time,$type)
     {
-        return response()->json(Internship_Time::find($id));
+        $data = DB::table('internship_time')
+            ->select()
+            ->where('id_internship_type', $type)
+            ->where('id',$time)
+            ->get();
+        return response()->json($data);
+        // return response()->json(Internship_Time::find($id));
     }
 
     public function create(Request $request)
@@ -41,17 +47,47 @@ class Internship_TimeController extends Controller
             ]
         );
         Internship_Time::insert($request->all());
-        return 1;
+
+        $data = DB::table('internship_time')
+            ->selectRaw('id,id_internship_type,course,DATE_FORMAT(start_time, "%d/%m/%Y") as start_time,DATE_FORMAT(end_time, "%d/%m/%Y") as end_time')
+            ->where('id_internship_type', $request->id_internship_type)
+            ->get();
+        return response()->json($data);
     }
 
     public function edit($id, Request $request)
     {
-
+        $this->validate($request,
+            [
+                'course'    =>'required',
+                'start_time'=>'required',
+                'end_time'  => 'required'
+            ],
+            [
+                'course.required'    =>'Mời nhập khóa học',
+                'start_time.required'=>'Nhập thời gian bắt đầu TT',
+                'end_time.required'  => 'Nhập thời gian kết thúc TT'
+            ]
+        );
+        
+        $edit = Internship_Time::find($id);
+        $edit->update($request->all());
+ 
+        $data = DB::table('internship_time')
+            ->selectRaw('id,id_internship_type,course,DATE_FORMAT(start_time, "%d/%m/%Y") as start_time,DATE_FORMAT(end_time, "%d/%m/%Y") as end_time')
+            ->where('id_internship_type', $request->id_internship_type)
+            ->get();
+        return response()->json($data);
     }
 
-    public function destroy($id)
+    public function destroy($type,$time)
     {
-
+        Internship_Time::find($time)->delete();
+        $data = DB::table('internship_time')
+            ->selectRaw('id,id_internship_type,course,DATE_FORMAT(start_time, "%d/%m/%Y") as start_time,DATE_FORMAT(end_time, "%d/%m/%Y") as end_time')
+            ->where('id_internship_type', $type)
+            ->get();
+        return response()->json($data);
     }
 
 }
