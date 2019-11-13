@@ -7,6 +7,10 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import routes from './routes.js'
 
+import 'datatables/media/css/jquery.dataTables.min.css';
+import 'datatables/media/js/jquery.dataTables.js'
+import 'datatables/media/js/jquery.dataTables.min.js'
+
 //vue resource
 import VueResource from 'vue-resource'
 

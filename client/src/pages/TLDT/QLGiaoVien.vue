@@ -571,6 +571,12 @@ export default {
       });
     },
    
+    mytablerl() {
+      $(document).ready(function() {       
+         $("#example").DataTable().destroy();
+            
+      });
+    },
     //start modal
     showadd() {
       this.$modal.show("modalAdd");
@@ -603,6 +609,7 @@ export default {
       if (confirm("Bạn có chắc chắn muốn xóa?"))
         this.$http.delete("api/teacher/" + id).then(
           response => {
+            this.mytablerl();
             this.$noty.success("Đã xóa thành công một giảng viên!");
             
             //   console.log(response);
@@ -610,6 +617,7 @@ export default {
               response => {
                 // get body data
                 this.teacher = response.body;
+                this.mytable();
 
                 //   console.log(response.body);
               },
@@ -632,11 +640,13 @@ export default {
       this.$http.post("api/teacher", this.user).then(
         response => {
           //   console.log(response.body);
+          this.mytablerl();
           this.$noty.success("Đã thêm một giảng viên thành công!");
           this.$http.get("api/teacher").then(
             response => {
               // get body data
               this.teacher = response.body;
+              this.mytable();
               //   console.log(response.body);
             },
             response => {

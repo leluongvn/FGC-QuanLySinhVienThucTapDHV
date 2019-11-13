@@ -559,7 +559,12 @@ export default {
         $("#example").dataTable();
       });
     },
-   
+   mytablerl() {
+      $(document).ready(function() {       
+         $("#example").DataTable().destroy();
+            
+      });
+    },
     //start modal
     showadd() {
       this.$modal.show("modalAdd");
@@ -591,6 +596,7 @@ export default {
       if (confirm("Bạn có chắc chắn muốn xóa?"))
         this.$http.delete("api/student/" + id).then(
           response => {
+            this.mytablerl();
             this.$noty.success("Đã xóa thành công một sinh viên!");
             
             //   console.log(response);
@@ -598,6 +604,7 @@ export default {
               response => {
                 // get body data
                 this.student = response.body;
+                this.mytable();
 
                 //   console.log(response.body);
               },
@@ -620,11 +627,13 @@ export default {
       this.$http.post("api/student", this.user).then(
         response => {
           //   console.log(response.body);
+          this.mytablerl();
           this.$noty.success("Đã thêm một sinh viên thành công!");
           this.$http.get("api/student").then(
             response => {
               // get body data
               this.student = response.body;
+              this.mytable();
               //   console.log(response.body);
             },
             response => {

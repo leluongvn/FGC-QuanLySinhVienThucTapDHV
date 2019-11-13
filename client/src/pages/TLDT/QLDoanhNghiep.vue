@@ -391,7 +391,7 @@ import $ from "jquery";
 
 const tableColumns = [
   // "Mã gv",
-  "Họ tên",
+  "Tên doanh nghiệp",
   "Email",
   "Số điện thoại",
   "Địa chỉ",
@@ -403,6 +403,7 @@ export default {
   components: {
     datatables
   },
+  
   data() {
     return {
       table1: {
@@ -500,10 +501,21 @@ export default {
     }
   },
   methods: {
+
     //datatable
     mytable() {
-      $(document).ready(function() {
-        $("#example").dataTable();
+      $(document).ready(function() {                
+       var table = $("#example").dataTable({
+         
+       });                    
+            
+      });
+    },
+    //datatable
+    mytablerl() {
+      $(document).ready(function() {       
+         $("#example").DataTable().destroy();
+            
       });
     },
 
@@ -539,6 +551,7 @@ export default {
       if (confirm("Bạn có chắc chắn muốn xóa?"))
         this.$http.delete("api/company/" + id).then(
           response => {
+            this.mytablerl();
             this.$noty.success("Đã xóa thành công một doanh nghiệp!");
 
             //   console.log(response);
@@ -546,7 +559,8 @@ export default {
               response => {
                 // get body data
                 this.company = response.body;
-
+                this.mytable();
+                
                 //   console.log(response.body);
               },
               response => {
@@ -554,6 +568,7 @@ export default {
               }
             );
             // this.$router.go("api/student");
+            
           },
 
           response => {
@@ -567,12 +582,14 @@ export default {
       this.$http.post("api/company", this.user).then(
         response => {
           //   console.log(response.body);
+          this.mytablerl();
           this.$noty.success("Đã thêm một doanh nghiệp thành công!");
           this.$http.get("api/company").then(
             response => {
               // get body data
               this.company = response.body;
               //   console.log(response.body);
+              this.mytable();
             },
             response => {
               // error callback
