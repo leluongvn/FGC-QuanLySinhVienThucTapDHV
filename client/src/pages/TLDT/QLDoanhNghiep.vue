@@ -16,6 +16,15 @@
               title="Thêm mới"
               @click="showadd()"
             >+</a>
+            <vue-excel-xlsx
+                :data="company"
+                :columns="columns"
+                :filename="'filename'"
+                :sheetname="'sheetname'"
+                class="btn-delete"
+                >
+                <i class="fa fa-download" aria-hidden="true"></i>
+            </vue-excel-xlsx>
           </h4>
           <p class="card-category">Xem thông tin, thêm, sửa, xóa doanh nghiệp</p>
 
@@ -406,6 +415,42 @@ export default {
   
   data() {
     return {
+
+      columns : [
+                    {
+                        label: "name",
+                        field: "name",
+                    },
+                    {
+                        label: "password",
+                        field: "password",
+                        
+                    },
+                    {
+                        label: "address",
+                        field: "address",
+                    },
+                    {
+                      label:"phone",
+                      field:"phone,"
+                    },
+                    {
+                      label:"email",
+                      field:"email",
+                    },
+                    {
+                      label:"introduce",
+                      field:"introduce",
+                    },
+                    {
+                      label:"status",
+                      field:"status",                      
+                    }
+                ],
+              
+
+
+
       table1: {
         columns: [...tableColumns]
       },
@@ -502,6 +547,9 @@ export default {
   },
   methods: {
 
+    priceFormat(value){
+                return '$ ' + value;
+            },
     //datatable
     mytable() {
       $(document).ready(function() {                
@@ -690,7 +738,7 @@ a {
 .btn-edit {
   background-color: dodgerblue;
   padding: 3px 10px;
-  font-size: 30px;
+  font-size: 13px;
   color: white;
   border-radius: 15px;
   border-color: dodgerblue;
@@ -720,20 +768,20 @@ a {
   border-color: lightseagreen;
 }
 .btn-delete {
-  background-color: brown;
+  background-color: darkgrey;
   padding: 3px 10px;
   font-size: 13px;
-  color: white;
+  color: chartreuse;
   border-radius: 15px;
-  border-color: brown;
+  border-color: darkgrey;
 }
 .btn-delete:hover {
-  background-color: red;
+  background-color: darkgrey;
   padding: 3px 10px;
   font-size: 13px;
   color: white;
   border-radius: 15px;
-  border-color: red;
+  border-color: darkgrey;
 }
 .add-modal {
   margin: 20px 30px;
