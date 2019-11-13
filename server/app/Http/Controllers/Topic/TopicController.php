@@ -24,14 +24,15 @@ class TopicController extends Controller
         $this->validate($request,
             [
                 'name' => 'required',
-                'id_internship_time' => 'required|exists:internship_time,id',
+                // 'id_internship_time' => 'required|exists:internship_time,id',
+                'id_internship_time' => 'required',
                 'creator' => 'required',
                 'content' => 'required',
                 'status' => 'required',
             ], [
                 'name.required' => 'Bạn chưa nhập tên đề tài',
                 'id_internship_time.required' => 'Bạn chưa chọn loại thực tập',
-                'id_internship_time.exists' => 'Thời gian thực tập không tồn tại',
+                // 'id_internship_time.exists' => 'Thời gian thực tập không tồn tại',
                 'creator.required' => 'Bạn chưa nhập tên người tạo',
                 'content.required' => 'Bạn chưa nhập nội dung đề tài',
                 'status.required' => 'Bạn chưa nhập tên trạng thái'
@@ -47,14 +48,15 @@ class TopicController extends Controller
         $this->validate($request,
             [
                 'name' => 'required',
-                'id_internship_time' => 'required|exists:internship_time,id',
+                // 'id_internship_time' => 'required|exists:internship_time,id',
+                'id_internship_time' => 'required',
                 'creator' => 'required',
                 'content' => 'required',
                 'status' => 'required',
             ], [
                 'name.required' => 'Bạn chưa nhập tên đề tài',
                 'id_internship_time.required' => 'Bạn chưa chọn loại thực tập',
-                'id_internship_time.exists' => 'Thời gian thực tập không tồn tại',
+                // 'id_internship_time.exists' => 'Thời gian thực tập không tồn tại',
                 'creator.required' => 'Bạn chưa nhập tên người tạo',
                 'content.required' => 'Bạn chưa nhập nội dung đề tài',
                 'status.required' => 'Bạn chưa nhập tên trạng thái'
