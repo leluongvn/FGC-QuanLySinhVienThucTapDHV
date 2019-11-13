@@ -11,6 +11,15 @@
           <h4 class="card-title">
             Quản lý giáo viên
             <a href="#" class="btn btn-add" title="Thêm mới" @click="showadd()">+</a>
+             <vue-excel-xlsx
+                :data="teacher"
+                :columns="columns"
+                :filename="'teacher'"
+                :sheetname="'sheetname'"
+                class="btn-delete"
+                >
+                <i class="fa fa-download" aria-hidden="true"></i>
+            </vue-excel-xlsx>
           </h4>
           <p class="card-category">Xem thông tin, thêm, sửa, xóa giáo viên</p>
         
@@ -457,6 +466,41 @@ export default {
   },
   data() {
     return {
+       columns : [
+                    {
+                        label: "msgv",
+                        field: "msgv",
+                    },
+                    {
+                        label: "id_subject",
+                        field: "id_subject",
+                        
+                    },
+                    {
+                        label: "name",
+                        field: "name",
+                    },
+                    {
+                      label:"password",
+                      field:"password,"
+                    },
+                    {
+                      label:"email",
+                      field:"email",
+                    },
+                    {
+                      label:"phone",
+                      field:"phone",
+                    },
+                    {
+                      label:"introduce",
+                      field:"introduce",                      
+                    },
+                    {
+                      label:"note",
+                      field:"note",
+                    }
+                ],
       table1: {
         columns: [...tableColumns]
       },
@@ -781,20 +825,20 @@ a{
   border-color: lightseagreen;
 }
 .btn-delete {
-  background-color: brown;
+  background-color: darkgrey;
   padding: 3px 10px;
   font-size: 13px;
-  color: white;
+  color: chartreuse;
   border-radius: 15px;
-  border-color: brown;
+  border-color: darkgrey;
 }
 .btn-delete:hover {
-  background-color: red;
+  background-color: darkgrey;
   padding: 3px 10px;
   font-size: 13px;
   color: white;
   border-radius: 15px;
-  border-color: red;
+  border-color: darkgrey;
 }
 .add-modal {
   margin: 20px 30px;
