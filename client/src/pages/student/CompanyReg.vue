@@ -11,7 +11,7 @@
           <div class="row">
             <div class="col-md-12 text-center">
               <h6>155D4802010135 - NGUYỄN XUÂN HẠNH - Ngành Công nghệ thông tin - K56</h6>
-              <h4 style="color:#006400">Danh sách đề tài có thể đăng ký trong thực tập chuyên nghành</h4>
+              <h4 style="color:#006400">Danh sách doanh nghiệp có thể đăng ký trong thực tập chuyên nghành</h4>
               <hr width="20%" color="black" />
             </div>
           </div>
@@ -48,16 +48,22 @@
                 <thead>
                   <tr role="row">
                     <th aria-controls="sampleTable">STT</th>
-                    <th aria-controls="sampleTable">Tên đề tài</th>
-                    <th aria-controls="sampleTable">Mô tả</th>
+                    <th aria-controls="sampleTable">Tên doanh nghiệp</th>
+                    <th aria-controls="sampleTable">Lĩnh vực</th>
+                    <th aria-controls="sampleTable">Địa điểm</th>
+                    <th aria-controls="sampleTable">Sĩ số</th>
+                    <th aria-controls="sampleTable">Đã ĐK</th>
                     <th aria-controls="sampleTable">Chọn</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr role="row" v-for="(v,i) in table" :key="i">
-                    <td class="text-center" >{{i}}</td>
+                    <td>{{i}}</td>
                     <td>{{v.name}}</td>
-                    <td>{{v.note}}</td>
+                    <td>{{v.dev}}</td>
+                    <td>{{v.address}}</td>
+                    <td>{{v.limit}}</td>
+                    <td>{{v.reg}}</td>
                     <td>
                       <span v-if="bool" class="btn badge badge-primary" @click="push(v)">Đăng ký</span>
                     </td>
@@ -87,18 +93,24 @@
                 <thead>
                   <tr role="row">
                     <th aria-controls="sampleTable">STT</th>
-                    <th aria-controls="sampleTable">Tên đề tài</th>
-                    <th aria-controls="sampleTable">Mô tả</th>
+                    <th aria-controls="sampleTable">Tên doanh nghiệp</th>
+                    <th aria-controls="sampleTable">Lĩnh vực</th>
+                    <th aria-controls="sampleTable">Địa điểm</th>
+                    <th aria-controls="sampleTable">Sĩ số</th>
+                    <th aria-controls="sampleTable">Đã ĐK</th>
                     <th aria-controls="sampleTable">Chọn</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr role="row" v-for="(v,i) in table1" :key="i">
-                    <td class="text-center" >{{i}}</td>
+                    <td>{{i}}</td>
                     <td>{{v.name}}</td>
-                    <td>{{v.note}}</td>
+                    <td>{{v.dev}}</td>
+                    <td>{{v.address}}</td>
+                    <td>{{v.limit}}</td>
+                    <td>{{v.reg}}</td>
                     <td>
-                      <span class="btn badge badge-danger" @click="pop(i)">Đổi ĐT</span>
+                      <span class="btn badge badge-danger" @click="pop(i)">Đổi DN</span>
                     </td>
                   </tr>
                 </tbody>
@@ -112,27 +124,36 @@
 </template>
 
 <script>
-import AppTitle from "../../components/pages/AppTitle.vue";
+import AppTitle from "../../components/pages/AppTitle";
 export default {
   data() {
     return {
-      title: "Đăng ký đề tài",
+      title: "Đăng ký doanh nghiệp",
       bool: true,
       table: [
         {
           id: 1,
-          name: "Quản lý sinh viên thực tập ĐHV",
-          note: "Phần mềm quản lý sinh viên thực tập viết bằng ngôn ngữ php + VueJs"
+          name: "FGC - Techlution",
+          dev: "php - laravel",
+          address: "55 Duy Tân",
+          limit: 20,
+          reg: 0
         },
         {
           id: 2,
-          name: "Quản lý xuất nhập kho",
-          note: "Phần mềm quản lý xuất nhập kho bằng winform c#"
+          name: "Hunico",
+          dev: "C#",
+          address: "Phong Đình Cảng",
+          limit: 20,
+          reg: 5
         },
         {
           id: 3,
-          name: "Website bán hàng",
-          note: "Website bán hàng bằng php"
+          name: "Nam Thăng",
+          dev: "Phần cứng",
+          address: "Cù Chính Lan",
+          limit: 20,
+          reg: 7
         }
       ],
       table1: []

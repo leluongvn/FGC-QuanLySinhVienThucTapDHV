@@ -281,7 +281,7 @@ export default {
   },
   methods: {
     pushReg(id) {
-      this.$router.push("reg/" + id);
+      this.$router.push("student/" + id);
       // alert(id)
     },
     getData(id) {
