@@ -10,6 +10,8 @@ import DKDoanhNghiep from './pages/SinhVien/CompanyReg.vue'
 import InterTime from './components/InternshipTime.vue'
 import StudentReg from './components/StudentReg.vue'
 
+import CompanyTime from './pages/Company/CompReg.vue'
+
 const routes = [
   {
     path: '/',
@@ -64,6 +66,18 @@ const routes = [
     path: '/DKDeTai',
     name: 'DKDeTai',
     component: DKDeTai
+  },
+  {
+    path: '/company',
+    name: 'company',
+    component: CompanyTime,
+    // children:[
+    //   {
+    //     path:':id',
+    //     name:'index',
+    //     component: 
+    //   }
+    // ]
   }
   
 ]

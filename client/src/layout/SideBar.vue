@@ -54,26 +54,26 @@
           </li>
         </nav-link>
         <!-- link -->
-        <nav-link :title="title.tbm">
-          <!-- item -->
+        <!-- <nav-link :title="title.tbm">
+          item
           <li>
             <router-link active-class="active" class="treeview-item" to="#">
               <i class="icon fa fa-circle-o"></i>Quản lý thực tập
             </router-link>
           </li>
-        </nav-link>
+        </nav-link> -->
         <!-- link -->
         <nav-link :title="title.gvhd">
           <!-- item -->
           <li>
             <a class="treeview-item" href="#">
-              <i class="icon fa fa-circle-o"></i>Quản lý thực tập
+              <i class="icon fa fa-circle-o"></i>Sinh viên thực tập
             </a>
           </li>
           <!-- item -->
           <li>
             <a class="treeview-item" href="#">
-              <i class="icon fa fa-circle-o"></i>Quản lý đề tài
+              <i class="icon fa fa-circle-o"></i>Cập nhật đề tài
             </a>
           </li>
         </nav-link>
@@ -81,14 +81,14 @@
         <nav-link :title="title.dn">
           <!-- item -->
           <li>
-            <a class="treeview-item" href="#">
-              <i class="icon fa fa-circle-o"></i>Quản lý thực tập
-            </a>
+            <router-link class="treeview-item" active-class="active"  to="/company">
+              <i class="icon fa fa-circle-o"></i>Sinh viên thực tâp
+            </router-link>
           </li>
           <!-- item -->
           <li>
             <a class="treeview-item" href="#">
-              <i class="icon fa fa-circle-o"></i>Quản lý đề tài
+              <i class="icon fa fa-circle-o"></i>Cập nhật đề tài
             </a>
           </li>
         </nav-link>
@@ -112,12 +112,6 @@
               <i class="icon fa fa-circle-o"></i>Lịch sử đăng ký
             </a>
           </li>
-          <!-- item -->
-          <li>
-            <a class="treeview-item" href="#">
-              <i class="icon fa fa-circle-o"></i>Tra cứu điểm
-            </a>
-          </li>
         </nav-link>
       </ul>
     </aside>
@@ -134,7 +128,7 @@ export default {
         tbm: "Trưởng bộ môn",
         gvhd: "Giáo viên HD",
         dn: "Doanh nghiệp",
-        sv: "Sinh viên"
+        sv: "Đăng ký thực tập"
       }
     };
   },

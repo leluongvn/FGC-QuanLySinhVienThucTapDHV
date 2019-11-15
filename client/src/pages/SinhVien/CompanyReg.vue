@@ -17,7 +17,7 @@
           </div>
           <div class="row">
             <div class="col-sm-12 col-md-6">
-              <div id="sampleTable_filter" class="dataTables_filter text-left">
+              <div id="sampleTable_filter" class="dataTables_filter text-left" style="float:none">
                 <label>
                   Search:
                   <input
