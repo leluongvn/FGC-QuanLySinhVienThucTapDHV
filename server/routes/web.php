@@ -46,6 +46,26 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     });
 
+     // code phần môn học
+     $router->group(['prefix' => 'subject'], function () use ($router) {
+        $router->get('/', 'Subject\SubjectController@show');
+        $router->get('/{id}', 'Subject\SubjectController@showOne');
+        $router->post('/', 'Subject\SubjectController@create');
+        $router->put('/{id}', 'Subject\SubjectController@edit');
+        $router->delete('/{id}', 'Subject\SubjectController@destroy');
+
+    });
+
+    // code phần chức vụ
+    $router->group(['prefix' => 'position'], function () use ($router) {
+        $router->get('/', 'Position\PositionController@show');
+        $router->get('/{id}', 'Position\PositionController@showOne');
+        $router->post('/', 'Position\PositionController@create');
+        $router->put('/{id}', 'Position\PositionController@edit');
+        $router->delete('/{id}', 'Position\PositionController@destroy');
+
+    });
+
 
     // code phần doanh nghiệp
     $router->group(['prefix' => 'company'], function () use ($router) {
