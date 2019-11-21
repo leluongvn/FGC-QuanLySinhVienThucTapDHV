@@ -44,6 +44,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->put('/{id}', 'Teacher\TeacherController@update');
         $router->delete('/{id}', 'Teacher\TeacherController@delete');
 
+
+
+        // import excel
+        $router->post('/importExcel', 'Teacher\TeacherController@importExcel');
+
     });
 
      // code phần môn học
@@ -94,6 +99,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('/', 'Student\StudentController@create');
         $router->put('{id}', 'Student\StudentController@update');
         $router->delete('{id}', 'Student\StudentController@delete');
+
 
         // sinh vien dang ky thuc tap
         $router->get('reg/{id}', 'Student\StudentRegisterController@getAll');
