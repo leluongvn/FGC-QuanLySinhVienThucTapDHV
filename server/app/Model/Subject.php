@@ -11,7 +11,7 @@ class Subject extends Model
      *
      * @var array
      */
-    protected $fillable = ['id','id_specialized','name','note'];
+    protected $fillable = ['id',''name','note'];
     
     // public function teacher()
     // {

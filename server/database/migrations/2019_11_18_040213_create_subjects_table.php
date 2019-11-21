@@ -15,8 +15,8 @@ class CreateSubjectsTable extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->bigInteger('id')->unsigned();
-            $table->bigInteger('id_specialized')->unsigned();
-            $table->string('name');
+            
+            $table->string('name',255);
             $table->string('note')->nullable();
             $table->timestamps();
         });

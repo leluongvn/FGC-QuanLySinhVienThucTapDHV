@@ -6,9 +6,9 @@ class Position extends Model
 {
 
     public $timestamps = false;
-    protected $primaryKey = 'id_teacher';//Mặc định Key là id. nếu muốn KEY khác phải thêm dòng này :D
+    protected $primaryKey = 'id';//Mặc định Key là id. nếu muốn KEY khác phải thêm dòng này :D
     protected $table='positions';
-    protected $fillable = ['id_teacher','id_position_type', 'note'];
+    protected $fillable = ['id','id_teacher','id_position_type', 'id_internship_time'];
 
     
     // public function teacher()
