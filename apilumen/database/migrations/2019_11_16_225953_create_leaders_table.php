@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStudentRegsTable extends Migration
+class CreateLeadersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateStudentRegsTable extends Migration
      */
     public function up()
     {
-        Schema::create('student_regs', function (Blueprint $table) {
-            $table->bigInteger('id');
-            $table->integer('student_id');
-            $table->integer('internship_time_id');
-            $table->string('note',255)->nullable();
+        Schema::create('leaders', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->integer('id_student_reg');
+            $table->bigInteger('id_position');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateStudentRegsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('student_regs');
+        Schema::dropIfExists('leaders');
     }
 }
