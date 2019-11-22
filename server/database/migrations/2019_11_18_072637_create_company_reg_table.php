@@ -17,7 +17,7 @@ class CreateCompanyRegTable extends Migration
             $table->bigIncrements('id');
             $table->integer('id_company');
             $table->integer('id_internship_time');
-            $table->integer('registration');
+            $table->integer('registration')->nullable();
             $table->integer('limit');
             $table->timestamps();
         });

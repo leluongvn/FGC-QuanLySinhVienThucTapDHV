@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Student;
 use App\Http\Controllers\Controller;
 use App\Model\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StudentController extends Controller
 {
@@ -48,7 +49,11 @@ class StudentController extends Controller
                 'email.email' => 'Không phải email',
             ]);
         $Student = Student::create($request->all());
-        return response()->json($Student, 201);
+
+        $id = DB::table('students')
+            ->select(DB::raw('max(id) as id'))
+            ->get();
+        return $id;
     }
 
     public function update(Request $request, $id)

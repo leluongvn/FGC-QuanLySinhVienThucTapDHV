@@ -33,18 +33,18 @@ class CompanyRegController extends Controller
             $request,
             [
                 'limit'            =>     'required',
-                'registration'     =>     'required',
+                // 'registration'     =>     'required',
 
             ],
             [
                 'limit.required'            => 'Bạn chưa nhập giới hạn người đăng kí',
-                'registration.required'     => 'Bạn chưa nhập số người đăng kí',
+                // 'registration.required'     => 'Bạn chưa nhập số người đăng kí',
             ]
         );
         CompanyReg::create($request->all());
         $result = new CompanyRegController();
-        $results = $result->getCompanyInternshipTime();
-
+        // $results = $result->getCompanyInternshipTime();
+        return 1;
         return response()->json($results, 201);
     }
     public function update($id, Request $request)
@@ -53,39 +53,47 @@ class CompanyRegController extends Controller
             $request,
             [
                 'limit'            =>     'required',
-                'registration'     =>     'required',
+                // 'registration'     =>     'required',
 
             ],
             [
                 'limit.required'            => 'Bạn chưa nhập giới hạn người đăng kí',
-                'registration.required'     => 'Bạn chưa nhập số người đăng kí',
+                // 'registration.required'     => 'Bạn chưa nhập số người đăng kí',
             ]
         );
         $companyreg = CompanyReg::findOrFail($id);
-        $companyreg->update($request->all());
-        $result = new CompanyRegController();
-        $results = $result->getCompanyInternshipTime();
+        $companyreg->id_company = $request->id_company;
+        $companyreg->limit = $request->limit;
+        
+        $companyreg->update();
 
-        return response()->json($results, 200);
+        // $result = new CompanyRegController();
+        // $results = $result->getCompanyInternshipTime();
+        return 1;
+        // return response()->json($results, 200);
     }
 
-    public function showOne($id,$type)
+    public function showOne($id)
     {
-            $data = DB::table('company_reg')
-            ->select('*')
-            ->where('id_internship_time', $id)
-            ->where('id',$type)
-            ->get();
-        return response()->json($data);
+        $data = DB::select('SELECT cr.id,c.id as id_company,c.name,c.phone,c.email,c.address,cr.limit,cr.registration 
+        from companies c join company_reg cr on c.id = cr.id_company 
+        WHERE cr.id = ?',[$id]); 
+         return response()->json($data);
     }
     public function show($id)
     {
-         $data = DB::table('company_reg')
-            ->selectRaw('*')
-            ->where('id_internship_time', $id)
-            ->get();
+        $data = DB::select('SELECT cr.id,c.name,c.phone,c.email,c.address,cr.limit,cr.registration 
+        from companies c join company_reg cr on c.id = cr.id_company 
+        WHERE cr.id_internship_time = ?',[$id]); 
          return response()->json($data);
     }
+    // Lấy danh sách công ty chưa đăng ký trong kỳ thực tập $id
+    public function getCompany($id){
+        $data = DB::select('SELECT * from companies 
+        WHERE id not in (SELECT id_company from company_reg WHERE id_internship_time = ?)',[$id]); 
+         return response()->json($data);
+    }
+
     public function delete($id)
     {
         CompanyReg::findOrFail($id)->delete();

@@ -21,15 +21,9 @@ class Internship_TimeController extends Controller
         return response()->json($data);
     }
 
-    public function showOne($time,$type)
+    public function showOne($id)
     {
-        $data = DB::table('internship_time')
-            ->select()
-            ->where('id_internship_type', $type)
-            ->where('id',$time)
-            ->get();
-        return response()->json($data);
-        // return response()->json(Internship_Time::find($id));
+        return response()->json(Internship_Time::find($id));
     }
 
     public function create(Request $request)

@@ -32,18 +32,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('/', 'Instructor\InstructorController@create');
         $router->put('/{id}', 'Instructor\InstructorController@update');
         $router->delete('/{id}', 'Instructor\InstructorController@delete');
+
     });
 
-    // code phần leader
-    $router->group(['prefix' => 'leader'], function () use ($router) {
-        // CRUD leader
-        $router->get('/', 'Leader\LeaderController@getAll');
-        $router->get('/{id}', 'Leader\LeaderController@getSingle');
-        $router->post('/', 'Leader\LeaderController@create');
-        $router->put('/{id}', 'Leader\LeaderController@update');
-        $router->delete('/{id}', 'Leader\LeaderController@delete');
-    });
-    
+
     // code phần giáo viên
     $router->group(['prefix' => 'teacher'], function () use ($router) {
         $router->get('/', 'Teacher\TeacherController@showAllTeachers');
@@ -52,28 +44,29 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->put('/{id}', 'Teacher\TeacherController@update');
         $router->delete('/{id}', 'Teacher\TeacherController@delete');
 
-
-
-        // import excel
-        $router->post('/importExcel', 'Teacher\TeacherController@importExcel');
     });
 
-    // code phần môn học
-    $router->group(['prefix' => 'subject'], function () use ($router) {
+     // code phần môn học
+     $router->group(['prefix' => 'subject'], function () use ($router) {
         $router->get('/', 'Subject\SubjectController@show');
         $router->get('/{id}', 'Subject\SubjectController@showOne');
         $router->post('/', 'Subject\SubjectController@create');
         $router->put('/{id}', 'Subject\SubjectController@edit');
         $router->delete('/{id}', 'Subject\SubjectController@destroy');
+
     });
 
     // code phần chức vụ
     $router->group(['prefix' => 'position'], function () use ($router) {
-        $router->get('/', 'Position\PositionController@show');
-        $router->get('/{id}', 'Position\PositionController@showOne');
+        $router->get('/{subject}/{id}', 'Position\PositionController@show');
+        $router->get('/{id:[0-9]+}', 'Position\PositionController@showOne');
+        $router->get('create/{subject}/{id}', 'Position\PositionController@getCreate');
         $router->post('/', 'Position\PositionController@create');
         $router->put('/{id}', 'Position\PositionController@edit');
         $router->delete('/{id}', 'Position\PositionController@destroy');
+
+        //position type
+        $router->get('type','Position\PositionTypeController@getAll');
     });
 
 
@@ -84,15 +77,18 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('/', 'Company\CompanyController@create');
         $router->put('{id}', 'Company\CompanyController@update');
         $router->delete('{id}', 'Company\CompanyController@delete');
+        
     });
-    // code phần đăng kí doanh nghiệp
-    $router->group(['prefix' => 'companyreg'], function () use ($router) {
+     // code phần đăng kí doanh nghiệp
+     $router->group(['prefix' => 'companyreg'], function () use ($router) {
         $router->get('/{id}', 'Company\CompanyRegController@show');
-        $router->get('/{id}/{type}', 'Company\CompanyRegController@showOne');
+        $router->get('create/{id}', 'Company\CompanyRegController@getCompany');
+        $router->get('one/{id}', 'Company\CompanyRegController@showOne');
         $router->post('/', 'Company\CompanyRegController@create');
         $router->put('/{id}', 'Company\CompanyRegController@update');
         $router->delete('/{id}', 'Company\CompanyRegController@delete');
         $router->get('/search/company/reg', 'Company\CompanyRegController@search');
+        
     });
 
     //đăng ký sinh viên
@@ -103,13 +99,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->put('{id}', 'Student\StudentController@update');
         $router->delete('{id}', 'Student\StudentController@delete');
 
-
-        // sinh vien dang ky thuc tap
+        // sinh vien dang ky thuc tap lọc qua internship_time
         $router->get('reg/{id}', 'Student\StudentRegisterController@getAll');
+        $router->get('reg-one/{id}', 'Student\StudentRegisterController@getOne');
         $router->post('reg', 'Student\StudentRegisterController@create');
+        $router->put('reg/{id}', 'Student\StudentRegisterController@update');
+        $router->delete('reg/{id}', 'Student\StudentRegisterController@delete');
 
-        // them sinh vien dang ky thuc tap
-        $router->post('create-register', 'Student\StudentRegisterController@create');
     });
 
     // code phần đề tài
@@ -140,13 +136,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     // });
 
     //code phần khóa học
-    //    $router->group(['prefix' => 'course'], function () use ($router) {
-    //        $router->get('/', ['uses' => 'Course\CourseController@show', 'as' => 'admin.course.show']);
-    //        $router->get('/{id:[0-9]+}', ['uses' => 'Course\CourseController@showOne', 'as' => 'admin.course.showOne']);
-    //        $router->post('/', ['uses' => 'Course\CourseController@create', 'as' => 'admin.course.create']);
-    //        $router->put('/{id:[0-9]+}', ['uses' => 'Course\CourseController@edit', 'as' => 'admin.course.edit']);
-    //        $router->delete('/{id: [0-9]+}', ['uses' => 'Course\CourseController@destroy', 'as' => 'admin.course.destroy']);
-    //    });
+//    $router->group(['prefix' => 'course'], function () use ($router) {
+//        $router->get('/', ['uses' => 'Course\CourseController@show', 'as' => 'admin.course.show']);
+//        $router->get('/{id:[0-9]+}', ['uses' => 'Course\CourseController@showOne', 'as' => 'admin.course.showOne']);
+//        $router->post('/', ['uses' => 'Course\CourseController@create', 'as' => 'admin.course.create']);
+//        $router->put('/{id:[0-9]+}', ['uses' => 'Course\CourseController@edit', 'as' => 'admin.course.edit']);
+//        $router->delete('/{id: [0-9]+}', ['uses' => 'Course\CourseController@destroy', 'as' => 'admin.course.destroy']);
+//    });
 
     //code phần loại thực tập
     $router->group(['prefix' => 'internship_type'], function () use ($router) {
@@ -156,10 +152,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->put('/{id:[0-9]+}', ['uses' => 'Internship\Internship_TypeController@edit', 'as' => 'admin.internship_type.edit']);
         $router->delete('/{id: [0-9]+}', ['uses' => 'Internship\Internship_TypeController@destroy', 'as' => 'admin.internship_type.destroy']);
     });
-    //    thời gian thực tập
+//    thời gian thực tập
     $router->group(['prefix' => 'internship_time'], function () use ($router) {
         $router->get('/{id}', ['uses' => 'Internship\Internship_TimeController@show']);
-        $router->get('/{type:[0-9]+}/{time:[0-9]+}', ['uses' => 'Internship\Internship_TimeController@showOne']);
+        $router->get('one/{id:[0-9]+}', ['uses' => 'Internship\Internship_TimeController@showOne']);
         $router->post('/', ['uses' => 'Internship\Internship_TimeController@create']);
         $router->put('/{id:[0-9]+}', ['uses' => 'Internship\Internship_TimeController@edit']);
         $router->delete('/{type:[0-9]+}/{time:[0-9]+}', ['uses' => 'Internship\Internship_TimeController@destroy']);

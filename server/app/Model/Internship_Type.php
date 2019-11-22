@@ -14,6 +14,6 @@ class Internship_Type extends Model
 
     public function internship_time()
     {
-        return $this->hasMany('App\Internship_Time');
+        return $this->hasMany('App\Model\Internship_Time','id_internship_type','id');
     }
 }

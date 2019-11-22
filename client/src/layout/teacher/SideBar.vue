@@ -25,7 +25,7 @@
                 </li>
                 <!-- item -->
                 <li>
-                    <router-link active-class="active" class="treeview-item" to="/">
+                    <router-link active-class="active" class="treeview-item" to="/teacher/instructor">
                         <i class="icon fa fa-circle-o"></i>Phân giáo viên hưỡng dẫn
                     </router-link>
                 </li>

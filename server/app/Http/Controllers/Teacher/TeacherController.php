@@ -5,9 +5,6 @@ namespace App\Http\Controllers\Teacher;
 use App\Http\Controllers\Controller;
 use App\Model\Teacher;
 use Illuminate\Http\Request;
-use Excel;
-// use Illuminate\Support\Facades\Input as Input;
-
 
 
 class TeacherController extends Controller
@@ -70,25 +67,5 @@ class TeacherController extends Controller
     {
         Teacher::findOrFail($id)->delete();
         return response('Deleted Successfully', 200);
-    }
-
-    public function importExcel(Request $request)
-    {
-      
-        if($request->hasFile('import_file')){
-			$path = $request->file('import_file')->getRealPath();
-			$data = Excel::load($path, function($reader) {
-			})->get();
-			if($data && $data->count()){
-				foreach ($data as $key => $value) {
-					$insert[] = ['msgv' => $value->msgv, 'id_subject' => $value->id_subject, 'name' => $value->name, 'password' => $value->password, 'email' => $value->email, 'phone' => $value->phone, 'introduce' => $value->introduce, 'note' => $value->note];                    
-                }
-				if($insert){
-                    // DB::table('teacher')->insert($insert);
-                    $teacher= Teacher::insert($insert);
-                    return response()->json($teacher, 201);					
-                }                
-            }            
-		}		
     }
 }

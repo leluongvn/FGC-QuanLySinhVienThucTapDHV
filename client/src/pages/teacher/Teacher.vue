@@ -21,13 +21,6 @@
                 <i class="fa fa-download" aria-hidden="true"></i>
             </vue-excel-xlsx>
           </h4>
-
-          <input type="file" name="import_file" />
-			<button class="btn btn-primary" @click="addExData()">Import File</button>
-
-
-
-
           <p class="card-category">Xem thông tin, thêm, sửa, xóa giáo viên</p>
         
           <div class="card-body table-full-width table-responsive">
@@ -691,32 +684,6 @@ export default {
       this.$http.post("api/teacher", this.user).then(
         response => {
           //   console.log(response.body);
-          this.mytablerl();
-          this.$noty.success("Đã thêm một giảng viên thành công!");
-          this.$http.get("api/teacher").then(
-            response => {
-              // get body data
-              this.teacher = response.body;
-              this.mytable();
-              //   console.log(response.body);
-            },
-            response => {
-              // error callback
-            }
-          );
-        },
-        response => {
-          this.$noty.error("Thất bại khi thêm mới một giảng viên!");
-          console.log(response);
-        }
-      );
-    },
-    //add row table
-    addExData() {
-      this.$http.post("api/teacher/importExcel", this.user).then(
-        response => {
-          
-          //   
           this.mytablerl();
           this.$noty.success("Đã thêm một giảng viên thành công!");
           this.$http.get("api/teacher").then(

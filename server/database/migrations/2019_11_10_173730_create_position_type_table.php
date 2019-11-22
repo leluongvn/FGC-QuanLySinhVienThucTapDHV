@@ -14,8 +14,8 @@ class CreatePositionTypeTable extends Migration
     public function up()
     {
         Schema::create('position_type', function (Blueprint $table) {
-            $table->bigInteger('id_teacher')->unsigned();
-            $table->bigInteger('id_position_type')->unsigned();
+            $table->bigIncrements('id')->unsigned();
+            $table->string('name');
             $table->string('note')->nullable();
             $table->timestamps();
         });

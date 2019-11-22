@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="sidebar-mini rtl">
+  <div id="app" class="app sidebar-mini rtl">
     <router-view></router-view>
   </div>
 </template>

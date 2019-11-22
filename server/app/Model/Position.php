@@ -5,10 +5,10 @@ use Illuminate\Database\Eloquent\Model;
 class Position extends Model 
 {
 
-    public $timestamps = false;
-    protected $primaryKey = 'id';//Mặc định Key là id. nếu muốn KEY khác phải thêm dòng này :D
+    // public $timestamps = false;
+    // protected $primaryKey = 'id_teacher';//Mặc định Key là id. nếu muốn KEY khác phải thêm dòng này :D
     protected $table='positions';
-    protected $fillable = ['id','id_teacher','id_position_type', 'id_internship_time'];
+    protected $fillable = ['id_teacher','id_position_type','id_internship_time', 'note'];
 
     
     // public function teacher()

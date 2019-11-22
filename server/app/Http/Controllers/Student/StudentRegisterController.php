@@ -21,21 +21,23 @@ class StudentRegisterController extends Controller
         return response()->json($data);
     }
 
+    public function getOne($id){
+        return StudentReg::find($id);
+    }
+
     public function create(Request $request)
     {
-        /**
-         * Thêm mới các sinh viên đăng ký thực tập
-         */
+        StudentReg::create($request->all());
+        return 1;
+    }
 
-        if (count($request->json()->all())) {
-            $students = $request->json()->all();
-            foreach ($students as $value) {
-                StudentReg::create([
-                    'student_id' => $value['student_id'],
-                    'note' => $value['note'],
-                    'internship_time_id' => $value['intership_time_id'],
-                ]);
-            }
-        }
+    public function update ($id, Request $request){
+        StudentReg::find($id)->update($request->all());
+        return 1;
+    }
+
+    public function delete($id){
+        StudentReg::find($id)->delete();
+        return 1;
     }
 }
