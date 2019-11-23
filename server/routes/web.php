@@ -79,6 +79,16 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->delete('{id}', 'Company\CompanyController@delete');
         
     });
+    // code phần danh sách sinh viên đăng kí doanh nghiệp
+    $router->group(['prefix' => 'companyreglist'], function () use ($router) {
+        $router->get('/', 'Company\CompanyRegListController@show');
+        $router->get('/{id}', 'Company\CompanyRegListController@showOne');
+        $router->post('/', 'Company\CompanyRegListController@create');
+        $router->put('/{id}', 'Company\CompanyRegListController@update');
+        $router->delete('/{id}', 'Company\CompanyRegListController@delete');
+        $router->get('/search/companyreglist/','Company\CompanyRegListController@search');
+        
+    });
      // code phần đăng kí doanh nghiệp
      $router->group(['prefix' => 'companyreg'], function () use ($router) {
         $router->get('/{id}', 'Company\CompanyRegController@show');
