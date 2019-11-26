@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePositionTypeTable extends Migration
+class CreateInternshipTopicTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreatePositionTypeTable extends Migration
      */
     public function up()
     {
-        Schema::create('position_type', function (Blueprint $table) {
-            $table->bigIncrements('id')->unsigned();
-            $table->string('name');
-            $table->string('note')->nullable();
+        Schema::create('internship_topic', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->integer('id_user');
+            $table->integer('id_topic');
+            $table->integer('id_internship_time');
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ class CreatePositionTypeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('position_type');
+        Schema::dropIfExists('internship_topic');
     }
 }

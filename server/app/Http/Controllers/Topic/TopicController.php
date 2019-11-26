@@ -5,13 +5,19 @@ namespace App\Http\Controllers\Topic;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Topic;
+use Illuminate\Support\Facades\DB;
 
 class TopicController extends Controller
 {
 
-    public function show()
+    public function show($type)
     {
-        return response()->json(Topic::all());
+        $data = DB::table('topics as t')
+            ->select('t.id', 't.name', 't.content', 't.status')
+            ->join('internship_type as i', 'i.id', 't.id_internship_type')
+            ->where('i.id', $type)
+            ->get();
+        return $data;
     }
 
     public function showOne($id)
@@ -24,23 +30,18 @@ class TopicController extends Controller
         $this->validate($request,
             [
                 'name' => 'required',
-                // 'id_internship_time' => 'required|exists:internship_time,id',
-                'id_internship_time' => 'required',
-                'creator' => 'required',
-                'content' => 'required',
-                'status' => 'required',
+                'id_internship_type' => 'required|exists:internship_type,id',
+                'content' => 'required'
             ], [
                 'name.required' => 'Bạn chưa nhập tên đề tài',
-                'id_internship_time.required' => 'Bạn chưa chọn loại thực tập',
-                // 'id_internship_time.exists' => 'Thời gian thực tập không tồn tại',
-                'creator.required' => 'Bạn chưa nhập tên người tạo',
-                'content.required' => 'Bạn chưa nhập nội dung đề tài',
-                'status.required' => 'Bạn chưa nhập tên trạng thái'
+                'id_internship_type.required' => 'Mời nhập mã loại thực tập',
+                'id_internship_type.exists' => 'Bộ môn thực tập không tồn tại',
+                'content.required' => 'Bạn chưa nhập nội dung đề tài'
             ]
         );
 
-        $Topic = Topic::create($request->all());
-        return response()->json($Topic, 201);
+        Topic::create($request->all());
+        return 1;
     }
 
     public function edit($id, Request $request)
@@ -48,35 +49,25 @@ class TopicController extends Controller
         $this->validate($request,
             [
                 'name' => 'required',
-                // 'id_internship_time' => 'required|exists:internship_time,id',
-                'id_internship_time' => 'required',
-                'creator' => 'required',
+                'id_internship_type' => 'required|exists:internship_type,id',
                 'content' => 'required',
-                'status' => 'required',
             ], [
                 'name.required' => 'Bạn chưa nhập tên đề tài',
-                'id_internship_time.required' => 'Bạn chưa chọn loại thực tập',
-                // 'id_internship_time.exists' => 'Thời gian thực tập không tồn tại',
-                'creator.required' => 'Bạn chưa nhập tên người tạo',
-                'content.required' => 'Bạn chưa nhập nội dung đề tài',
-                'status.required' => 'Bạn chưa nhập tên trạng thái'
+                'id_internship_type.required' => 'Bạn chưa chọn loại thực tập',
+                'id_internship_type.exists' => 'Loại thực tập không có',
+                'content.required' => 'Bạn chưa nhập nội dung đề tài'
             ]
         );
 
         $Topic = Topic::find($id);
-        if ($Topic->count() == 0)
-            return response('Edit Failed', 200);
         $Topic->update($request->all());
-        return response()->json($Topic->get(), 200);
+        return 1;
     }
 
     public function destroy($id)
     {
-        $Topic = Topic::find($id);
-        if ($Topic->count() == 0)
-            return response('Delete Failed', 200);
-        $Topic->delete();
-        return response('Delete Successfully', 200);
+        Topic::find($id)->delete();
+        return 1;
     }
 
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStudentRegTable extends Migration
+class CreateRolesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateStudentRegTable extends Migration
      */
     public function up()
     {
-        Schema::create('student_reg', function (Blueprint $table) {
-            $table->integerIncrements('id');
-            $table->integer('id_student');
-            $table->integer('id_internship_time');
-            $table->integer('total_point');
+        Schema::create('roles', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateStudentRegTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('student_reg');
+        Schema::dropIfExists('roles');
     }
 }

@@ -15,14 +15,10 @@ class CreateTeachersTable extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('msgv',20);
             $table->integer('id_subject');
-            $table->string('name',255);
-            $table->string('password',255);                        
-            $table->string('email');
-            $table->string('phone');
-            $table->text('introduce')->nullable();
-            $table->string('note')->nullable();
+            $table->integer('id_user');
+            $table->string('msgv')->unique();
+            $table->string('fields')->nullable();
             $table->timestamps();
         });
     }

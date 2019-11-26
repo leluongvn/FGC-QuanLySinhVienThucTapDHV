@@ -16,15 +16,4 @@ class Internship_Time extends Model
     {
         return $this->belongsTo('App\Internship_Type');
     }
-
-    public function topic()
-    {
-        return $this->hasMany('App\Topic');
-    }
-
-    public function companies()
-    {
-
-        return $this->belongsToMany('App\Model\Company', 'company_reg', 'id_internship_time');
-    }
 }

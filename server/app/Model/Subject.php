@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Model;
+
 use Illuminate\Database\Eloquent\Model;
-class Subject extends Model 
+
+class Subject extends Model
 {
 
     protected $table = 'subjects';
@@ -11,8 +13,8 @@ class Subject extends Model
      *
      * @var array
      */
-    protected $fillable = ['id','id_specialized','name','note'];
-    
+    protected $fillable = ['id', 'name', 'status'];
+
     // public function teacher()
     // {
     //     return $this->belongsTo('App\Internship_Time');

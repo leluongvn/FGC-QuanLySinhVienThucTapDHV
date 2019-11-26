@@ -15,9 +15,8 @@ class CreateTopicsTable extends Migration
     {
         Schema::create('topics', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('id_internship_type');
             $table->string('name');
-            $table->bigInteger('id_internship_time')->unsigned();
-            $table->string('creator');
             $table->string('content');
             $table->integer('status')->default(1);
             $table->timestamps();

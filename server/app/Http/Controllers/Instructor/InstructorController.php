@@ -9,14 +9,15 @@ use Illuminate\Http\Request;
 
 class InstructorController extends Controller
 {
-    public function showAllInstructor()
+    public function getAll()
     {
         return response()->json(Instructor::all());
     }
 
-    // public function showOneInstructor($id){
-    //     return response()->json(Instructor::find($id));
-    // }
+    public function getOne($id)
+    {
+        return response()->json(Instructor::find($id));
+    }
 
     public function create(Request $request)
     {
@@ -24,17 +25,17 @@ class InstructorController extends Controller
         return response()->json($instructor, 201);
     }
 
-//    public function update($id, Request $request)
-//    {
-//        $instructor = Instructor::findOrFail($id);
-//        $instructor->update($request->all());
-//
-//        return response()->json($instructor, 200);
-//    }
-//
-//    public function delete($id)
-//    {
-//        Instructor::findOrFail($id)->delete();
-//        return response('Deleted Successfully', 200);
-//    }
+    public function update($id, Request $request)
+    {
+        $instructor = Instructor::findOrFail($id);
+        $instructor->update($request->all());
+
+        return response()->json($instructor, 200);
+    }
+
+    public function delete($id)
+    {
+        Instructor::find($id)->delete();
+        return response('Deleted Successfully', 200);
+    }
 }

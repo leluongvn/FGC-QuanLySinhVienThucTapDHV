@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatestudentsTable extends Migration
+class CreateRoleUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,11 @@ class CreatestudentsTable extends Migration
      * @return void
      */
     public function up()
-    {   
-        Schema::create('students', function (Blueprint $table) {
+    {
+        Schema::create('role_user', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('id_user');
-            $table->string('mssv')->unique();
-            $table->date('birthday');
-            $table->string('class');
+            $table->integer('id_role');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreatestudentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('students');
+        Schema::dropIfExists('role_user');
     }
 }

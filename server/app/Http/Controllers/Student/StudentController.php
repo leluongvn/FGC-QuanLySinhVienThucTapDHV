@@ -3,94 +3,63 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
-use App\Model\Student;
+use App\Model\Student_Reg;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class StudentController extends Controller
 {
-    public function getAll()
+    public function getAll($time)
     {
-        /**
-         *  Trả về tất cả sinh viên
-         */
-        return response()->json(Student::all());
+        $data = DB::table('users as u')
+            ->select('sr.id', 'sr.id_student', 's.id_user', 'u.name', 'u.email', 'u.phone', 's.mssv', 's.birthday', 's.class', 'sr.total_point', 'u.status')
+            ->join('students as s', 's.id_user', 'u.id')
+            ->join('student_reg as sr', 'sr.id_student', 's.id')
+            ->where('sr.id_internship_time', $time)
+            ->get();
+
+        return $data;
     }
 
-    public function getSingle($id)
+    public function getOne($id)
     {
-        /**
-         *  Trả về một sinh viên theo id
-         */
-        return response()->json(Student::find($id));
+        $data = DB::table('users as u')
+            ->select('sr.id', 'sr.id_student', 's.id_user', 'u.name', 'u.email', 'u.phone', 's.mssv', 's.birthday', 's.class', 'sr.total_point', 'u.status')
+            ->join('students as s', 's.id_user', 'u.id')
+            ->join('student_reg as sr', 'sr.id_student', 's.id')
+            ->where('sr.id', $id)
+            ->get();
+
+        return $data;
     }
 
     public function create(Request $request)
     {
-        /**
-         * Thêm mới một sinh viên
-         */
-        $this->validate($request, [
-            'mssv' => 'required|max:20|min:10',
-            'name' => 'required',
-            'class' => 'required',
-            'email' => 'email',
-            'date_birth' => 'required',
-//            'phone' => 'required',
-        ],
+        $this->validate($request,
             [
-                'mssv.required' => 'Vui lòng nhập mã sinh viên',
-                'mssv.max' => 'Độ dài mã sinh viên phải nhỏ hơn 20 ký tự',
-                'mssv.min' => 'Độ dài mã sinh viên phải lớn hơn 10 ký tự',
-                'name.required' => 'Vui lòng nhập tên',
-                'class.required' => 'Vui lòng nhập lớp',
-                'date_birth.required' => 'Vui lòng nhập ngày sinh ',
-//                'phone.required' => 'Vui lòng nhập số điện thoại ',
-                'email.email' => 'Không phải email',
+                'id_student' => 'required|exists:students,id',
+                'id_internship_time' => 'required|exists:internship_time,id'
             ]);
-        $Student = Student::create($request->all());
 
-        $id = DB::table('students')
-            ->select(DB::raw('max(id) as id'))
-            ->get();
-        return $id;
+        Student_Reg::create($request->all());
+        return 1;
     }
 
-    public function update(Request $request, $id)
+    public function update($id, Request $request)
     {
-        /**
-         * Cập nhật một sinh viên theo id
-         */
-        $this->validate($request, [
-            'mssv' => 'required|max:20|min:10',
-            'name' => 'required',
-            'class' => 'required',
-            'email' => 'email',
-            'date_birth' => 'required',
-//            'phone' => 'required',
-        ],
+        $this->validate($request,
             [
-                'mssv.required' => 'Vui lòng nhập mã sinh viên',
-                'mssv.max' => 'Độ dài mã sinh viên phải nhỏ hơn 20 ký tự',
-                'mssv.min' => 'Độ dài mã sinh viên phải lớn hơn 10 ký tự',
-                'name.required' => 'Vui lòng nhập tên',
-                'class.required' => 'Vui lòng nhập lớp',
-                'date_birth.required' => 'Vui lòng nhập ngày sinh ',
-//                'phone.required' => 'Vui lòng nhập số điện thoại ',
-                'email.email' => 'Không phải email',
+                'id_student' => 'required|exists:students,id',
+                'id_internship_time' => 'required|exists:internship_time,id'
             ]);
-        $Student = Student::find($id);
-        $Student->update($request->all());
-        return response()->json($Student, 200);
+
+        Student_Reg::find($id)->update($request->all());
+        return 1;
     }
 
     public function delete($id)
     {
-        /**
-         * Xóa sinh viên theo id
-         */
-        $Student = Student::find($id);
-        $Student->delete();
-        return response('Thực hiện thành công !', 200);
+        Student_Reg::find($id)->delete();
+        return 1;
     }
 }
