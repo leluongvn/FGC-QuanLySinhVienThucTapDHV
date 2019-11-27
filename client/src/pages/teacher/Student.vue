@@ -574,7 +574,7 @@ export default {
             if (confirm("Bạn có chắc chắn muốn xóa?"))
                 this.$http.delete("api/student/" + id).then(
                     response => {
-                        this.mytablerl();
+                        
                         this.getData();
                         this.$noty.success("Đã xóa thành công một sinh viên!");
                     },
@@ -589,7 +589,7 @@ export default {
             this.$http.post("api/student", this.user).then(
                 response => {
                     //   console.log(response.body);
-                    this.mytablerl();
+                    
                     this.getData();
                     this.$noty.success("Đã thêm một sinh viên thành công!");
 
@@ -636,6 +636,7 @@ export default {
             );
         },
         getData() {
+            this.mytablerl();
             this.$http.get("api/student").then(
                 response => {
                     // get body data
@@ -648,17 +649,7 @@ export default {
     //end methor
     //start getall table
     created() {
-        this.$http.get("api/student").then(
-            response => {
-                // get body data
-                this.student = response.body;
-                this.mytable();
-                console.log(response.body);
-            },
-            response => {
-                // error callback
-            }
-        );
+       this.getData();
     }
 };
 </script>

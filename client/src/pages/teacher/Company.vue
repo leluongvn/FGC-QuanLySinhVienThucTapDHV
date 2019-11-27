@@ -594,10 +594,11 @@ export default {
         },
         getAllData() {
             // Lấy danh sách doanh nghiệp
+            this.mytablerl();
             this.$http.get("api/company").then(
                 response => {
                     this.company = response.body;
-                    this.mytablerl();
+                    
                     this.mytable();
                 }
             );
