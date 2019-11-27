@@ -328,7 +328,7 @@ export default {
             if (confirm("Bạn có chắc chắn muốn xóa?"))
                 this.$http.delete("api/topic/" + id).then(
                     response => {
-                        this.mytablerl();
+                        // this.mytablerl();
                         this.$noty.success("Đã xóa thành công một đề tài!");
                         this.getAllData();
                     },
@@ -387,11 +387,12 @@ export default {
         },
         getAllData() {
             //Lấy thông tin đề tài theo từng loại thực tập
+            this.mytablerl();
             this.$http.get("api/topic/" + this.type_id).then(
                 response => {
                     // get body data
                     this.topic = response.body;
-                    this.mytablerl();
+                    
                     this.mytable();
                 }
             );

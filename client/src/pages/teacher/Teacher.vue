@@ -573,7 +573,7 @@ export default {
             if (confirm("Bạn có chắc chắn muốn xóa?"))
                 this.$http.delete("api/teacher/" + id).then(
                     response => {
-                        this.mytablerl();
+                        // this.mytablerl();
                         this.getAllData();
                         this.$noty.success("Đã xóa thành công một giảng viên!");
                     },
@@ -589,8 +589,9 @@ export default {
             this.$http.post("api/teacher", this.user).then(
                 response => {
                     //   console.log(response.body);
+                    // this.mytablerl();
                     this.getAllData();
-                    this.mytablerl();
+                    
                     this.$noty.success("Đã thêm một giảng viên thành công!");
                 },
                 response => {
@@ -643,11 +644,12 @@ export default {
         },
         getAllData() {
             // Lấy tất cả giáo viên theo bộ môn
+            this.mytablerl();
             this.$http.get("api/teacher/" + this.select_subject).then(
                 response => {
                     // get body data
                     this.teacher = response.body;
-                    this.mytablerl();
+                   
                     this.mytable();
                 }
             );
@@ -659,11 +661,15 @@ export default {
         // lấy danh sách bộ môn
         this.$http.get("api/subject").then(
             response => {
+                
                 this.subject = response.body;
                 this.select_subject = this.subject[0].id;
+                this.getAllData();
             }
         );
-        this.getAllData();
+        
+        // this.mytablerl();
+        // this.getAllData();
     }
 };
 </script>
