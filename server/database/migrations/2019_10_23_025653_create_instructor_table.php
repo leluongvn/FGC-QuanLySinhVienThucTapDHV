@@ -14,8 +14,10 @@ class CreateInstructorTable extends Migration
     public function up()
     {
         Schema::create('instructor', function (Blueprint $table) {
-            $table->integer('id_leader')->unique();
-            $table->integer('id_teacher')->unique();
+            $table->bigIncrements('id');
+            $table->integer('id_student_reg');
+            $table->integer('id_teacher');
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }

@@ -25,24 +25,24 @@
                 </li>
                 <!-- item -->
                 <li>
-                    <router-link active-class="active" class="treeview-item" to="/">
+                    <router-link active-class="active" class="treeview-item" to="/teacher/instructor">
                         <i class="icon fa fa-circle-o"></i>Phân giáo viên hưỡng dẫn
                     </router-link>
                 </li>
                 <!-- item -->
                 <li>
-                    <router-link active-class="active" class="treeview-item" to="/">
+                    <router-link  class="treeview-item" to="/">
                         <i class="icon fa fa-circle-o"></i>Cập nhật đề tài
                     </router-link>
                 </li>
                 <li>
-                    <router-link active-class="active" class="treeview-item" to="/">
+                    <router-link  class="treeview-item" to="/">
                         <i class="icon fa fa-circle-o"></i>Hồ sơ điểm
                     </router-link>
                 </li>
                 <!-- item -->
                 <li>
-                    <router-link active-class="active" class="treeview-item" to="/">
+                    <router-link  class="treeview-item" to="/">
                         <i class="icon fa fa-circle-o"></i> Lịch sử hưỡng dẫn
                     </router-link>
                 </li>

@@ -6,9 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Instructor extends Model
 {
-    public $timestamps = false;
-
     protected $table = 'instructor';
-    protected $fillable = ['id_leader', 'id_teacher'];
+    protected $fillable = ['id_student_reg', 'id_teacher','status'];
 
 }

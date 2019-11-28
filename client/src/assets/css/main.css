@@ -3,7 +3,7 @@
  * Vali Admin
  * Author: Pratik Borsadiya
  * ================================*/
-@import url(https://fonts.googleapis.com/css?family=Lato:300,400,400i,700);
+@import url(https://fonts.googleapis.com/css?family=Lato:300, 400, 400i, 700);
 @import url(https://fonts.googleapis.com/css?family=Niconne);
 /*!
  * Bootstrap v4.1.1 (https://getbootstrap.com/)
@@ -25,7 +25,7 @@
   --white: #fff;
   --gray: #6c757d;
   --gray-dark: #343a40;
-  --primary: #009688;
+  --primary: #2980b9;
   --secondary: #6c757d;
   --success: #28a745;
   --info: #17a2b8;
@@ -260,7 +260,7 @@ th {
 
 label {
   display: inline-block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0 !important;
 }
 
 button {
@@ -481,7 +481,7 @@ small,
 mark,
 .mark {
   padding: 0.2em;
-  background-color: #fcf8e3;
+  background-color: #f3f312 !important;
 }
 
 .list-unstyled,
@@ -2075,7 +2075,6 @@ pre code {
   color: #495057;
   background-color: #fff;
   background-clip: padding-box;
-  border: 2px solid #ced4da;
   border-radius: 4px;
   -webkit-transition: border-color 0.15s ease-in-out,
     -webkit-box-shadow 0.15s ease-in-out;
@@ -2106,7 +2105,8 @@ pre code {
   border-color: #009688;
   outline: 0;
   -webkit-box-shadow: none;
-  box-shadow: none;
+  border: 1px solid rgb(41, 128, 185) !important ;
+  box-shadow: none !important;
 }
 
 .form-control::-webkit-input-placeholder {
@@ -5343,7 +5343,7 @@ input[type="button"].btn-block {
 .badge {
   display: inline-block;
   padding: 0.25em 0.4em;
-  font-size: 75%;
+  font-size: 90% !important;
   font-weight: 700;
   line-height: 1;
   text-align: center;
@@ -14046,7 +14046,7 @@ be a descendant of the grid when it is being dragged.
   background-color: #00635a;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1050px) {
   .app.sidenav-toggled .app-content {
     margin-left: 0;
   }
@@ -14058,7 +14058,7 @@ be a descendant of the grid when it is being dragged.
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1050px) {
   .app {
     overflow-x: hidden;
   }
@@ -14089,7 +14089,7 @@ be a descendant of the grid when it is being dragged.
   transition: margin-left 0.3s ease;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1050px) {
   .app-content {
     margin-left: 230px;
   }
@@ -14196,7 +14196,7 @@ be a descendant of the grid when it is being dragged.
   transition: background-color 0.3s ease;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1049px) {
   .app-sidebar__toggle {
     -webkit-box-ordinal-group: 0;
     -ms-flex-order: -1;
@@ -14377,7 +14377,7 @@ be a descendant of the grid when it is being dragged.
   width: 230px;
   overflow: auto;
   z-index: 10;
-  background-color: #e9ebee;
+  background-color: #fff;
   -webkit-box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
   box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
   -webkit-transition: left 0.3s ease, width 0.3s ease;
@@ -14504,7 +14504,7 @@ be a descendant of the grid when it is being dragged.
 
 .treeview.active,
 .treeview:hover {
-  color:#fff;
+  color: #fff;
   cursor: pointer;
 }
 
@@ -14533,6 +14533,7 @@ be a descendant of the grid when it is being dragged.
   padding: 5px 5px 5px 20px;
   font-size: 1em;
   color: black;
+  border-bottom: 1px solid #fff;
 }
 
 .treeview-item.active,
@@ -14695,7 +14696,7 @@ be a descendant of the grid when it is being dragged.
   -ms-flex-direction: row;
   flex-direction: row;
   background-color: #fff;
-  margin: -30px -30px 30px;
+  margin: -30px -30px 15px;
   padding: 20px 30px;
   -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -14723,7 +14724,7 @@ be a descendant of the grid when it is being dragged.
 
 .app-title h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 1.3em;
   font-weight: 400;
 }
 
@@ -15364,7 +15365,7 @@ be a descendant of the grid when it is being dragged.
 
 .widget-small.primary.coloured-icon {
   background-color: #fff;
-  color: #2a2a2a; 
+  color: #2a2a2a;
   cursor: pointer;
 }
 

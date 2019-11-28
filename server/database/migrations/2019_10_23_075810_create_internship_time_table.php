@@ -15,7 +15,7 @@ class CreateInternshipTimeTable extends Migration
     {
         Schema::create('internship_time', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('id_internship_type')->unsigned();
+            $table->bigInteger('id_internship_type');
             $table->integer('course');
             $table->date('start_time');
             $table->date('end_time');

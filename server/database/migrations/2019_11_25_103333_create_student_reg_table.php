@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCompanyRegTable extends Migration
+class CreateStudentRegTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateCompanyRegTable extends Migration
      */
     public function up()
     {
-        Schema::create('company_reg', function (Blueprint $table) {
+        Schema::create('student_reg', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('id_company');
+            $table->integer('id_student');
             $table->integer('id_internship_time');
-            $table->integer('registration');
-            $table->integer('limit');
+            $table->integer('total_point')->default(0);
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateCompanyRegTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('company_reg');
+        Schema::dropIfExists('student_reg');
     }
 }

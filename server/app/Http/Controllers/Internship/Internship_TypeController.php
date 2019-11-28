@@ -23,44 +23,34 @@ class Internship_TypeController extends Controller
     {
         $this->validate(
             $request, [
-            'name' => 'required',
-//            'id_specialized' => 'required|exists:specialized,id'
+            'name' => 'required'
         ], [
-                'name.required' => 'Bạn chưa nhập tên thực tập',
-//                'id_specialized.required' => 'Bạn chưa chọn khoa',
-//                'id_specialized.exists' => 'Không tồn tại khoa đã chọn'
+                'name.required' => 'Bạn chưa nhập tên thực tập'
             ]
         );
-        $data = Internship_Type::create($request->all());
-        return response()->json($data, 201);
+
+        Internship_Type::create($request->all());
+        return 1;
     }
 
     public function edit($id, Request $request)
     {
         $this->validate(
             $request, [
-            'name' => 'required',
-//            'id_specialized' => 'required|exists:specialized,id'
+            'name' => 'required'
         ], [
-                'name.required' => 'Bạn chưa nhập tên thực tập',
-//                'id_specialized.required' => 'Bạn chưa chọn khoa',
-//                'id_specialized.exists' => 'Không tồn tại khoa đã chọn'
+                'name.required' => 'Bạn chưa nhập tên thực tập'
             ]
         );
-        $data = Internship_Type::where('id', $id);
-        if ($data->count() == 0)
-            return response('Edit Failed', 400);
-        $data->update($request->all());
-        return response()->json($data->get(), 200);
+
+        Internship_Type::find($id)->update($request->all());
+        return 1;
     }
 
     public function destroy($id)
     {
-        $data = Internship_Type::where('id', $id);
-        if ($data->count() == 0)
-            return response('Delete Failed', 400);
-        $data->delete();
-        return response('Delete Successfully', 200);
+        Internship_Type::where('id', $id)->delete();
+        return 1;
     }
 
 }

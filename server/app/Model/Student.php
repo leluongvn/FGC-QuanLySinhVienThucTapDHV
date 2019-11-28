@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Model;
+
 use Illuminate\Database\Eloquent\Model;
-class Student extends Model 
+
+class Student extends Model
 {
 
     protected $table = 'students';
@@ -11,6 +13,6 @@ class Student extends Model
      *
      * @var array
      */
-    protected $fillable = ['mssv','name','password','class','email','date_birth','phone','note'];
+    protected $fillable = ['id_user', 'mssv', 'birthday', 'class'];
 
 }

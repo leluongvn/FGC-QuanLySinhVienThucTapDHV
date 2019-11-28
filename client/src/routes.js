@@ -3,14 +3,17 @@ import HomePage from "./layout/HomeDefault.vue";
 
 // Teacher
 import Teacher from "./pages/teacher/Home.vue";
+//Tra cứu TT
 import TeacherUser from "./pages/teacher/User.vue";
 import ListStudent from "./pages/teacher/Student.vue";
 import ListCompany from "./pages/teacher/Company.vue";
 import ListTeacher from "./pages/teacher/Teacher.vue";
 import ListTopic from "./pages/teacher/Topic.vue";
 import Create from "./pages/teacher/CreateInternship.vue"
+// Hồ sơ thực tập
 import Internship from "./components/pages/internship/InternshipTime.vue"
-import StudentReg from "./components/pages/internship/StudentReg.vue"
+import Tabs from "./components/pages/internship/Tabs.vue"
+import Instructor from "./pages/teacher/Instructor.vue"
 
 // Company
 import Company from "./pages/company/Home.vue";
@@ -29,7 +32,7 @@ const routes = [
     component: HomePage,
     children: [
       {
-        path: "teacher",
+        path: "/teacher",
         name: "teacher",
         component: Teacher,
         children:[
@@ -45,11 +48,16 @@ const routes = [
                 component: Internship
               },
               {
-                path:'student/:id',
-                name:'index',
-                component: StudentReg
+                path:'internship/:id',
+                name:'internship',
+                component: Tabs
               }
             ]
+          },
+          {
+            path:'instructor',
+            name:'instructor',
+            component:Instructor
           },
           {
             path: "user",
