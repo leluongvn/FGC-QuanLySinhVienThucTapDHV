@@ -33,7 +33,6 @@ class UserController extends Controller
         /**
          *  Trả về một sinh viên theo id
          */
-        // $this->middleware('isadmin');
         $data = DB::table('users as u')
             ->select('s.id', 's.id_user', 'u.name','u.password', 'u.email', 'u.phone', 's.mssv', 's.birthday', 's.class', 'u.status','u.note')
             ->join('students as s', 's.id_user', 'u.id')

@@ -8,6 +8,12 @@
                 <h4 class="card-title">
                     Quản lý đề tài
                     <a class="btn btn-add" title="Thêm mới" @click="showadd()">+</a>
+<<<<<<< HEAD
+=======
+                    <vue-excel-xlsx :data="topic" :columns="columns" :filename="'detai'" :sheetname="'sheetname'" title="Tải xuống Excel" class="btn-delete">
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                    </vue-excel-xlsx>
+>>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
                 </h4>
                 <p class="card-category">Xem thông tin, thêm, sửa, xóa doanh nghiệp</p>
                 <hr width="20%" color="#2980b9">
@@ -226,6 +232,27 @@ export default {
         return {
             type: [],
             type_id: 1,
+<<<<<<< HEAD
+=======
+             columns: [
+               
+                {
+                    label: "name",
+                    field: "name",
+                },
+                
+                {
+                    label: "content",
+                    field: "content",
+                },
+                {
+                    label: "status",
+                    field: "status",
+                },
+                
+                
+            ],
+>>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
             table1: {
                 columns: [...tableColumns]
             },
@@ -328,7 +355,11 @@ export default {
             if (confirm("Bạn có chắc chắn muốn xóa?"))
                 this.$http.delete("api/topic/" + id).then(
                     response => {
+<<<<<<< HEAD
                         this.mytablerl();
+=======
+                        // this.mytablerl();
+>>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
                         this.$noty.success("Đã xóa thành công một đề tài!");
                         this.getAllData();
                     },
@@ -387,11 +418,19 @@ export default {
         },
         getAllData() {
             //Lấy thông tin đề tài theo từng loại thực tập
+<<<<<<< HEAD
+=======
+            this.mytablerl();
+>>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
             this.$http.get("api/topic/" + this.type_id).then(
                 response => {
                     // get body data
                     this.topic = response.body;
+<<<<<<< HEAD
                     this.mytablerl();
+=======
+                    
+>>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
                     this.mytable();
                 }
             );

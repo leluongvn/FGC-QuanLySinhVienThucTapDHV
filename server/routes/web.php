@@ -33,8 +33,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->put('/{id}', 'Instructor\InstructorController@update');
         $router->delete('/{id}', 'Instructor\InstructorController@delete');
     });
-
-
     // code phần giáo viên
     $router->group(['prefix' => 'teacher'], function () use ($router) {
         $router->get('/{subject:[0-9]+}', 'Teacher\UserController@showAllTeachers');
@@ -67,7 +65,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     });
 
 
-    // code phần doanh nghiệp
+    // code phần doanh nghiệp/instructor
     $router->group(['prefix' => 'company'], function () use ($router) {
         $router->get('/', 'Company\UserController@show');
         $router->get('/{id}', 'Company\UserController@showOne');
