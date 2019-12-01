@@ -10,7 +10,7 @@
                 <h4 class="card-title">
                     Quản lý giáo viên
                     <a class="btn btn-add" title="Thêm mới" @click="showadd()">+</a>
-                    <vue-excel-xlsx :data="teacher" :columns="columns" :filename="'teacher'" :sheetname="'sheetname'" class="btn-delete">
+                    <vue-excel-xlsx :data="teacher" :columns="columns" :filename="'teacher'" :sheetname="'sheetname'" title="Tải xuống Excel" class="btn-delete">
                         <i class="fa fa-download" aria-hidden="true"></i>
                     </vue-excel-xlsx>
                 </h4>
@@ -392,19 +392,12 @@ export default {
                     label: "msgv",
                     field: "msgv",
                 },
-                {
-                    label: "id_subject",
-                    field: "id_subject",
-
-                },
+               
                 {
                     label: "name",
                     field: "name",
                 },
-                {
-                    label: "password",
-                    field: "password,"
-                },
+                
                 {
                     label: "email",
                     field: "email",
@@ -417,10 +410,7 @@ export default {
                     label: "fields",
                     field: "fields",
                 },
-                {
-                    label: "note",
-                    field: "note",
-                }
+                
             ],
             table1: {
                 columns: [...tableColumns]

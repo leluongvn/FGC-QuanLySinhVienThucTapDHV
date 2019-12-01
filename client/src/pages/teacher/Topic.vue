@@ -8,6 +8,9 @@
                 <h4 class="card-title">
                     Quản lý đề tài
                     <a class="btn btn-add" title="Thêm mới" @click="showadd()">+</a>
+                    <vue-excel-xlsx :data="topic" :columns="columns" :filename="'detai'" :sheetname="'sheetname'" title="Tải xuống Excel" class="btn-delete">
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                    </vue-excel-xlsx>
                 </h4>
                 <p class="card-category">Xem thông tin, thêm, sửa, xóa doanh nghiệp</p>
                 <hr width="20%" color="#2980b9">
@@ -226,6 +229,24 @@ export default {
         return {
             type: [],
             type_id: 1,
+             columns: [
+               
+                {
+                    label: "name",
+                    field: "name",
+                },
+                
+                {
+                    label: "content",
+                    field: "content",
+                },
+                {
+                    label: "status",
+                    field: "status",
+                },
+                
+                
+            ],
             table1: {
                 columns: [...tableColumns]
             },

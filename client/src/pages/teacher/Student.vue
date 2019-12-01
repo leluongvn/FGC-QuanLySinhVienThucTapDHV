@@ -8,8 +8,8 @@
                 <h4 class="card-title">
                     Quản lý sinh viên
                     <a href="#" class="btn btn-add" title="Thêm mới" @click="showadd()">+</a>
-                    <vue-excel-xlsx :data="student" :columns="columns" :filename="'student'" :sheetname="'sheetname'" class="btn-delete">
-                        <i class="fa fa-download" aria-hidden="true"></i>
+                    <vue-excel-xlsx :data="student" :columns="columns" :filename="'student'" :sheetname="'sheetname'" class="btn-delete" title="Tải xuống Execl">
+                        <i  class="fa fa-download" aria-hidden="true"></i>
                     </vue-excel-xlsx>
                 </h4>
                 <p class="card-category">Xem thông tin, thêm, sửa, xóa sinh viên</p>
@@ -32,10 +32,10 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <a @click="getOne(v.id),showUpdate()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                            <a  title="Cập nhật" @click="getOne(v.id),showUpdate()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                                         </div>
                                         <div class="col-md-6">
-                                            <a @click="delData(v.id)"><i style="color:red;" class="fa fa-trash" aria-hidden="true"></i></a>
+                                            <a  title="Xóa" @click="delData(v.id)"><i style="color:red;" class="fa fa-trash" aria-hidden="true"></i></a>
                                         </div>
                                     </div>
 
@@ -390,7 +390,8 @@ export default {
     },
     data() {
         return {
-            columns: [{
+            columns: [
+                {
                     label: "mssv",
                     field: "mssv",
                 },
@@ -398,19 +399,12 @@ export default {
                     label: "name",
                     field: "name",
 
-                },
-                {
-                    label: "password",
-                    field: "password",
-                },
-                {
-                    label: "class",
-                    field: "class,"
-                },
+                },                               
                 {
                     label: "email",
                     field: "email",
                 },
+                 
                 {
                     label: "birthday",
                     field: "birthday",

@@ -8,7 +8,7 @@
                 <h4 class="card-title">
                     Quản lý doanh nghiệp
                     <a class="btn btn-add" title="Thêm mới" @click="showadd()">+</a>
-                    <vue-excel-xlsx :data="company" :columns="columns" :filename="'filename'" :sheetname="'sheetname'" class="btn-delete">
+                    <vue-excel-xlsx :data="company" :columns="columns" :filename="'doanhnghiep'" :sheetname="'sheetname'" title="Tải xuống Excel" class="btn-delete">
                         <i class="fa fa-download" aria-hidden="true"></i>
                     </vue-excel-xlsx>
 
@@ -358,23 +358,16 @@ export default {
                     label: "name",
                     field: "name",
                 },
-                {
-                    label: "password",
-                    field: "password",
-
-                },
+                
                 {
                     label: "address",
                     field: "address",
                 },
-                {
-                    label: "phone",
-                    field: "phone,"
-                },
+               
                 {
                     label: "email",
                     field: "email",
-                }, ,
+                }, 
                 {
                     label: "fields",
                     field: "fields",
@@ -384,10 +377,7 @@ export default {
                     label: "introduce",
                     field: "introduce",
                 },
-                {
-                    label: "status",
-                    field: "status",
-                }
+
             ],
 
             table1: {
