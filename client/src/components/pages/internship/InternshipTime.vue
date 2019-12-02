@@ -2,16 +2,14 @@
 <div class="content">
     <!-- header -->
     <div class="row header">
-        <div class="col-sm-12 col-md-6">
-            <div id="sampleTable_length" class="dataTables_length">
-                <!-- search -->
-                <label>
-                    Học phần:
-                    <select v-model="select_id" style="display: inline-block;width: 100%;border: 1px solid #2980b9;box-shadow: none;" placeholder aria-controls="sampleTable" class="form-control form-control-sm" @change="pushID($event)">
-                        <option v-for="(v,i) in inter_type" :key="i" :value="v.id">{{v.name}}</option>
-                    </select>
-                </label>
-                <!-- end search -->
+        <div class="col-sm-12 text-center">
+            <h4 style="color: rgb(41, 128, 185);text-transform: uppercase;">Hồ sơ thực tập ngành Công nghệ thông tin</h4>
+            <hr width="10%">
+            <div style="display:inline-block">
+                <label>Học phần:</label>
+                <select style="width:200px" v-model="select_id" placeholder aria-controls="sampleTable" class="form-control form-control-sm" @change="pushID($event)">
+                    <option v-for="(v,i) in inter_type" :key="i" :value="v.id">{{v.name}}</option>
+                </select>
             </div>
         </div>
     </div>

@@ -8,11 +8,7 @@
                 <h4 class="card-title">
                     Quản lý doanh nghiệp
                     <a class="btn btn-add" title="Thêm mới" @click="showadd()">+</a>
-<<<<<<< HEAD
-                    <vue-excel-xlsx :data="company" :columns="columns" :filename="'filename'" :sheetname="'sheetname'" class="btn-delete">
-=======
                     <vue-excel-xlsx :data="company" :columns="columns" :filename="'doanhnghiep'" :sheetname="'sheetname'" title="Tải xuống Excel" class="btn-delete">
->>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
                         <i class="fa fa-download" aria-hidden="true"></i>
                     </vue-excel-xlsx>
 
@@ -362,30 +358,6 @@ export default {
                     label: "name",
                     field: "name",
                 },
-<<<<<<< HEAD
-                {
-                    label: "password",
-                    field: "password",
-
-                },
-                {
-                    label: "address",
-                    field: "address",
-                },
-                {
-                    label: "phone",
-                    field: "phone,"
-                },
-                {
-                    label: "email",
-                    field: "email",
-                }, ,
-                {
-                    label: "fields",
-                    field: "fields",
-                },
-
-=======
                 
                 {
                     label: "address",
@@ -401,19 +373,11 @@ export default {
                     field: "fields",
                 },
 
->>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
                 {
                     label: "introduce",
                     field: "introduce",
                 },
-<<<<<<< HEAD
-                {
-                    label: "status",
-                    field: "status",
-                }
-=======
 
->>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
             ],
 
             table1: {
@@ -620,18 +584,11 @@ export default {
         },
         getAllData() {
             // Lấy danh sách doanh nghiệp
-<<<<<<< HEAD
-            this.$http.get("api/company").then(
-                response => {
-                    this.company = response.body;
-                    this.mytablerl();
-=======
             this.mytablerl();
             this.$http.get("api/company").then(
                 response => {
                     this.company = response.body;
                     
->>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
                     this.mytable();
                 }
             );

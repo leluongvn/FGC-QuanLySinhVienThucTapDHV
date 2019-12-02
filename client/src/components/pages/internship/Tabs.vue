@@ -1,27 +1,39 @@
 <template>
 <div class="content">
     <div class="text-center mb-4">
-        <h4 style="color: rgb(41, 128, 185);text-transform: uppercase;">{{type.name}} - khóa {{time.course}}</h4>
-        <p>Thời gian: {{time.start_time}} / {{time.end_time}}</p>
+        <h4 style="color: rgb(41, 128, 185);text-transform: uppercase;">{{type.name}} - khóa {{time.course}} - ngành công nghệ thông tin</h4>
+        <p>Thời gian: {{time.start_time}} - {{time.end_time}}</p>
         <hr width="10%">
     </div>
     <div>
         <b-tabs content-class="mt-3" align="center">
-            <b-tab title="Chức vụ giảng viên" active>
-                <!-- content -->
-                <position />
-            </b-tab>
-            <b-tab title="Doanh nghiệp đăng ký">
-                <!-- content -->
-                <company-reg />
-            </b-tab>
             <b-tab title="Sinh viên đăng ký">
                 <!-- content -->
                 <student-reg />
             </b-tab>
-            <b-tab title="Phân về TBM">
+
+            <b-tab title="Doanh nghiệp đăng ký">
                 <!-- content -->
-                <leader />
+                <company-reg />
+            </b-tab>
+
+            <b-tab title="Hồ sơ điểm">
+                <!-- content -->
+                <internship-point />
+            </b-tab>
+
+            <b-tab title="Phân GVHD">
+                <!-- content -->
+                <instructor />
+            </b-tab>
+
+            <b-tab title="Cập nhật đề tài">
+                <!-- content -->
+                <internship-topic />
+            </b-tab>
+
+            <b-tab title="Sinh viên hưỡng dẫn">
+                <!-- content -->
             </b-tab>
         </b-tabs>
     </div>
@@ -31,9 +43,11 @@
 
 <script>
 import StudentReg from './StudentReg'
-import Position from './Position'
 import CompanyReg from './CompanyReg'
-import Leader from './Leader'
+import InternshipPoint from './InternshipPoint'
+import Instructor from './Instructor'
+import InternshipTopic from './InternshipTopic'
+// import CompanyReg from './CompanyReg'
 export default {
     data() {
         return {
@@ -44,16 +58,17 @@ export default {
     },
     components: {
         StudentReg,
-        Position,
-        Leader,
-        CompanyReg
+        CompanyReg,
+        InternshipPoint,
+        InternshipTopic,
+        Instructor
     },
     created() {
         // Lấp thông tin thực tập
         this.$http.get("api/internship_time/one/" + this.$route.params.id).then(
             response => {
                 // console.log(response.body);
-                this.time = response.body;
+                this.time = response.body[0];
                 this.$http.get("api/internship_type/" + this.time.id_internship_type).then(
                     response => {
                         // console.log(response.body);

@@ -8,13 +8,8 @@
                 <h4 class="card-title">
                     Quản lý sinh viên
                     <a href="#" class="btn btn-add" title="Thêm mới" @click="showadd()">+</a>
-<<<<<<< HEAD
-                    <vue-excel-xlsx :data="student" :columns="columns" :filename="'student'" :sheetname="'sheetname'" class="btn-delete">
-                        <i class="fa fa-download" aria-hidden="true"></i>
-=======
                     <vue-excel-xlsx :data="student" :columns="columns" :filename="'student'" :sheetname="'sheetname'" class="btn-delete" title="Tải xuống Execl">
                         <i  class="fa fa-download" aria-hidden="true"></i>
->>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
                     </vue-excel-xlsx>
                 </h4>
                 <p class="card-category">Xem thông tin, thêm, sửa, xóa sinh viên</p>
@@ -37,17 +32,10 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6">
-<<<<<<< HEAD
-                                            <a @click="getOne(v.id),showUpdate()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <a @click="delData(v.id)"><i style="color:red;" class="fa fa-trash" aria-hidden="true"></i></a>
-=======
                                             <a  title="Cập nhật" @click="getOne(v.id),showUpdate()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                                         </div>
                                         <div class="col-md-6">
                                             <a  title="Xóa" @click="delData(v.id)"><i style="color:red;" class="fa fa-trash" aria-hidden="true"></i></a>
->>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
                                         </div>
                                     </div>
 
@@ -402,12 +390,8 @@ export default {
     },
     data() {
         return {
-<<<<<<< HEAD
-            columns: [{
-=======
             columns: [
                 {
->>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
                     label: "mssv",
                     field: "mssv",
                 },
@@ -415,27 +399,12 @@ export default {
                     label: "name",
                     field: "name",
 
-<<<<<<< HEAD
-                },
-                {
-                    label: "password",
-                    field: "password",
-                },
-                {
-                    label: "class",
-                    field: "class,"
-                },
-=======
                 },                               
->>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
                 {
                     label: "email",
                     field: "email",
                 },
-<<<<<<< HEAD
-=======
                  
->>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
                 {
                     label: "birthday",
                     field: "birthday",
@@ -561,7 +530,6 @@ export default {
             $(document).ready(function () {
                 $("#example").dataTable();
             });
-<<<<<<< HEAD
         },
         mytablerl() {
             $(document).ready(function () {
@@ -579,25 +547,6 @@ export default {
         showUpdate() {
             this.$modal.show("modalUpdate");
         },
-=======
-        },
-        mytablerl() {
-            $(document).ready(function () {
-                $("#example").DataTable().destroy();
-
-            });
-        },
-        //start modal
-        showadd() {
-            this.$modal.show("modalAdd");
-        },
-        hideadd() {
-            this.$modal.hide("modalAdd");
-        },
-        showUpdate() {
-            this.$modal.show("modalUpdate");
-        },
->>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
         hideUpdate() {
             this.$modal.hide("modalUpdate");
         },
@@ -611,101 +560,6 @@ export default {
             } else {
                 this.showpassword = false;
                 show.type = "password";
-<<<<<<< HEAD
-            }
-        },
-        //end showpassword
-        //start delete row table
-        delData(id) {
-            if (confirm("Bạn có chắc chắn muốn xóa?"))
-                this.$http.delete("api/student/" + id).then(
-                    response => {
-                        this.mytablerl();
-                        this.getData();
-                        this.$noty.success("Đã xóa thành công một sinh viên!");
-                    },
-                    response => {
-                        this.$noty.error("Thất bại khi xóa một sinh viên!");
-                    }
-                );
-
-        },
-        //add row table
-        addData() {
-            this.$http.post("api/student", this.user).then(
-                response => {
-                    //   console.log(response.body);
-                    this.mytablerl();
-                    this.getData();
-                    this.$noty.success("Đã thêm một sinh viên thành công!");
-
-                },
-                response => {
-                    if (response.body.mssv !== undefined)
-                        this.$noty.error(response.body.mssv);
-                    else if (response.body.name !== undefined)
-                        this.$noty.error(response.body.name);
-                    else if (response.body.email !== undefined)
-                        this.$noty.error(response.body.email);
-                    else if (response.body.password !== undefined)
-                        this.$noty.error(response.body.password);
-                    else
-                        this.$noty.error("Thất bại khi thêm mới một sinh viên!");
-                }
-            );
-        },
-        // get One table
-        getOne(id) {
-            this.$http.get("api/student/" + id).then(
-                response => {
-                    this.userUpdate = response.body[0];
-                }
-            );
-        },
-        //update table
-        putData() {
-            this.$http.put("api/student/" + this.userUpdate.id, this.userUpdate).then(
-                response => {
-                    this.getData();
-                    this.$noty.success("Đã cập nhật một sinh viên thành công!");
-                },
-                response => {
-                    if (response.body.mssv !== undefined)
-                        this.$noty.error(response.body.mssv);
-                    else if (response.body.name !== undefined)
-                        this.$noty.error(response.body.name);
-                    else if (response.body.email !== undefined)
-                        this.$noty.error(response.body.email);
-                    else if (response.body.password !== undefined)
-                        this.$noty.error(response.body.password);
-                }
-            );
-        },
-        getData() {
-            this.$http.get("api/student").then(
-                response => {
-                    // get body data
-                    this.student = response.body;
-                    this.mytable();
-                }
-            );
-        }
-    },
-    //end methor
-    //start getall table
-    created() {
-        this.$http.get("api/student").then(
-            response => {
-                // get body data
-                this.student = response.body;
-                this.mytable();
-                console.log(response.body);
-            },
-            response => {
-                // error callback
-            }
-        );
-=======
             }
         },
         //end showpassword
@@ -790,7 +644,6 @@ export default {
     //start getall table
     created() {
        this.getData();
->>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
     }
 };
 </script>

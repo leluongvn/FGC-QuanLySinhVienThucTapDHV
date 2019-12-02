@@ -96,7 +96,7 @@
                 <h6 class="text-center mt-2 col-10">Công ty đăng ký</h6>
                 <i @click="hide_modal_company" class="fa fa-times col-2 text-right" aria-hidden="true"></i>
                 <b-form-group class="col-md-12 mb-0" label-size="sm" id="fieldset-1" label="Tên công ty:" label-for="input-1">
-                    <select class="form-control form-control-sm" v-model="getUpdateCompany.id">
+                    <select class="form-control form-control-sm" v-model="getUpdateCompany.id_company">
                         <option :value="getUpdateCompany.id_company">{{getUpdateCompany.name}}</option>
                         <option v-for="(item, index) in getCreateCompany" :key="index" :value="item.id">{{item.name}}</option>
                     </select>
@@ -134,10 +134,12 @@ export default {
     },
     methods: {
         hide_modal_company() {
+            //ẩn modal update
             this.$refs['modal-company'].hide();
         },
-        delCompany(id){
-          this.$http.delete("api/companyreg/" + id).then(
+        delCompany(id) {
+            //xóa doanh nghiệp ra khỏi ds đăng ký của sinh viên
+            this.$http.delete("api/companyreg/" + id).then(
                 response => {
                     this.$noty.success("Thành công :)");
                     this.getAllCompanyReg();
@@ -155,7 +157,10 @@ export default {
                     this.getAllCompanyReg();
                 },
                 response => {
-                    this.$noty.error("Thất bại :(");
+                    if (response.body.limit !== undefined)
+                        this.$noty.error(response.body.limit);
+                    else
+                        this.$noty.error("Thất bại :(");
                 }
             );
         },
@@ -165,19 +170,22 @@ export default {
                 response => {
                     console.log(response.body);
                     this.getUpdateCompany = response.body[0];
-                },
-                response => {}
+                }
             );
         },
         insertCompany() {
+            //Nhập thông tin doanh nghiệp có thể đăng ký
             this.$http.post("api/companyreg", this.postCreateCompany).then(
                 response => {
-                    // console.log(response.body);
                     this.$noty.success("Thành công :)");
+                    this.postCreateCompany.id_company = null;
                     this.getAllCompanyReg();
                 },
                 response => {
-                    this.$noty.error("Thất bại :(");
+                    if (response.body.limit !== undefined)
+                        this.$noty.error(response.body.limit);
+                    else
+                        this.$noty.error("Thất bại :(");
                 }
             );
         },
@@ -186,36 +194,18 @@ export default {
             this.$http.get("api/companyreg/" + this.id).then(
                 respone => {
                     this.company_reg = respone.body;
-                },
-                response => {}
+                }
             );
             // lấy thông tin công ty chưa đăng ký
             this.$http.get("api/companyreg/create/" + this.id).then(
                 response => {
-                    // console.log(response.body);
                     this.getCreateCompany = response.body;
-                },
-                response => {}
+                }
             );
         }
     },
     created() {
-        // lấy thông tin công ty đăng ký
-        this.$http.get("api/companyreg/" + this.id).then(
-            respone => {
-                this.company_reg = respone.body;
-            },
-            response => {}
-        );
-        // lấy thông tin công ty chưa đăng ký
-        this.$http.get("api/companyreg/create/" + this.id).then(
-            response => {
-                // console.log(response.body);
-                this.getCreateCompany = response.body;
-            },
-            response => {}
-        );
-
+        this.getAllCompanyReg();
     }
 };
 </script>

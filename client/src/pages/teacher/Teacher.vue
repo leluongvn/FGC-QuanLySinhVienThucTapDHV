@@ -10,11 +10,7 @@
                 <h4 class="card-title">
                     Quản lý giáo viên
                     <a class="btn btn-add" title="Thêm mới" @click="showadd()">+</a>
-<<<<<<< HEAD
-                    <vue-excel-xlsx :data="teacher" :columns="columns" :filename="'teacher'" :sheetname="'sheetname'" class="btn-delete">
-=======
                     <vue-excel-xlsx :data="teacher" :columns="columns" :filename="'teacher'" :sheetname="'sheetname'" title="Tải xuống Excel" class="btn-delete">
->>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
                         <i class="fa fa-download" aria-hidden="true"></i>
                     </vue-excel-xlsx>
                 </h4>
@@ -396,43 +392,6 @@ export default {
                     label: "msgv",
                     field: "msgv",
                 },
-<<<<<<< HEAD
-                {
-                    label: "id_subject",
-                    field: "id_subject",
-
-                },
-                {
-                    label: "name",
-                    field: "name",
-                },
-                {
-                    label: "password",
-                    field: "password,"
-                },
-                {
-                    label: "email",
-                    field: "email",
-                },
-                {
-                    label: "phone",
-                    field: "phone",
-                },
-                {
-                    label: "fields",
-                    field: "fields",
-                },
-                {
-                    label: "note",
-                    field: "note",
-                }
-            ],
-            table1: {
-                columns: [...tableColumns]
-            },
-            teacher: [],
-
-=======
                
                 {
                     label: "name",
@@ -458,7 +417,6 @@ export default {
             },
             teacher: [],
 
->>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
             user: {
                 msgv: "",
                 name: "",
@@ -599,84 +557,6 @@ export default {
         getData() {
             // Lấy tất cả giáo viên theo bộ môn
             this.getAllData();
-<<<<<<< HEAD
-        },
-        //start delete row table
-        delData(id) {
-            if (confirm("Bạn có chắc chắn muốn xóa?"))
-                this.$http.delete("api/teacher/" + id).then(
-                    response => {
-                        this.mytablerl();
-                        this.getAllData();
-                        this.$noty.success("Đã xóa thành công một giảng viên!");
-                    },
-                    response => {
-                        this.$noty.error("Thất bại khi xóa một giảng viên!");
-                        // error callback
-                    }
-                );
-        },
-        //add row table
-        addData() {
-            this.user.id_subject = this.select_subject;
-            this.$http.post("api/teacher", this.user).then(
-                response => {
-                    //   console.log(response.body);
-                    this.getAllData();
-                    this.mytablerl();
-                    this.$noty.success("Đã thêm một giảng viên thành công!");
-                },
-                response => {
-                    if (response.body.msgv !== undefined)
-                        this.$noty.error(response.body.msgv);
-                    else if (response.body.name !== undefined)
-                        this.$noty.error(response.body.name);
-                    else if (response.body.email !== undefined)
-                        this.$noty.error(response.body.email);
-                    else if (response.body.password !== undefined)
-                        this.$noty.error(response.body.password);
-                    else if (response.body.id_subject !== undefined)
-                        this.$noty.error(response.body.password);
-                    else
-                        this.$noty.error("Thất bại khi thêm mới một giảng viên!");
-                }
-            );
-        },
-        // get One table
-        getOne(id) {
-            this.$http.get("api/teacher/one/" + id).then(
-                response => {
-                    this.userUpdate = response.body[0];
-                }
-            );
-        },
-        //update table
-        putData() {
-            this.userUpdate.id_subject = this.select_subject;
-            this.$http.put("api/teacher/" + this.userUpdate.id, this.userUpdate).then(
-                response => {
-                    this.$noty.success("Đã cập nhật một giảng viên thành công!");
-                    this.getAllData();
-                },
-                response => {
-                    if (response.body.msgv !== undefined)
-                        this.$noty.error(response.body.msgv);
-                    else if (response.body.name !== undefined)
-                        this.$noty.error(response.body.name);
-                    else if (response.body.email !== undefined)
-                        this.$noty.error(response.body.email);
-                    else if (response.body.password !== undefined)
-                        this.$noty.error(response.body.password);
-                    else if (response.body.id_subject !== undefined)
-                        this.$noty.error(response.body.password);
-                    else
-                        this.$noty.error("Thất bại cập nhật một giảng viên!");
-                }
-            );
-        },
-        getAllData() {
-            // Lấy tất cả giáo viên theo bộ môn
-=======
         },
         //start delete row table
         delData(id) {
@@ -755,16 +635,11 @@ export default {
         getAllData() {
             // Lấy tất cả giáo viên theo bộ môn
             this.mytablerl();
->>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
             this.$http.get("api/teacher/" + this.select_subject).then(
                 response => {
                     // get body data
                     this.teacher = response.body;
-<<<<<<< HEAD
-                    this.mytablerl();
-=======
                    
->>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
                     this.mytable();
                 }
             );
@@ -776,13 +651,6 @@ export default {
         // lấy danh sách bộ môn
         this.$http.get("api/subject").then(
             response => {
-<<<<<<< HEAD
-                this.subject = response.body;
-                this.select_subject = this.subject[0].id;
-            }
-        );
-        this.getAllData();
-=======
                 
                 this.subject = response.body;
                 this.select_subject = this.subject[0].id;
@@ -792,7 +660,6 @@ export default {
         
         // this.mytablerl();
         // this.getAllData();
->>>>>>> 7bc50c520a0bb8e03fd69bb85529d88872a6d06c
     }
 };
 </script>

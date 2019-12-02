@@ -75,10 +75,10 @@ class UserController extends Controller
         ]);
 
         $company = Company::find($id);
-        $company->update($request->only( 'fields', 'id_user', 'introduce'));
+        $company->update($request->only( 'fields', 'id_user', 'introduce','address'));
 
         $user = User::find($request->id_user);
-        $user->update($request->only('name', 'email', 'password', 'phone','address', 'status'));
+        $user->update($request->only('name', 'email', 'password', 'phone', 'status'));
 
         return 1;
     }

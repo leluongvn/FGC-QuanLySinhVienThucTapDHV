@@ -22,7 +22,11 @@ class Internship_TimeController extends Controller
 
     public function showOne($id)
     {
-        return response()->json(Internship_Time::find($id));
+        $data = DB::table('internship_time')
+            ->selectRaw('id,id_internship_type,course,DATE_FORMAT(start_time, "%d/%m/%Y") as start_time,DATE_FORMAT(end_time, "%d/%m/%Y") as end_time,start_topic,end_topic,start_company,end_company')
+            ->where('id', $id)
+            ->get();
+        return response()->json($data);
     }
 
     public function create(Request $request)

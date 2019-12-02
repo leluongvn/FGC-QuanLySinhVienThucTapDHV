@@ -1,6 +1,6 @@
 <template>
 <div>
-    <app-title :title="title" />
+    <!-- <app-title :title="title" /> -->
     <!-- body -->
     <div class="tile">
         <div class="tile-body">

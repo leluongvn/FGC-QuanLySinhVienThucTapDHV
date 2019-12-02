@@ -16,37 +16,11 @@
                     <span class="app-menu__label">Trang chủ</span>
                 </router-link>
             </li>
-            <nav-link :title="title.hstt">
-                <!-- item -->
-                <li>
-                    <router-link active-class="active" class="treeview-item" to="/teacher/create">
-                        <i class="icon fa fa-circle-o"></i>Thêm hồ sơ TT
-                    </router-link>
-                </li>
-                <!-- item -->
-                <li>
-                    <router-link active-class="active" class="treeview-item" to="/teacher/instructor">
-                        <i class="icon fa fa-circle-o"></i>Phân giáo viên hưỡng dẫn
-                    </router-link>
-                </li>
-                <!-- item -->
-                <li>
-                    <router-link  class="treeview-item" to="/">
-                        <i class="icon fa fa-circle-o"></i>Cập nhật đề tài
-                    </router-link>
-                </li>
-                <li>
-                    <router-link  class="treeview-item" to="/">
-                        <i class="icon fa fa-circle-o"></i>Hồ sơ điểm
-                    </router-link>
-                </li>
-                <!-- item -->
-                <li>
-                    <router-link  class="treeview-item" to="/">
-                        <i class="icon fa fa-circle-o"></i> Lịch sử hưỡng dẫn
-                    </router-link>
-                </li>
-            </nav-link>
+            <li>
+                <router-link active-class="active" class="app-menu__item" to="/teacher/create">
+                    <i class="app-menu__icon fa fa-laptop"></i>Hồ sơ thực tập
+                </router-link>
+            </li>
             <nav-link :title="title.tctt">
                 <!-- item -->
                 <li>

@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    public function __construct(){
-        $this->middleware('auth');
-        // $this->middleware('isAdmin');
-    }
-
     public function getAll()
     {
         /**
@@ -25,6 +20,23 @@ class UserController extends Controller
             ->join('students as s', 's.id_user', 'u.id')
             ->get();
 
+        return $data;
+    }
+
+    public function getNotReg($id){
+        $reg = DB::table('student_reg')
+            ->select('id_student')
+            ->where('id_internship_time',$id)
+            ->get();
+        $arr = [];
+        foreach($reg as $r){
+            array_push($arr, $r->id_student);
+        }
+        $data = DB::table('users as u')
+            ->select('s.id', 's.id_user', 'u.name', 'u.email', 'u.phone', 's.mssv', 's.birthday', 's.class', 'u.status')
+            ->join('students as s', 's.id_user', 'u.id')
+            ->whereNotIn('s.id', $arr)
+            ->get();
         return $data;
     }
 
@@ -76,7 +88,7 @@ class UserController extends Controller
 
         $student->save();
 
-        return 1;
+        return $student;
     }
 
     public function update(Request $request, $id)
