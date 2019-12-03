@@ -152,4 +152,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['prefix' => 'user'], function () use ($router) {
         $router->post('/login', ['uses' => 'Auth\AuthController@login']);
     });
+
+    // file đính kèm
+    $router->group(['prefix' => 'file'], function () use ($router) {
+        $router->get('/', ['uses' => 'File\FileController@show']);
+        $router->get('/{id:[0-9]+}', ['uses' => 'File\FileController@showOne']);
+        $router->post('/upload', ['uses' => 'File\FileController@doUpload']);
+        $router->get('/download/{id:[0-9]+}', ['uses' => 'File\FileController@doDownload']);
+    });
 });
