@@ -1,18 +1,27 @@
 <template>
 <div class="content">
     <div class="row mb-3">
-        <div class="col-sm-12 col-md-6">
-            <div id="sampleTable_length" class="dataTables_length">
-                <!-- search -->
-                <label>
-                    Tìm kiếm:
-                    <input style="display: inline-block;width: 100%;box-shadow: none;" placeholder aria-controls="sampleTable" class="form-control form-control-sm" />
-                </label>
-                <!-- end search -->
-            </div>
+        <div class="col-sm-12 col-md-8 dataTables_length">
+            <!-- <div class="row"> -->
+            <!-- <div class="col-md-6">
+                    <label>
+                        Tìm kiếm:
+                        <input style="display: inline-block;width: 100%;box-shadow: none;" placeholder aria-controls="sampleTable" class="form-control form-control-sm" />
+                    </label>
+                </div> -->
+            <!-- end search -->
+            <!-- <div class="col-md-6"> -->
+            <label>Bộ môn
+                <select v-model="insert_reg.id_subject" @change="changeOptionSubject" style="width:100%" placeholder aria-controls="sampleTable" class="form-control form-control-sm">
+                    <option v-for="(item,index) in option_subject" :value="item.id" :key="index">{{item.name}}</option>
+                </select>
+            </label>
+            <!-- </div> -->
+
+            <!-- </div> -->
         </div>
 
-        <div class="col-sm-12 col-md-6">
+        <div class="col-sm-12 col-md-4">
             <div id="sampleTable_filter" class="dataTables_filter">
                 <!-- btn modal -->
                 <b-button-group size="sm">
@@ -154,9 +163,11 @@ export default {
     data() {
         return {
             id: this.$route.params.id,
+            option_subject: [],
             option_student: [],
             reg: [],
             insert_reg: {
+                id_subject: null,
                 id_student: null,
                 id_internship_time: this.$route.params.id,
                 total_point: 0
@@ -173,6 +184,9 @@ export default {
         }
     },
     methods: {
+        changeOptionSubject() {
+            this.getAllDataStudentReg();
+        },
         hide_modal_reg() {
             this.$refs['modal-update-reg'].hide();
         },
@@ -261,15 +275,15 @@ export default {
             this.$http.post("api/student/reg", this.insert_reg).then(
                 response => {
                     this.$noty.success("Thành công :)");
-                    this.insert_reg = {
-                        id_student: null,
-                        id_internship_time: this.$route.params.id,
-                        total_point: 0
-                    };
+                    this.insert_reg.id_student = null;
+                    this.insert_reg.id_internship_time = this.$route.params.id;
+                    this.insert_reg.total_point = 0;
                     this.getAllDataStudentReg(); //Load datatable
 
                 },
                 response => {
+                    console.log(this.insert_reg);
+
                     // echo validate server
                     if (response.body.id_student !== undefined)
                         this.$noty.error(response.body.id_student);
@@ -282,8 +296,9 @@ export default {
         },
         getAllDataStudentReg() {
             // lấy tất cả sinh viên đã đăng ký thực tập
-            this.$http.get("api/student/reg/" + this.$route.params.id).then(
+            this.$http.get("api/student/reg/" + this.$route.params.id + "/" + this.insert_reg.id_subject).then(
                 response => {
+
                     this.reg = response.body;
                 }
             );
@@ -296,7 +311,14 @@ export default {
         }
     },
     created() {
-        this.getAllDataStudentReg();
+        //Lấy thông tin bộ môn
+        this.$http.get("api/subject").then(
+            response => {
+                this.insert_reg.id_subject = response.body[0].id;
+                this.option_subject = response.body;
+                this.getAllDataStudentReg();
+            }
+        );
     }
 };
 </script>

@@ -16,6 +16,7 @@ class CreateStudentRegTable extends Migration
         Schema::create('student_reg', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('id_student');
+            $table->integer('id_subject');
             $table->integer('id_internship_time');
             $table->integer('total_point')->default(0);
             $table->timestamps();

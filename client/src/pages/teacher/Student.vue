@@ -9,7 +9,7 @@
                     Quản lý sinh viên
                     <a href="#" class="btn btn-add" title="Thêm mới" @click="showadd()">+</a>
                     <vue-excel-xlsx :data="student" :columns="columns" :filename="'student'" :sheetname="'sheetname'" class="btn-delete" title="Tải xuống Execl">
-                        <i  class="fa fa-download" aria-hidden="true"></i>
+                        <i class="fa fa-download" aria-hidden="true"></i>
                     </vue-excel-xlsx>
                 </h4>
                 <p class="card-category">Xem thông tin, thêm, sửa, xóa sinh viên</p>
@@ -23,6 +23,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="(v,index) in student" :key="index">
+                                <td>{{index+1}}</td>
                                 <td>{{v.mssv}}</td>
                                 <td>{{v.name}}</td>
                                 <td>{{v.birthday}}</td>
@@ -32,10 +33,10 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <a  title="Cập nhật" @click="getOne(v.id),showUpdate()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                            <a title="Cập nhật" @click="getOne(v.id),showUpdate()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                                         </div>
                                         <div class="col-md-6">
-                                            <a  title="Xóa" @click="delData(v.id)"><i style="color:red;" class="fa fa-trash" aria-hidden="true"></i></a>
+                                            <a title="Xóa" @click="delData(v.id)"><i style="color:red;" class="fa fa-trash" aria-hidden="true"></i></a>
                                         </div>
                                     </div>
 
@@ -47,7 +48,6 @@
                     <hr />
                 </div>
                 <br />
-
                 <br />
             </div>
 
@@ -63,13 +63,11 @@
                                 <!--ma sinh vien-->
                                 <div class="col-md-5">
                                     <p class="mg-top-10">Mã sinh viên:</p>
-                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.user.mssv.$model" :class="{
-                    'is-invalid': $v.user.mssv.$error, 'is-valid':!$v.user.mssv.$invalid }" />
+                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.user.mssv.$model" :class="{'is-invalid': $v.user.mssv.$error, 'is-valid':!$v.user.mssv.$invalid }" />
                                     <div class="valid-feedback">Mã sinh viên hợp lệ!</div>
                                     <div class="invalid-feedback">
                                         <span v-if="!$v.user.mssv.required">Yêu cầu nhập Mã sinh viên!</span>
                                         <!-- <span v-if="!$v.user.mssv.isUnique">Mã sinh viên đã tồn tại!</span> -->
-
                                         <span v-if="!$v.user.mssv.minLength">
                                             Độ dài phải lớn hơn
                                             {{$v.user.mssv.$params.minLength.min}} ký tự!
@@ -83,8 +81,7 @@
                                 <!--name-->
                                 <div class="col-md-7">
                                     <p class="mg-top-10">Họ tên:</p>
-                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.user.name.$model" :class="{
-                'is-invalid': $v.user.name.$error, 'is-valid':!$v.user.name.$invalid }" />
+                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.user.name.$model" :class="{'is-invalid': $v.user.name.$error, 'is-valid':!$v.user.name.$invalid }" />
                                     <div class="valid-feedback">Họ tên hợp lệ!</div>
                                     <div class="invalid-feedback">
                                         <span v-if="!$v.user.name.required">Yêu cầu nhập thông tin họ tên!</span>
@@ -96,8 +93,7 @@
                                 <!--Ngay sinh-->
                                 <div class="col-md-4">
                                     <p class="mg-top-10">Ngày sinh::</p>
-                                    <input width="50%" type="date" class="form-control" v-model.trim="$v.user.birthday.$model" :class="{
-                    'is-invalid': $v.user.birthday.$error, 'is-valid':!$v.user.birthday.$invalid }" />
+                                    <input width="50%" type="date" class="form-control" v-model.trim="$v.user.birthday.$model" :class="{'is-invalid': $v.user.birthday.$error, 'is-valid':!$v.user.birthday.$invalid }" />
                                     <div class="valid-feedback">Ngày sinh hợp lệ!</div>
                                     <div class="invalid-feedback">
                                         <span v-if="!$v.user.birthday.required">Yêu cầu bạn nhập ngày sinh!</span>
@@ -106,8 +102,7 @@
                                 <!--phone-->
                                 <div class="col-md-4">
                                     <p class="mg-top-10">Số điện thoại:</p>
-                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.user.phone.$model" :class="{
-                     'is-invalid': $v.user.phone.$error, 'is-valid':!$v.user.phone.$invalid }" />
+                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.user.phone.$model" :class="{'is-invalid': $v.user.phone.$error, 'is-valid':!$v.user.phone.$invalid }" />
                                     <div class="valid-feedback">Số điện thoại hợp lệ!</div>
                                     <div class="invalid-feedback">
                                         <span v-if="!$v.user.phone.required">Yêu cầu bạn nhập số điện thoại!</span>
@@ -116,8 +111,7 @@
                                 <!--Lớp-->
                                 <div class="col-md-4">
                                     <p class="mg-top-10">Lớp:</p>
-                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.user.class.$model" :class="{
-                      'is-invalid': $v.user.class.$error, 'is-valid':!$v.user.class.$invalid }" />
+                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.user.class.$model" :class="{'is-invalid': $v.user.class.$error, 'is-valid':!$v.user.class.$invalid }" />
                                     <div class="valid-feedback">Lớp học hợp lệ!</div>
                                     <div class="invalid-feedback">
                                         <span v-if="!$v.user.class.required">Yêu cầu nhập thông tin lớp học!</span>
@@ -129,8 +123,7 @@
                                 <!--Email-->
                                 <div class="col-md-6">
                                     <p class="mg-top-10">Email:</p>
-                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.user.email.$model" :class="{
-                          'is-invalid': $v.user.email.$error, 'is-valid':!$v.user.email.$invalid }" />
+                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.user.email.$model" :class="{'is-invalid': $v.user.email.$error, 'is-valid':!$v.user.email.$invalid }" />
                                     <div class="valid-feedback">Email hợp lệ!</div>
                                     <div class="invalid-feedback">
                                         <span v-if="!$v.user.email.required">Yêu cầu nhập Email!</span>
@@ -140,8 +133,7 @@
                                 <!--Password-->
                                 <div class="col-md-6">
                                     <p class="mg-top-10">Mật khẩu:</p>
-                                    <input width="50%" type="password" id="password" class="form-control" v-model.trim="$v.user.password.$model" :class="{
-                          'is-invalid': $v.user.password.$error, 'is-valid':!$v.user.password.$invalid }" />
+                                    <input width="50%" type="password" id="password" class="form-control" v-model.trim="$v.user.password.$model" :class="{'is-invalid': $v.user.password.$error, 'is-valid':!$v.user.password.$invalid }" />
                                     <div class="valid-feedback">Mật khẩu hợp lệ!</div>
                                     <div class="invalid-feedback">
                                         <span v-if="!$v.user.password.required">Yêu cầu nhập Mật khẩu!</span>
@@ -161,202 +153,139 @@
                             <!--Ghi chu-->
                             <div class="row pd-right-10">
                                 <p class="mg-top-10 pd-top-10">Ghi chú:</p>
-                                <textarea rows="4" width="50%" type="text" class="form-control" v-model.trim="$v.user.note.$model" :class="{
-                    'is-invalid': $v.user.note.$error, 'is-valid':!$v.user.note.$invalid }" />
+                                <textarea rows="4" width="50%" type="text" class="form-control" v-model.trim="$v.user.note.$model" :class="{'is-invalid': $v.user.note.$error, 'is-valid':!$v.user.note.$invalid }" />
                                 <div class="valid-feedback">ghi chú có thể bỏ trống</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                            <button @click="addData()" class="btn-modal-add">Thêm mới</button>
+                    </div>
                 </div>
-                <div class="row">
+            </modal>
 
-                        <button @click="addData()" class="btn-modal-add">Thêm mới</button>
+            <modal name="modalUpdate" width="80%" height="auto" :scrollable="true">
+                <!--Input-->
+                <div class="add-modal">
+                    <h4 class="card-title">Sửa thông tin sinh viên</h4>
+                    <p class="card-category">(*) Yêu cầu thông tin chính xác</p>
+                    <hr />
+                    <div class="row" id="input">
+                        <div class="col-md-7">
+                            <div class="row">
+                                <!--ma sinh vien-->
+                                <div class="col-md-5">
+                                    <p class="mg-top-10">Mã sinh viên:</p>
+                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.userUpdate.mssv.$model"
+                                    :class="{'is-invalid': $v.userUpdate.mssv.$error, 'is-valid':!$v.userUpdate.mssv.$invalid }"/>
+                                    <div class="valid-feedback">Mã sinh viên hợp lệ!</div>
+                                    <div class="invalid-feedback">
+                                    <span v-if="!$v.userUpdate.mssv.required">Yêu cầu nhập Mã sinh viên!</span>
+                                    <!-- <span v-if="!$v.user.mssv.isUnique">Mã sinh viên đã tồn tại!</span> -->
 
+                                    <span v-if="!$v.userUpdate.mssv.minLength">
+                                        Độ dài phải lớn hơn
+                                        {{$v.userUpdate.mssv.$params.minLength.min}} ký tự!
+                                    </span>
+                                    <span v-if="!$v.userUpdate.mssv.maxLength">
+                                        Độ dài phải nhỏ hơn
+                                        {{$v.userUpdate.mssv.$params.maxLength.max}} ký tự!
+                                    </span>
+                                    </div>
+                                </div>
+                                <!--name-->
+                                <div class="col-md-7">
+                                    <p class="mg-top-10">Họ tên:</p>
+                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.userUpdate.name.$model"
+                                    :class="{'is-invalid': $v.userUpdate.name.$error, 'is-valid':!$v.userUpdate.name.$invalid }"/>
+                                    <div class="valid-feedback">Họ tên hợp lệ!</div>
+                                    <div class="invalid-feedback">
+                                        <span v-if="!$v.userUpdate.name.required">Yêu cầu nhập thông tin họ tên!</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!--Ngay sinh-->
+                                <div class="col-md-4">
+                                    <p class="mg-top-10">Ngày sinh::</p>
+                                    <input width="50%" type="date" class="form-control" v-model.trim="$v.userUpdate.birthday.$model"
+                                    :class="{'is-invalid': $v.userUpdate.birthday.$error, 'is-valid':!$v.userUpdate.birthday.$invalid }"/>
+                                    <div class="valid-feedback">Ngày sinh hợp lệ!</div>
+                                    <div class="invalid-feedback">
+                                        <span v-if="!$v.userUpdate.birthday.required">Yêu cầu bạn nhập ngày sinh!</span>
+                                    </div>
+                                </div>
+                                <!--phone-->
+                                <div class="col-md-4">
+                                    <p class="mg-top-10">Số điện thoại:</p>
+                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.userUpdate.phone.$model"
+                                    :class="{'is-invalid': $v.userUpdate.phone.$error, 'is-valid':!$v.userUpdate.phone.$invalid }"/>
+                                    <div class="valid-feedback">Số điện thoại hợp lệ!</div>
+                                    <div class="invalid-feedback">
+                                        <span v-if="!$v.userUpdate.phone.required">Yêu cầu bạn nhập số điện thoại!</span>
+                                    </div>
+                                </div>
+                                <!--Lớp-->
+                                <div class="col-md-4">
+                                    <p class="mg-top-10">Lớp:</p>
+                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.userUpdate.class.$model"
+                                    :class="{'is-invalid': $v.userUpdate.class.$error, 'is-valid':!$v.userUpdate.class.$invalid }"/>
+                                    <div class="valid-feedback">Lớp học hợp lệ!</div>
+                                    <div class="invalid-feedback">
+                                        <span v-if="!$v.userUpdate.class.required">Yêu cầu nhập thông tin lớp học!</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!--Email-->
+                                <div class="col-md-6">
+                                    <p class="mg-top-10">Email:</p>
+                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.userUpdate.email.$model"
+                                    :class="{'is-invalid': $v.userUpdate.email.$error, 'is-valid':!$v.userUpdate.email.$invalid }"/>
+                                    <div class="valid-feedback">Email hợp lệ!</div>
+                                    <div class="invalid-feedback">
+                                        <span v-if="!$v.userUpdate.email.required">Yêu cầu nhập Email!</span>
+                                        <span v-if="!$v.userUpdate.email.isUnique">Yêu cầu ... @gmail.com</span>
+                                    </div>
+                                </div>
+                                <!--Password-->
+                                <div class="col-md-6">
+                                    <p class="mg-top-10">Mật khẩu:</p>
+                                    <input width="50%" type="password" id="password" class="form-control" v-model.trim="$v.userUpdate.password.$model"
+                                    :class="{'is-invalid': $v.userUpdate.password.$error, 'is-valid':!$v.userUpdate.password.$invalid }"/>
+                                    <div class="valid-feedback">Mật khẩu hợp lệ!</div>
+                                    <div class="invalid-feedback">
+                                        <span v-if="!$v.userUpdate.password.required">Yêu cầu nhập Mật khẩu!</span>
+                                        <span v-if="!$v.userUpdate.password.minLength">
+                                            Độ dài phải lớn hơn
+                                            {{$v.userUpdate.password.$params.minLength.min}} ký tự!
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="showpassword" @click="toggleShowPassword" v-model="showpassword" />
+                                        <label class="form-check-label pd-top-10" form="showpassword">Hiện mật khẩu</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <!--Ghi chu-->
+                            <div class="row pd-right-10">
+                                <p class="mg-top-10 pd-top-10">Ghi chú:</p>
+                                <textarea rows="4" width="50%" type="text" class="form-control" v-model.trim="$v.userUpdate.note.$model"
+                                    :class="{'is-invalid': $v.userUpdate.note.$error, 'is-valid':!$v.userUpdate.note.$invalid }"/>
+                                <div class="valid-feedback">ghi chú có thể bỏ trống</div>
+                            </div>
+                            <div class="row">
+                                <button  @click="putData()" class="btn-modal-add">Cập nhật</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-              </div>
-            </div>
-
-          </div>
-        </modal>
-
-        <modal name="modalUpdate" width="80%" height="auto" :scrollable="true">
-          <!--Input-->
-          <div class="add-modal">
-            <h4 class="card-title">Sửa thông tin sinh viên</h4>
-            <p class="card-category">(*) Yêu cầu thông tin chính xác</p>
-            <hr />
-            <div class="row" id="input">
-              <div class="col-md-7">
-                <div class="row">
-                  <!--ma sinh vien-->
-                  <div class="col-md-5">
-                    <p class="mg-top-10">Mã sinh viên:</p>
-                    <input
-                      width="50%"
-                      type="text"
-                      class="form-control"
-                      v-model.trim="$v.userUpdate.mssv.$model"
-                      :class="{
-                    'is-invalid': $v.userUpdate.mssv.$error, 'is-valid':!$v.userUpdate.mssv.$invalid }"
-                    />
-                    <div class="valid-feedback">Mã sinh viên hợp lệ!</div>
-                    <div class="invalid-feedback">
-                      <span v-if="!$v.userUpdate.mssv.required">Yêu cầu nhập Mã sinh viên!</span>
-                      <!-- <span v-if="!$v.user.mssv.isUnique">Mã sinh viên đã tồn tại!</span> -->
-
-                      <span v-if="!$v.userUpdate.mssv.minLength">
-                        Độ dài phải lớn hơn
-                        {{$v.userUpdate.mssv.$params.minLength.min}} ký tự!
-                      </span>
-                      <span v-if="!$v.userUpdate.mssv.maxLength">
-                        Độ dài phải nhỏ hơn
-                        {{$v.userUpdate.mssv.$params.maxLength.max}} ký tự!
-                      </span>
-                    </div>
-                  </div>
-                  <!--name-->
-                  <div class="col-md-7">
-                    <p class="mg-top-10">Họ tên:</p>
-                    <input
-                      width="50%"
-                      type="text"
-                      class="form-control"
-                      v-model.trim="$v.userUpdate.name.$model"
-                      :class="{
-                'is-invalid': $v.userUpdate.name.$error, 'is-valid':!$v.userUpdate.name.$invalid }"
-                    />
-                    <div class="valid-feedback">Họ tên hợp lệ!</div>
-                    <div class="invalid-feedback">
-                      <span v-if="!$v.userUpdate.name.required">Yêu cầu nhập thông tin họ tên!</span>
-                    </div>
-                  </div>
-
-                </div>
-                <div class="row">
-                  <!--Ngay sinh-->
-                  <div class="col-md-4">
-                    <p class="mg-top-10">Ngày sinh::</p>
-                    <input
-                      width="50%"
-                      type="date"
-                      class="form-control"
-                      v-model.trim="$v.userUpdate.birthday.$model"
-                      :class="{
-                    'is-invalid': $v.userUpdate.birthday.$error, 'is-valid':!$v.userUpdate.birthday.$invalid }"
-                    />
-                    <div class="valid-feedback">Ngày sinh hợp lệ!</div>
-                    <div class="invalid-feedback">
-                      <span v-if="!$v.userUpdate.birthday.required">Yêu cầu bạn nhập ngày sinh!</span>
-                    </div>
-                  </div>
-                  <!--phone-->
-                  <div class="col-md-4">
-                    <p class="mg-top-10">Số điện thoại:</p>
-                    <input
-                      width="50%"
-                      type="text"
-                      class="form-control"
-                      v-model.trim="$v.userUpdate.phone.$model"
-                      :class="{
-                    'is-invalid': $v.userUpdate.phone.$error, 'is-valid':!$v.userUpdate.phone.$invalid }"
-                    />
-                    <div class="valid-feedback">Số điện thoại hợp lệ!</div>
-                    <div class="invalid-feedback">
-                      <span v-if="!$v.userUpdate.phone.required">Yêu cầu bạn nhập số điện thoại!</span>
-                    </div>
-                  </div>
-                  <!--Lớp-->
-                  <div class="col-md-4">
-                    <p class="mg-top-10">Lớp:</p>
-                    <input
-                      width="50%"
-                      type="text"
-                      class="form-control"
-                      v-model.trim="$v.userUpdate.class.$model"
-                      :class="{
-                    'is-invalid': $v.userUpdate.class.$error, 'is-valid':!$v.userUpdate.class.$invalid }"
-                    />
-                    <div class="valid-feedback">Lớp học hợp lệ!</div>
-                    <div class="invalid-feedback">
-                      <span v-if="!$v.userUpdate.class.required">Yêu cầu nhập thông tin lớp học!</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <!--Email-->
-                  <div class="col-md-6">
-                    <p class="mg-top-10">Email:</p>
-                    <input
-                      width="50%"
-                      type="text"
-                      class="form-control"
-                      v-model.trim="$v.userUpdate.email.$model"
-                      :class="{
-                          'is-invalid': $v.userUpdate.email.$error, 'is-valid':!$v.userUpdate.email.$invalid }"
-                    />
-                    <div class="valid-feedback">Email hợp lệ!</div>
-                    <div class="invalid-feedback">
-                      <span v-if="!$v.userUpdate.email.required">Yêu cầu nhập Email!</span>
-                      <span v-if="!$v.userUpdate.email.isUnique">Yêu cầu ... @gmail.com</span>
-                    </div>
-                  </div>
-                  <!--Password-->
-                  <div class="col-md-6">
-                    <p class="mg-top-10">Mật khẩu:</p>
-                    <input
-                      width="50%"
-                      type="password"
-                      id="password"
-                      class="form-control"
-                      v-model.trim="$v.userUpdate.password.$model"
-                      :class="{
-                          'is-invalid': $v.userUpdate.password.$error, 'is-valid':!$v.userUpdate.password.$invalid }"
-                    />
-                    <div class="valid-feedback">Mật khẩu hợp lệ!</div>
-                    <div class="invalid-feedback">
-                      <span v-if="!$v.userUpdate.password.required">Yêu cầu nhập Mật khẩu!</span>
-                      <span v-if="!$v.userUpdate.password.minLength">
-                        Độ dài phải lớn hơn
-                        {{$v.userUpdate.password.$params.minLength.min}} ký tự!
-                      </span>
-                    </div>
-                    <div>
-                      <input
-                        type="checkbox"
-                        id="showpassword"
-                        @click="toggleShowPassword"
-                        v-model="showpassword"
-                      />
-                      <label class="form-check-label pd-top-10" form="showpassword">Hiện mật khẩu</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-5">
-                <!--Ghi chu-->
-                <div class="row pd-right-10">
-                  <p class="mg-top-10 pd-top-10">Ghi chú:</p>
-                  <textarea
-                    rows="4"
-                    width="50%"
-                    type="text"
-                    class="form-control"
-                    v-model.trim="$v.userUpdate.note.$model"
-                    :class="{
-                  'is-invalid': $v.userUpdate.note.$error, 'is-valid':!$v.userUpdate.note.$invalid }"
-                  />
-                  <div class="valid-feedback">ghi chú có thể bỏ trống</div>
-                </div>
-                <div class="row">
-                  <button  @click="putData()" class="btn-modal-add">Cập nhật</button>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </modal>
-      </div>
+            </modal>
+        </div>
     </div>
-  </div>
+</div>
 </template>
 
 <script>
@@ -374,6 +303,7 @@ import datatables from "datatables";
 import $ from "jquery";
 
 const tableColumns = [
+    "STT",
     "Mã sv",
     "Họ tên",
     "Ngày sinh",
@@ -390,8 +320,10 @@ export default {
     },
     data() {
         return {
-            columns: [
-                {
+            columns: [{
+                    label: "STT",
+                    field: "STT",
+                }, {
                     label: "mssv",
                     field: "mssv",
                 },
@@ -399,12 +331,12 @@ export default {
                     label: "name",
                     field: "name",
 
-                },                               
+                },
                 {
                     label: "email",
                     field: "email",
                 },
-                 
+
                 {
                     label: "birthday",
                     field: "birthday",
@@ -568,7 +500,7 @@ export default {
             if (confirm("Bạn có chắc chắn muốn xóa?"))
                 this.$http.delete("api/student/" + id).then(
                     response => {
-                        
+
                         this.getData();
                         this.$noty.success("Đã xóa thành công một sinh viên!");
                     },
@@ -583,12 +515,14 @@ export default {
             this.$http.post("api/student", this.user).then(
                 response => {
                     //   console.log(response.body);
-                    
+
                     this.getData();
                     this.$noty.success("Đã thêm một sinh viên thành công!");
 
                 },
                 response => {
+                    console.log(response);
+
                     if (response.body.mssv !== undefined)
                         this.$noty.error(response.body.mssv);
                     else if (response.body.name !== undefined)
@@ -643,7 +577,7 @@ export default {
     //end methor
     //start getall table
     created() {
-       this.getData();
+        this.getData();
     }
 };
 </script>

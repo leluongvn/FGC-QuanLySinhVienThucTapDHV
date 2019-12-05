@@ -23,7 +23,7 @@ class isAdmin
     {
         foreach($request->user()->roles as $roles){
             $role = $roles->pivot->first()->id_role;
-        }
+        } 
         if ( $role != IS_ADMIN) {
             return response('k phai la admin .', 403);
         }

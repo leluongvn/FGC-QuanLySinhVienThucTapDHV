@@ -31,7 +31,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="(v,index) in topic" :key="index">
-                                <td>{{index}}</td>
+                                <td>{{index+1}}</td>
                                 <td>{{v.name}}</td>
                                 <td>{{v.content}}</td>
                                 <td>{{v.status}}</td>
@@ -55,7 +55,6 @@
                     <hr />
                 </div>
                 <br />
-
                 <br />
             </div>
 
@@ -71,8 +70,7 @@
                                 <!--name-->
                                 <div class="col-md-12">
                                     <p class="mg-top-10">Tên đề tài:</p>
-                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.user.name.$model" :class="{
-                'is-invalid': $v.user.name.$error, 'is-valid':!$v.user.name.$invalid }" />
+                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.user.name.$model" :class="{'is-invalid': $v.user.name.$error, 'is-valid':!$v.user.name.$invalid }" />
                                     <div class="valid-feedback">Tên hợp lệ!</div>
                                     <div class="invalid-feedback">
                                         <span v-if="!$v.user.name.required">Yêu cầu nhập thông tin Tên đề tài!</span>
@@ -83,119 +81,92 @@
                                 <!--Trạng thái-->
                                 <div class="col-md-6">
                                     <p class="mg-top-10">Trạng thái:</p>
-                                    <select size="2" class="form-control" v-model.trim="$v.user.status.$model" :class="{
-                    'is-invalid': $v.user.status.$error, 'is-valid':!$v.user.status.$invalid }">
+                                    <select size="2" class="form-control" v-model.trim="$v.user.status.$model" :class="{'is-invalid': $v.user.status.$error, 'is-valid':!$v.user.status.$invalid }">
                                         <option value="0">Chưa phê duyệt</option>
                                         <option value="1">Đã được phê duyệt</option>
                                     </select>
-
                                     <div class="valid-feedback">Bộ môn hợp lệ!</div>
                                     <div class="invalid-feedback">
                                         <span v-if="!$v.user.status.required">Yêu cầu bạn nhập Bộ môn!</span>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <div class="col-md-5">
                             <!--Noi dung-->
                             <div class="row pd-right-10">
                                 <p class="mg-top-10 pd-top-10">Nội dung:</p>
-                                <textarea rows="4" width="50%" type="text" class="form-control" v-model.trim="$v.user.content.$model" :class="{
-                    'is-invalid': $v.user.content.$error, 'is-valid':!$v.user.content.$invalid }" />
+                                <textarea rows="4" width="50%" type="text" class="form-control" v-model.trim="$v.user.content.$model" :class="{'is-invalid': $v.user.content.$error, 'is-valid':!$v.user.content.$invalid }" />
                                 <div class="valid-feedback">Nội dung hợp lệ!</div>
-                  <div class="invalid-feedback">
-                    <span v-if="!$v.user.content.required">Yêu cầu bạn nhập!</span>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <button @click="addData()" class="btn-modal-add">Thêm mới</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </modal>
-
-        <modal name="modalUpdate" width="80%" height="auto" :scrollable="true">
-          <!--Input-->
-          <div class="add-modal">
-            <h4 class="card-title">Nhập thông tin đề tài</h4>
-            <p class="card-category">(*) Yêu cầu thông tin chính xác</p>
-            <hr />
-            <div class="row" id="input">
-              <div class="col-md-7">
-                <div class="row">
-                  <!--name-->
-                  <div class="col-md-12">
-                    <p class="mg-top-10">Tên đề tài:</p>
-                    <input
-                      width="50%"
-                      type="text"
-                      class="form-control"
-                      v-model.trim="$v.userUpdate.name.$model"
-                      :class="{
-                'is-invalid': $v.userUpdate.name.$error, 'is-valid':!$v.userUpdate.name.$invalid }"
-                    />
-                    <div class="valid-feedback">Tên hợp lệ!</div>
-                    <div class="invalid-feedback">
-                      <span v-if="!$v.userUpdate.name.required">Yêu cầu nhập thông tin Tên đề tài!</span>
+                                <div class="invalid-feedback">
+                                    <span v-if="!$v.user.content.required">Yêu cầu bạn nhập!</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <button @click="addData()" class="btn-modal-add">Thêm mới</button>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-                <div class="row">
-                  <!--Trạng thái-->
-                  <div class="col-md-6">
-                    <p class="mg-top-10">Trạng thái:</p>
-                    <select
-                      size="2"
-                      class="form-control"
-                      v-model.trim="$v.userUpdate.status.$model"
-                      :class="{
-                    'is-invalid': $v.userUpdate.status.$error, 'is-valid':!$v.userUpdate.status.$invalid }"
-                    >
-                      <option value="0">Chưa phê duyệt</option>
-                      <option value="1">Đã được phê duyệt</option>
-                    </select>
+            </modal>
 
-                    <div class="valid-feedback">Bộ môn hợp lệ!</div>
-                    <div class="invalid-feedback">
-                      <span v-if="!$v.userUpdate.status.required">Yêu cầu bạn nhập Bộ môn!</span>
+            <modal name="modalUpdate" width="80%" height="auto" :scrollable="true">
+                <!--Input-->
+                <div class="add-modal">
+                    <h4 class="card-title">Nhập thông tin đề tài</h4>
+                    <p class="card-category">(*) Yêu cầu thông tin chính xác</p>
+                    <hr />
+                    <div class="row" id="input">
+                        <div class="col-md-7">
+                            <div class="row">
+                                <!--name-->
+                                <div class="col-md-12">
+                                    <p class="mg-top-10">Tên đề tài:</p>
+                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.userUpdate.name.$model"
+                                    :class="{'is-invalid': $v.userUpdate.name.$error, 'is-valid':!$v.userUpdate.name.$invalid }"/>
+                                    <div class="valid-feedback">Tên hợp lệ!</div>
+                                    <div class="invalid-feedback">
+                                        <span v-if="!$v.userUpdate.name.required">Yêu cầu nhập thông tin Tên đề tài!</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!--Trạng thái-->
+                                <div class="col-md-6">
+                                    <p class="mg-top-10">Trạng thái:</p>
+                                    <select size="2" class="form-control" v-model.trim="$v.userUpdate.status.$model"
+                                    :class="{'is-invalid': $v.userUpdate.status.$error, 'is-valid':!$v.userUpdate.status.$invalid }">
+                                    <option value="0">Chưa phê duyệt</option>
+                                    <option value="1">Đã được phê duyệt</option>
+                                    </select>
+                                    <div class="valid-feedback">Bộ môn hợp lệ!</div>
+                                    <div class="invalid-feedback">
+                                        <span v-if="!$v.userUpdate.status.required">Yêu cầu bạn nhập Bộ môn!</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <!--Noi dung-->
+                            <div class="row pd-right-10">
+                                <p class="mg-top-10 pd-top-10">Nội dung:</p>
+                                <textarea rows="4" width="50%" type="text" class="form-control" v-model.trim="$v.userUpdate.content.$model"
+                                    :class="{'is-invalid': $v.userUpdate.content.$error, 'is-valid':!$v.userUpdate.content.$invalid }"/>
+                                <div class="valid-feedback">Nội dung hợp lệ!</div>
+                                <div class="invalid-feedback">
+                                    <span v-if="!$v.userUpdate.content.required">Yêu cầu bạn nhập!</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <button @click="putData()" class="btn-modal-add">Cập nhật</button>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-
-              </div>
-              <div class="col-md-5">
-                <!--Noi dung-->
-                <div class="row pd-right-10">
-                  <p class="mg-top-10 pd-top-10">Nội dung:</p>
-                  <textarea
-                    rows="4"
-                    width="50%"
-                    type="text"
-                    class="form-control"
-                    v-model.trim="$v.userUpdate.content.$model"
-                    :class="{
-                    'is-invalid': $v.userUpdate.content.$error, 'is-valid':!$v.userUpdate.content.$invalid }"
-                  />
-                  <div class="valid-feedback">Nội dung hợp lệ!</div>
-                  <div class="invalid-feedback">
-                    <span v-if="!$v.userUpdate.content.required">Yêu cầu bạn nhập!</span>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <button @click="putData()" class="btn-modal-add">Cập nhật</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </modal>
-
-      </div>
+            </modal>
+        </div>
     </div>
-  </div>
+</div>
 </template>
 
 <script>
@@ -229,13 +200,13 @@ export default {
         return {
             type: [],
             type_id: 1,
-             columns: [
-               
+            columns: [
+
                 {
                     label: "name",
                     field: "name",
                 },
-                
+
                 {
                     label: "content",
                     field: "content",
@@ -244,8 +215,7 @@ export default {
                     label: "status",
                     field: "status",
                 },
-                
-                
+
             ],
             table1: {
                 columns: [...tableColumns]
@@ -413,7 +383,7 @@ export default {
                 response => {
                     // get body data
                     this.topic = response.body;
-                    
+
                     this.mytable();
                 }
             );

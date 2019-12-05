@@ -18,7 +18,8 @@
             </li>
             <li>
                 <router-link active-class="active" class="app-menu__item" to="/teacher/create">
-                    <i class="app-menu__icon fa fa-laptop"></i>Hồ sơ thực tập
+                    <i class="app-menu__icon fa fa-laptop"></i>
+                    <span class="app-menu__label">Hồ sơ thực tập</span>
                 </router-link>
             </li>
             <nav-link :title="title.tctt">

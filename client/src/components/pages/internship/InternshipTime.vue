@@ -231,8 +231,8 @@ export default {
             this.$http
                 .get("api/internship_time/one/" + id)
                 .then(response => {
-                    // console.log(response.body);
-                    this.update_time = response.body;
+                    console.log(response.body);
+                    this.update_time = response.body[0];
                 });
         },
         update(id) {
@@ -267,8 +267,6 @@ export default {
                     };
                 },
                 response => {
-                    // console.log(response.bodyText);
-
                     this.$noty.error("Thất bại :(");
                 }
             );
@@ -294,10 +292,11 @@ export default {
                 },
                 response => {}
             );
+            this.init_time.id_internship_type = this.$route.params.id;
         }
     },
     created() {
-        //danh thời gina thực tập
+        //danh thời gian thực tập
         this.$http.get("api/internship_time/" + this.$route.params.id).then(
             response => {
                 // console.log(response.body);

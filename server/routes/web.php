@@ -27,7 +27,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     // code phần người hướng dẫn
     $router->group(['prefix' => 'instructor'], function () use ($router) {
-        $router->get('/', 'Instructor\InstructorController@getAll');
+        $router->get('/{id}/{time}/{subject}', 'Instructor\InstructorController@getAll');
         $router->get('/{id}', 'Instructor\InstructorController@getOne');
         $router->post('/', 'Instructor\InstructorController@create');
         $router->put('/{id}', 'Instructor\InstructorController@update');
@@ -88,7 +88,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->put('/{id}', 'Company\CompanyRegController@update');
         $router->delete('/{id}', 'Company\CompanyRegController@delete');
         $router->get('/search/company/reg', 'Company\CompanyRegController@search');
-
     });
 
     //đăng ký sinh viên
@@ -100,12 +99,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->delete('{id}', 'Student\UserController@delete');
 
         // sinh vien dang ky thuc tap lọc qua internship_time
-        $router->get('reg/{id}', 'Student\StudentController@getAll');
+        $router->get('reg/{time}/{subject}', 'Student\StudentController@getAll');
+        $router->get('not-instructor/{time}/{subject}', 'Student\StudentController@getNotInstructor');
         $router->get('reg-one/{id}', 'Student\StudentController@getOne');
         $router->get('not-reg/{id}', 'Student\UserController@getNotReg');
         $router->post('reg', 'Student\StudentController@create');
         $router->put('reg/{id}', 'Student\StudentController@update');
         $router->delete('reg/{id}', 'Student\StudentController@delete');
+
 
     });
 

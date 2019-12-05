@@ -174,20 +174,24 @@ export default {
             );
         },
         insertCompany() {
-            //Nhập thông tin doanh nghiệp có thể đăng ký
-            this.$http.post("api/companyreg", this.postCreateCompany).then(
-                response => {
-                    this.$noty.success("Thành công :)");
-                    this.postCreateCompany.id_company = null;
-                    this.getAllCompanyReg();
-                },
-                response => {
-                    if (response.body.limit !== undefined)
-                        this.$noty.error(response.body.limit);
-                    else
-                        this.$noty.error("Thất bại :(");
-                }
-            );
+            if (this.postCreateCompany.id_company == null || this.postCreateCompany.id_company == 'null')
+                this.$noty.error("Thất bại, Mời chon doanh nghiệp :(");
+            else {
+                //Nhập thông tin doanh nghiệp có thể đăng ký
+                this.$http.post("api/companyreg", this.postCreateCompany).then(
+                    response => {
+                        this.$noty.success("Thành công :)");
+                        this.postCreateCompany.id_company = null;
+                        this.getAllCompanyReg();
+                    },
+                    response => {
+                        if (response.body.limit !== undefined)
+                            this.$noty.error(response.body.limit);
+                        else
+                            this.$noty.error("Thất bại :(");
+                    }
+                );
+            }
         },
         getAllCompanyReg() {
             // lấy thông tin công ty đăng ký

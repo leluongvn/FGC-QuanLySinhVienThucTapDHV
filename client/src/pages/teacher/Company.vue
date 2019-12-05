@@ -24,7 +24,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="(v,index) in company" :key="index">
-                                <td>{{index}}</td>
+                                <td>{{index+1}}</td>
                                 <td>{{v.name}}</td>
                                 <td>{{v.email}}</td>
                                 <td>{{v.phone}}</td>
@@ -65,7 +65,7 @@
                             <div class="row">
                                 <!--name-->
                                 <div class="col-md-12">
-                                    <p class="mg-top-10">Họ tên:</p>
+                                    <p class="mg-top-10">Tên doanh nghiệp:</p>
                                     <input width="50%" type="text" class="form-control" v-model.trim="$v.userUpdate.name.$model" :class="{'is-invalid': $v.userUpdate.name.$error, 'is-valid':!$v.userUpdate.name.$invalid }" />
                                     <div class="valid-feedback">Họ tên hợp lệ!</div>
                                     <div class="invalid-feedback">
@@ -134,190 +134,132 @@
                                 <p class="mg-top-10 pd-top-10">Địa chỉ:</p>
                                 <textarea rows="4" width="50%" type="text" class="form-control" v-model.trim="$v.userUpdate.address.$model" :class="{'is-invalid': $v.userUpdate.address.$error, 'is-valid':!$v.userUpdate.address.$invalid }" />
                                 <div class="valid-feedback">Địa chỉ hợp lệ!</div>
-                  <div class="invalid-feedback">
-                    <span v-if="!$v.userUpdate.address.required">Yêu cầu bạn nhập địa chỉ!</span>
-                  </div>
-                </div>
-                <!--Gioi thieu-->
-                <div class="row pd-right-10">
-                  <p class="mg-top-10 pd-top-10">Giới thiệu:</p>
-                  <textarea
-                    rows="4"
-                    width="50%"
-                    type="text"
-                    class="form-control"
-                    v-model.trim="$v.userUpdate.introduce.$model"
-                    :class="{
-                    'is-invalid': $v.userUpdate.introduce.$error, 'is-valid':!$v.userUpdate.introduce.$invalid }"
-                  />
-                  <div class="valid-feedback">Giới thiệu có thể bỏ trống</div>
-                </div>
+                                <div class="invalid-feedback">
+                                    <span v-if="!$v.userUpdate.address.required">Yêu cầu bạn nhập địa chỉ!</span>
+                                </div>
+                            </div>
+                            <!--Gioi thieu-->
+                            <div class="row pd-right-10">
+                                <p class="mg-top-10 pd-top-10">Giới thiệu:</p>
+                                <textarea rows="4" width="50%" type="text" class="form-control" v-model.trim="$v.userUpdate.introduce.$model"
+                                    :class="{'is-invalid': $v.userUpdate.introduce.$error, 'is-valid':!$v.userUpdate.introduce.$invalid }" />
+                                <div class="valid-feedback">Giới thiệu có thể bỏ trống</div>
+                            </div>
 
-                <div class="row">
-                  <button @click="putData()" class="btn-modal-add">Cập nhật</button>
+                            <div class="row">
+                                <button @click="putData()" class="btn-modal-add">Cập nhật</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </modal>
+            </modal>
+            <modal name="modalAdd" width="80%" height="auto" :scrollable="true">
+                <!--Input-->
+                <div class="add-modal">
+                    <h4 class="card-title">Nhập thông tin doanh nghiệp</h4>
+                    <p class="card-category">(*) Yêu cầu thông tin chính xác</p>
+                    <hr />
+                    <div class="row" id="input">
+                        <div class="col-md-7">
+                            <div class="row">
+                            <!--name-->
+                                <div class="col-md-12">
+                                    <p class="mg-top-10">Tên doanh nghiệp:</p>
+                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.user.name.$model"
+                                    :class="{'is-invalid': $v.user.name.$error, 'is-valid':!$v.user.name.$invalid }"/>
+                                    <div class="valid-feedback">Họ tên hợp lệ!</div>
+                                    <div class="invalid-feedback">
+                                        <span v-if="!$v.user.name.required">Yêu cầu nhập thông tin họ tên!</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!--Trạng thái-->
+                                <div class="col-md-6">
+                                    <p class="mg-top-10">Trạng thái:</p>
+                                    <select size="2" class="form-control" v-model.trim="$v.user.status.$model" 
+                                    :class="{'is-invalid': $v.user.status.$error, 'is-valid':!$v.user.status.$invalid }" >
+                                        <option value="0">Chưa phê duyệt</option>
+                                        <option value="1">Đã được phê duyệt</option>
+                                    </select>
 
-        <modal name="modalAdd" width="80%" height="auto" :scrollable="true">
-          <!--Input-->
-          <div class="add-modal">
-            <h4 class="card-title">Nhập thông tin doanh nghiệp</h4>
-            <p class="card-category">(*) Yêu cầu thông tin chính xác</p>
-            <hr />
-            <div class="row" id="input">
-              <div class="col-md-7">
-                <div class="row">
-                  <!--name-->
-                  <div class="col-md-12">
-                    <p class="mg-top-10">Họ tên:</p>
-                    <input
-                      width="50%"
-                      type="text"
-                      class="form-control"
-                      v-model.trim="$v.user.name.$model"
-                      :class="{
-                'is-invalid': $v.user.name.$error, 'is-valid':!$v.user.name.$invalid }"
-                    />
-                    <div class="valid-feedback">Họ tên hợp lệ!</div>
-                    <div class="invalid-feedback">
-                      <span v-if="!$v.user.name.required">Yêu cầu nhập thông tin họ tên!</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <!--Trạng thái-->
-                  <div class="col-md-6">
-                    <p class="mg-top-10">Trạng thái:</p>
-                    <select
-                      size="2"
-                      class="form-control"
-                      v-model.trim="$v.user.status.$model"
-                      :class="{
-                    'is-invalid': $v.user.status.$error, 'is-valid':!$v.user.status.$invalid }"
-                    >
-                      <option value="0">Chưa phê duyệt</option>
-                      <option value="1">Đã được phê duyệt</option>
-                    </select>
+                                    <div class="valid-feedback">Bộ môn hợp lệ!</div>
+                                    <div class="invalid-feedback">
+                                    <span v-if="!$v.user.status.required">Yêu cầu bạn nhập Bộ môn!</span>
+                                    </div>
+                                </div>
+                                <!--phone-->
+                                <div class="col-md-6">
+                                    <p class="mg-top-10">Số điện thoại:</p>
+                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.user.phone.$model"
+                                    :class="{'is-invalid': $v.user.phone.$error, 'is-valid':!$v.user.phone.$invalid }"/>
+                                    <div class="valid-feedback">Số điện thoại hợp lệ!</div>
+                                    <div class="invalid-feedback">
+                                        <span v-if="!$v.user.phone.required">Yêu cầu bạn nhập số điện thoại!</span>
+                                    </div>
+                                </div>
+                            </div>
 
-                    <div class="valid-feedback">Bộ môn hợp lệ!</div>
-                    <div class="invalid-feedback">
-                      <span v-if="!$v.user.status.required">Yêu cầu bạn nhập Bộ môn!</span>
+                            <div class="row">
+                                <!--Email-->
+                                <div class="col-md-6">
+                                    <p class="mg-top-10">Email:</p>
+                                    <input width="50%" type="text" class="form-control" v-model.trim="$v.user.email.$model"
+                                    :class="{'is-invalid': $v.user.email.$error, 'is-valid':!$v.user.email.$invalid }" />
+                                    <div class="valid-feedback">Email hợp lệ!</div>
+                                    <div class="invalid-feedback">
+                                        <span v-if="!$v.user.email.required">Yêu cầu nhập Email!</span>
+                                        <span v-if="!$v.user.email.isUnique">Yêu cầu ... @gmail.com</span>
+                                    </div>
+                                </div>
+                                <!--Password-->
+                                <div class="col-md-6">
+                                    <p class="mg-top-10">Mật khẩu:</p>
+                                    <input width="50%" type="password" id="password" class="form-control" v-model.trim="$v.user.password.$model"
+                                    :class="{'is-invalid': $v.user.password.$error, 'is-valid':!$v.user.password.$invalid }"/>
+                                    <div class="valid-feedback">Mật khẩu hợp lệ!</div>
+                                    <div class="invalid-feedback">
+                                        <span v-if="!$v.user.password.required">Yêu cầu nhập Mật khẩu!</span>
+                                        <span v-if="!$v.user.password.minLength">
+                                            Độ dài phải lớn hơn
+                                            {{$v.user.password.$params.minLength.min}} ký tự!
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="showpassword" @click="toggleShowPassword" v-model="showpassword"/>
+                                        <label class="form-check-label pd-top-10" form="showpassword">Hiện mật khẩu</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <!--Địa chỉ-->
+                            <div class="row pd-right-10">
+                                <p class="mg-top-10 pd-top-10">Địa chỉ:</p>
+                                <textarea rows="4" width="50%" type="text" class="form-control" v-model.trim="$v.user.address.$model"
+                                    :class="{'is-invalid': $v.user.address.$error, 'is-valid':!$v.user.address.$invalid }"/>
+                                <div class="valid-feedback">Địa chỉ hợp lệ!</div>
+                                <div class="invalid-feedback">
+                                    <span v-if="!$v.user.address.required">Yêu cầu bạn nhập địa chỉ!</span>
+                                </div>
+                            </div>
+                            <!--Gioi thieu-->
+                            <div class="row pd-right-10">
+                                <p class="mg-top-10 pd-top-10">Giới thiệu:</p>
+                                <textarea rows="4" width="50%" type="text" class="form-control" v-model.trim="$v.user.introduce.$model"
+                                    :class="{'is-invalid': $v.user.introduce.$error, 'is-valid':!$v.user.introduce.$invalid }" />
+                                <div class="valid-feedback">Giới thiệu có thể bỏ trống</div>
+                            </div>
+                            <div class="row">
+                                <button @click="addData()" class="btn-modal-add">Thêm mới</button>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                  <!--phone-->
-                  <div class="col-md-6">
-                    <p class="mg-top-10">Số điện thoại:</p>
-                    <input
-                      width="50%"
-                      type="text"
-                      class="form-control"
-                      v-model.trim="$v.user.phone.$model"
-                      :class="{
-                     'is-invalid': $v.user.phone.$error, 'is-valid':!$v.user.phone.$invalid }"
-                    />
-                    <div class="valid-feedback">Số điện thoại hợp lệ!</div>
-                    <div class="invalid-feedback">
-                      <span v-if="!$v.user.phone.required">Yêu cầu bạn nhập số điện thoại!</span>
-                    </div>
-                  </div>
                 </div>
-
-                <div class="row">
-                  <!--Email-->
-                  <div class="col-md-6">
-                    <p class="mg-top-10">Email:</p>
-                    <input
-                      width="50%"
-                      type="text"
-                      class="form-control"
-                      v-model.trim="$v.user.email.$model"
-                      :class="{
-                          'is-invalid': $v.user.email.$error, 'is-valid':!$v.user.email.$invalid }"
-                    />
-                    <div class="valid-feedback">Email hợp lệ!</div>
-                    <div class="invalid-feedback">
-                      <span v-if="!$v.user.email.required">Yêu cầu nhập Email!</span>
-                      <span v-if="!$v.user.email.isUnique">Yêu cầu ... @gmail.com</span>
-                    </div>
-                  </div>
-                  <!--Password-->
-                  <div class="col-md-6">
-                    <p class="mg-top-10">Mật khẩu:</p>
-                    <input
-                      width="50%"
-                      type="password"
-                      id="password"
-                      class="form-control"
-                      v-model.trim="$v.user.password.$model"
-                      :class="{
-                          'is-invalid': $v.user.password.$error, 'is-valid':!$v.user.password.$invalid }"
-                    />
-                    <div class="valid-feedback">Mật khẩu hợp lệ!</div>
-                    <div class="invalid-feedback">
-                      <span v-if="!$v.user.password.required">Yêu cầu nhập Mật khẩu!</span>
-                      <span v-if="!$v.user.password.minLength">
-                        Độ dài phải lớn hơn
-                        {{$v.user.password.$params.minLength.min}} ký tự!
-                      </span>
-                    </div>
-                    <div>
-                      <input
-                        type="checkbox"
-                        id="showpassword"
-                        @click="toggleShowPassword"
-                        v-model="showpassword"
-                      />
-                      <label class="form-check-label pd-top-10" form="showpassword">Hiện mật khẩu</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-5">
-                <!--Địa chỉ-->
-                <div class="row pd-right-10">
-                  <p class="mg-top-10 pd-top-10">Địa chỉ:</p>
-                  <textarea
-                    rows="4"
-                    width="50%"
-                    type="text"
-                    class="form-control"
-                    v-model.trim="$v.user.address.$model"
-                    :class="{
-                    'is-invalid': $v.user.address.$error, 'is-valid':!$v.user.address.$invalid }"
-                  />
-                  <div class="valid-feedback">Địa chỉ hợp lệ!</div>
-                  <div class="invalid-feedback">
-                    <span v-if="!$v.user.address.required">Yêu cầu bạn nhập địa chỉ!</span>
-                  </div>
-                </div>
-                <!--Gioi thieu-->
-                <div class="row pd-right-10">
-                  <p class="mg-top-10 pd-top-10">Giới thiệu:</p>
-                  <textarea
-                    rows="4"
-                    width="50%"
-                    type="text"
-                    class="form-control"
-                    v-model.trim="$v.user.introduce.$model"
-                    :class="{
-                    'is-invalid': $v.user.introduce.$error, 'is-valid':!$v.user.introduce.$invalid }"
-                  />
-                  <div class="valid-feedback">Giới thiệu có thể bỏ trống</div>
-                </div>
-
-                <div class="row">
-                  <button @click="addData()" class="btn-modal-add">Thêm mới</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </modal>
-      </div>
+            </modal>
+        </div>
     </div>
-  </div>
+</div>
 </template>
 
 <script>
@@ -358,16 +300,16 @@ export default {
                     label: "name",
                     field: "name",
                 },
-                
+
                 {
                     label: "address",
                     field: "address",
                 },
-               
+
                 {
                     label: "email",
                     field: "email",
-                }, 
+                },
                 {
                     label: "fields",
                     field: "fields",
@@ -588,7 +530,7 @@ export default {
             this.$http.get("api/company").then(
                 response => {
                     this.company = response.body;
-                    
+
                     this.mytable();
                 }
             );

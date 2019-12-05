@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Model\Student;
+use Illuminate\Support\Facades\Auth;
 use App\Model\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,13 +24,14 @@ class UserController extends Controller
         return $data;
     }
 
-    public function getNotReg($id){
+    public function getNotReg($id)
+    {
         $reg = DB::table('student_reg')
             ->select('id_student')
-            ->where('id_internship_time',$id)
+            ->where('id_internship_time', $id)
             ->get();
         $arr = [];
-        foreach($reg as $r){
+        foreach ($reg as $r) {
             array_push($arr, $r->id_student);
         }
         $data = DB::table('users as u')
@@ -46,7 +48,7 @@ class UserController extends Controller
          *  Trả về một sinh viên theo id
          */
         $data = DB::table('users as u')
-            ->select('s.id', 's.id_user', 'u.name','u.password', 'u.email', 'u.phone', 's.mssv', 's.birthday', 's.class', 'u.status','u.note')
+            ->select('s.id', 's.id_user', 'u.name', 'u.password', 'u.email', 'u.phone', 's.mssv', 's.birthday', 's.class', 'u.status', 'u.note')
             ->join('students as s', 's.id_user', 'u.id')
             ->where('s.id', $id)
             ->get();
@@ -60,25 +62,35 @@ class UserController extends Controller
          * Thêm mới một sinh viên
          */
         $this->validate($request, [
-                'mssv' => 'required|max:20|min:10|unique:students',
-                'name' => 'required',
-                'email' => 'email|required|unique:users',
-                'password' => 'required'
-            ],
+            'mssv' => 'required|max:20|min:10|unique:students',
+            'name' => 'required',
+            'email' => 'email|required|unique:users',
+            'password' => 'required'
+        ],
             [
-                'mssv.required'=>'Mời nhập mssv',
-                'mssv.unique'=>'Mã sinh viên đã tồn tại',
-                'mssv.max'=>'Mã sinh viên phải nhỏ hơn 20 ký tự',
-                'mssv.min'=>'Mã sinh viên phải lớn hơn 10 ký tự',
-                'name.required'=>'Mời nhập tên sinh viên',
-                'email.required'=>'Mời nhập Email',
-                'email.unique'=>'Email đã tồn tại',
-                'email.email'=>'Email không hợp lệ',
-                'password.required'=>'Mời nhập mật khẩu'
+                'mssv.required' => 'Mời nhập mssv',
+                'mssv.unique' => 'Mã sinh viên đã tồn tại',
+                'mssv.max' => 'Mã sinh viên phải nhỏ hơn 20 ký tự',
+                'mssv.min' => 'Mã sinh viên phải lớn hơn 10 ký tự',
+                'name.required' => 'Mời nhập tên sinh viên',
+                'email.required' => 'Mời nhập Email',
+                'email.unique' => 'Email đã tồn tại',
+                'email.email' => 'Email không hợp lệ',
+                'password.required' => 'Mời nhập mật khẩu'
             ]
         );
 
-        $user = User::create($request->only('name', 'email', 'password', 'phone', 'status'));
+//        $user = User::create($request->only('name', 'email', 'password', 'phone', 'status'));
+
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = app('hash')->make($request->password);
+        $user->phone = $request->phone;
+        $user->id_role = 6;
+        $user->note = $request->note;
+
+        $user->save();
 
         $student = new Student();
         $student->mssv = $request->mssv;
@@ -101,15 +113,15 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'email|required',
             'password' => 'required',
-            ],
+        ],
             [
-                'mssv.required'=>'Mời nhập mssv',
-                'mssv.max'=>'Mã sinh viên phải nhỏ hơn 20 ký tự',
-                'mssv.min'=>'Mã sinh viên phải lớn hơn 10 ký tự',
-                'name.required'=>'Mời nhập tên sinh viên',
-                'email.required'=>'Mời nhập Email',
-                'email.email'=>'Email không hợp lệ',
-                'password.required'=>'Mời nhập mật khẩu',
+                'mssv.required' => 'Mời nhập mssv',
+                'mssv.max' => 'Mã sinh viên phải nhỏ hơn 20 ký tự',
+                'mssv.min' => 'Mã sinh viên phải lớn hơn 10 ký tự',
+                'name.required' => 'Mời nhập tên sinh viên',
+                'email.required' => 'Mời nhập Email',
+                'email.email' => 'Email không hợp lệ',
+                'password.required' => 'Mời nhập mật khẩu',
             ]
         );
 
@@ -117,7 +129,7 @@ class UserController extends Controller
         $student->update($request->only('mssv', 'birthday', 'id_user', 'class'));
 
         $user = User::find($request->id_user);
-        $user->update($request->only('name', 'email', 'password', 'phone', 'status','note'));
+        $user->update($request->only('name', 'email', 'password', 'phone', 'status', 'note'));
 
         return 1;
     }

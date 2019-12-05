@@ -18,7 +18,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password', 'phone', 'fields', 'id_role', 'status', 'note'];
+    protected $fillable = ['name', 'email', 'password', 'phone', 'id_role', 'status', 'note'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -29,7 +29,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         // 'password',
     ];
 
-    
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
@@ -45,7 +45,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return [];
     }
 
-    public function roles(){
-        return $this->belongsToMany('App\Model\Role','role_user','id_user','id_role');
+    public function roles()
+    {
+        return $this->belongsToMany('App\Model\Role', 'role_user', 'id_user', 'id_role');
     }
 }

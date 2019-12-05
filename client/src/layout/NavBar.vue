@@ -3,16 +3,17 @@
     <a class="app-header__logo" href="index.html">
         <img style="width:40px;margin-bottom: 5px" src="../assets/logo.png" alt />
     </a>
+    <!-- <p class="app-header__logo">Cổng thông tin trường đại học vinh</p> -->
     <!-- Sidebar toggle button-->
     <a style="color: #fff" class="app-sidebar__toggle" @click="tonggle" id="sidebar_toggle" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
     <!-- Navbar Right Menu-->
     <ul class="app-nav">
-        <li class="app-search">
+        <!-- <li class="app-search">
             <input class="app-search__input" type="search" placeholder="Search" />
             <button class="app-search__button">
                 <i class="fa fa-search"></i>
             </button>
-        </li>
+        </li> -->
         <!--Notification Menu-->
         <li class="dropdown">
             <a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Show notifications">
@@ -115,10 +116,10 @@
         </li>
         <!-- User Menu-->
         <li class="dropdown">
-            <a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu">
-                <i class="fa fa-user fa-lg"></i>
+            <a class="app-nav__item" @click="logout" data-toggle="dropdown" aria-label="Open Profile Menu">
+                <i style="color: white" class="fa fa-sign-out fa-lg" aria-hidden="true"></i>
             </a>
-            <ul class="dropdown-menu settings-menu dropdown-menu-right">
+            <!-- <ul class="dropdown-menu settings-menu dropdown-menu-right">
                 <li>
                     <a class="dropdown-item" href="page-user.html">
                         <i class="fa fa-cog fa-lg"></i> Settings
@@ -134,7 +135,7 @@
                         <i class="fa fa-sign-out fa-lg"></i> Logout
                     </a>
                 </li>
-            </ul>
+            </ul> -->
         </li>
     </ul>
 </header>
@@ -142,6 +143,9 @@
 
 <script>
 export default {
+    data() {
+        return {}
+    },
     methods: {
         tonggle() {
             var element = document.getElementById("sidebar");
@@ -152,8 +156,14 @@ export default {
 
             var element = document.getElementById("app");
             element.classList.toggle("sidenav-toggled");
+        },
+        logout() {
+            this.$cookie.delete('token');
+            this.$cookie.delete('role');
+            this.$router.push('/login');
         }
-    }
+    },
+    watch: {}
 };
 </script>
 

@@ -1,6 +1,6 @@
 // Home Page
 import HomePage from "./layout/HomeDefault.vue";
-
+import Login from "./pages/Login.vue"
 // Teacher
 import Teacher from "./pages/teacher/Home.vue";
 //Tra cứu TT
@@ -27,6 +27,7 @@ import StudentUser from "./pages/student/User.vue";
 
 const routes = [
   {
+
     path: "/",
     name: "home",
     component: HomePage,
@@ -119,6 +120,11 @@ const routes = [
         ]
       }
     ]
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
   }
 ];
 export default routes;

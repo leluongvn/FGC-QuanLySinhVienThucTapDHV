@@ -34,6 +34,7 @@
 
             <b-tab title="Sinh viên hưỡng dẫn">
                 <!-- content -->
+                <student-instructor />
             </b-tab>
         </b-tabs>
     </div>
@@ -47,6 +48,7 @@ import CompanyReg from './CompanyReg'
 import InternshipPoint from './InternshipPoint'
 import Instructor from './Instructor'
 import InternshipTopic from './InternshipTopic'
+import StudentInstructor from './StudentInstructor'
 // import CompanyReg from './CompanyReg'
 export default {
     data() {
@@ -61,7 +63,8 @@ export default {
         CompanyReg,
         InternshipPoint,
         InternshipTopic,
-        Instructor
+        Instructor,
+        StudentInstructor
     },
     created() {
         // Lấp thông tin thực tập

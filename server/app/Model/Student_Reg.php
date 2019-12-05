@@ -13,6 +13,6 @@ class Student_Reg extends Model
      *
      * @var array
      */
-    protected $fillable = ['id_student', 'id_internship_time', 'total_point'];
+    protected $fillable = ['id_student', 'id_subject', 'id_internship_time', 'total_point'];
 
 }

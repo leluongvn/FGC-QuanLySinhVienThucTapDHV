@@ -23,7 +23,10 @@ import VModal from 'vue-js-modal'
 //vue execl
 import VueExcelXlsx from "vue-excel-xlsx";
 
+//vue VueCookie
+import VueCookie from 'vue-cookie'
 
+Vue.use(VueCookie);
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
 Vue.use(VueResource)
