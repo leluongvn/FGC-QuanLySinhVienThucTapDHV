@@ -265,6 +265,10 @@ export default {
                 }
             );
         },
+        getData() {
+            // Lấy tất cả giáo viên theo bộ môn
+            this.getAllData();
+        },
         //update table
         putData() {
             this.userUpdate.id_subject = this.select_subject;
