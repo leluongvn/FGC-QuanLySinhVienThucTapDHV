@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Company;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Company;
-use App\Model\CompanyReg;
+use App\Model\Company_Reg;
 use App\Model\Internship_Company;
 use App\Model\Internship_Time;
 use Illuminate\Support\Facades\DB;

@@ -24,6 +24,10 @@ $router->get('/', function () use ($router) {
  $router->get('detai',['uses'=>'detaiController@create']);
 */
 $router->group(['prefix' => 'api'], function () use ($router) {
+    // gửi mail
+
+    $router->post('/sendmail', 'Mail\MailController@sendMail');
+
 
     // code phần người hướng dẫn
     $router->group(['prefix' => 'instructor'], function () use ($router) {
@@ -88,7 +92,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->put('/{id}', 'Company\CompanyRegController@update');
         $router->delete('/{id}', 'Company\CompanyRegController@delete');
         $router->get('/search/company/reg', 'Company\CompanyRegController@search');
+
+        // đăng kí doanh nghiệp theo internship_time
+        $router->post('/reg', 'Company\CompanyRegInternController@create');
+        $router->put('/reg/{id}', 'Company\CompanyRegInternController@update');
+        $router->delete('/reg/{id}', 'Company\CompanyRegInternController@delete');
     });
+
 
     //đăng ký sinh viên
     $router->group(['prefix' => 'student'], function () use ($router) {
@@ -159,4 +169,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('/upload', ['uses' => 'File\FileController@doUpload']);
         $router->get('/download/{id:[0-9]+}', ['uses' => 'File\FileController@doDownload']);
     });
+
+
 });

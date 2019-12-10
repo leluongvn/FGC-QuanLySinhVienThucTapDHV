@@ -16,7 +16,7 @@ class CreateCompanyRegTable extends Migration
         Schema::create('company_reg', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('id_student_reg');
-            $table->integer('id_internship_time');
+            $table->integer('id_internship_company');
             $table->timestamps();
         });
     }
