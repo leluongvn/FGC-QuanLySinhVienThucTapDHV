@@ -1,6 +1,6 @@
 // Home Page
 import HomePage from "./layout/HomeDefault.vue";
-import Login from "./pages/Login.vue"
+import Login from "./pages/Login.vue";
 // Teacher
 import Teacher from "./pages/teacher/Home.vue";
 //Tra cứu TT
@@ -9,11 +9,16 @@ import ListStudent from "./pages/teacher/Student.vue";
 import ListCompany from "./pages/teacher/Company.vue";
 import ListTeacher from "./pages/teacher/Teacher.vue";
 import ListTopic from "./pages/teacher/Topic.vue";
-import Create from "./pages/teacher/CreateInternship.vue"
+import Create from "./pages/teacher/CreateInternship.vue";
 // Hồ sơ thực tập
-import Internship from "./components/pages/internship/InternshipTime.vue"
-import Tabs from "./components/pages/internship/Tabs.vue"
-import Instructor from "./pages/teacher/Instructor.vue"
+import Internship from "./components/pages/internship/InternshipTime.vue";
+import Tabs from "./components/pages/internship/Tabs.vue";
+import StudentReg from "./components/pages/internship/StudentReg.vue";
+import CompanyReg from "./components/pages/internship/CompanyReg.vue";
+import Point from "./components/pages/internship/InternshipPoint.vue";
+import Instructor from "./components/pages/internship/Instructor.vue";
+import InternshipTopic from "./components/pages/internship/InternshipTopic.vue";
+import GuideStudent from "./components/pages/internship/StudentInstructor.vue";
 
 // Company
 import Company from "./pages/company/Home.vue";
@@ -25,9 +30,11 @@ import TopicReg from "./pages/student/TopicReg.vue";
 import StudentPoint from "./pages/student/InternshipPoint.vue";
 import StudentUser from "./pages/student/User.vue";
 
+//test
+import test from "./Test.vue";
+
 const routes = [
   {
-
     path: "/",
     name: "home",
     component: HomePage,
@@ -36,29 +43,57 @@ const routes = [
         path: "/teacher",
         name: "teacher",
         component: Teacher,
-        children:[
+        children: [
           {
             path: "create",
             name: "create",
             component: Create,
-            redirect:"create/1",
-            children:[
+            redirect: "create/1",
+            children: [
               {
                 path: ":id",
                 name: "internship",
                 component: Internship
               },
               {
-                path:'internship/:id',
-                name:'internship',
-                component: Tabs
+                path: "internship",
+                name: "internship",
+                component: Tabs,
+                // redirect:"internship/student-reg/1",
+                children: [
+                  {
+                    path: "student-reg/:id",
+                    name: "student-reg",
+                    component: StudentReg
+                  },
+                  {
+                    path: "company-reg/:id",
+                    name: "company-reg",
+                    component: CompanyReg
+                  },
+                  {
+                    path: "point/:id",
+                    name: "point",
+                    component: Point
+                  },
+                  {
+                    path: "instructor/:id",
+                    name: "instructor",
+                    component: Instructor
+                  },
+                  {
+                    path: "topic-reg/:id",
+                    name: "topic-reg",
+                    component: InternshipTopic
+                  },
+                  {
+                    path: "guide-student/:id",
+                    name: "guide-student",
+                    component: GuideStudent
+                  }
+                ]
               }
             ]
-          },
-          {
-            path:'instructor',
-            name:'instructor',
-            component:Instructor
           },
           {
             path: "user",
@@ -116,15 +151,20 @@ const routes = [
             path: "user",
             name: "user",
             component: StudentUser
-          },
+          }
         ]
       }
     ]
   },
   {
-    path: '/login',
-    name: 'login',
+    path: "/login",
+    name: "login",
     component: Login
+  },
+  {
+    path: "/test",
+    name: "test",
+    component: test
   }
 ];
 export default routes;

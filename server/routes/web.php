@@ -27,7 +27,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     // code phần người hướng dẫn
     $router->group(['prefix' => 'instructor'], function () use ($router) {
-        $router->get('/{id}/{time}/{subject}', 'Instructor\InstructorController@getAll');
+        $router->get('/{id}/{time}/{subject}', ['middleware' => 'auth', 'uses' => 'Instructor\InstructorController@getAll']);
         $router->get('/{id}', 'Instructor\InstructorController@getOne');
         $router->post('/', 'Instructor\InstructorController@create');
         $router->put('/{id}', 'Instructor\InstructorController@update');
@@ -92,7 +92,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     //đăng ký sinh viên
     $router->group(['prefix' => 'student'], function () use ($router) {
-        $router->get('/', 'Student\UserController@getAll');
+        $router->get('/', ['uses' => 'Student\UserController@getAll']);
         $router->get('/{id}', 'Student\UserController@getSingle');
         $router->post('/', 'Student\UserController@create');
         $router->put('{id}', 'Student\UserController@update');
@@ -147,9 +147,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     });
 
 
-
-
-    //  Xác thực User 
+    //  Xác thực User
     $router->group(['prefix' => 'user'], function () use ($router) {
         $router->post('/login', ['uses' => 'Auth\AuthController@login']);
     });

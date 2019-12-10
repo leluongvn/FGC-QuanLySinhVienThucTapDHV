@@ -221,7 +221,7 @@ export default {
     },
     methods: {
         pushReg(id) {
-            this.$router.push("internship/" + id);
+            this.$router.push("internship/student-reg/" + id);
             // alert(id)
         },
         pushID(e) {

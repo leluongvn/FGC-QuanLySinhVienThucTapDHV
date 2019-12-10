@@ -81,6 +81,8 @@ export default {
 
                 },
                 response => {
+                    console.log(response);
+                    
                     this.$noty.error("Thất bại, Kiểm tra lại email và mật khẩu :(");
                 }
             );

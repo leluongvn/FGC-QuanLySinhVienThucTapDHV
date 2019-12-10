@@ -1,85 +1,125 @@
 <template>
 <div class="content">
-    <div class="row mb-3">
-        <div class="col-sm-12 col-md-6">
-            <div id="sampleTable_length" class="dataTables_length">
-                <!-- search -->
-                <label>
-                    Tìm kiếm:
-                    <input style="display: inline-block;width: 100%;box-shadow: none;" placeholder aria-controls="sampleTable" class="form-control form-control-sm" />
-                </label>
-                <!-- end search -->
+    <b-container fluid>
+        <!-- search -->
+        <b-row class="mx-1 my-2 float-y">
+            <div>
+                <b-form-group label-for="filterInput" class="mb-0">
+                    <b-input-group size="sm">
+                        <b-form-input v-model="filter" type="search" id="filterInput" placeholder="Tìm kiếm"></b-form-input>
+                        <b-input-group-append>
+                            <b-button :disabled="!filter" @click="filter = ''"><i class="icon ion-md-backspace"></i></b-button>
+                        </b-input-group-append>
+                    </b-input-group>
+                </b-form-group>
             </div>
-        </div>
+            <!-- controls -->
+            <b-button-group size="sm">
+                <!-- button mở modal thêm dữ liệu -->
+                <b-button v-b-modal.modal-insert variant="primary"><i class="fa fa-lg fa-plus"></i></b-button>
 
-        <div class="col-sm-12 col-md-6">
-            <div id="sampleTable_filter" class="dataTables_filter">
-                <!-- btn modal -->
-                <b-button-group size="sm">
-                    <b-button v-b-modal.modal-lg-add-topic variant="primary"><i class="fa fa-lg fa-plus"></i></b-button>
-                    <b-button variant="success"><i class="fa fa-cloud-upload" aria-hidden="true"></i></b-button>
-                    <b-button variant="dark"><i class="fa fa-file-excel-o" aria-hidden="true"></i></b-button>
-                </b-button-group>
-                <!-- modal -->
-                <b-modal ref="modal-topic" id="modal-lg-add-topic" centered size="sm" hide-footer hide-header>
-                    <b-form @submit.stop.prevent>
-                        <div class="row">
-                            <h6 class="text-center mt-2 col-10">Cập nhật đề tài</h6>
-                            <i @click="hide_modal_topic" class="fa fa-times col-2 text-right" aria-hidden="true"></i>
-                            <b-form-group class="col-12 mb-0" label-size="sm" id="fieldset-1" label="Chọn đề tài:" label-for="input-1">
+                <!-- button import excel -->
+                <!-- <b-button variant="success" @click="$refs.importExcel.$el.dblclick()"> -->
+                <vue-xlsx-table class="btn p-0" @on-select-file="importExcel">
+                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                </vue-xlsx-table>
+                <!-- </b-button> -->
+
+                <!-- button export execl -->
+                <b-button variant="success" @click="$refs.exportExcel.$el.click()">
+                    <i class="icon ion-md-download"></i>
+                    <vue-excel-xlsx class="d-none" ref="exportExcel" :data="topics" :columns="fields" :filename="'DS đề tài TT'" :sheetname="'sheetname'"></vue-excel-xlsx>
+                </b-button>
+            </b-button-group>
+        </b-row>
+
+        <!-- modal thêm dữ liệu-->
+        <b-modal ref="modal" id="modal-insert" centered size="sm" hide-footer hide-header>
+            <b-form @submit.stop.prevent>
+                <div class="row">
+                    <h6 class="text-center mt-2 col-10">Cập nhật đề tài</h6>
+                    <i @click="hide_modal" class="fa fa-times col-2 text-right" aria-hidden="true"></i>
+                    <b-form-group class="col-12 mb-0" label-size="sm" id="fieldset-1" label="Chọn đề tài:" label-for="input-1">
+                        <select v-model="postTopic.id_topic" class="form-control form-control-sm">
+                            <option value="null">-----------</option>
+                            <option v-for="(item, index) in optionCreate" :key="index" :value="item.id">{{item.name}}</option>
+                        </select>
+                    </b-form-group>
+                    <div class="col-12 text-center mt-2">
+                        <b-button size="sm" variant="info" @click="insertTopic">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Xong
+                        </b-button>
+                    </div>
+                </div>
+            </b-form>
+        </b-modal>
+        <!-- kết thúc modal thêm dữ liệu -->
+
+        <!-- table hiển thị dữ liệu -->
+        <b-row>
+            <b-table sticky-header class="col-md-12 table" show-empty small striped bordered responsive :items="topics" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" :filterIncludedFields="filterOn" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection">
+                <template v-slot:cell(index)="data">
+                    {{ data.index + 1 }}
+                </template>
+
+                <template v-slot:cell(actions)="data">
+                    <div class="btn-group">
+                        <a class="badge badge-warning btn-sm btn bg-dark text-light font-weight-light px-2" @click="data.toggleDetails" style="font-size: 13px !important">@</a>
+                        <a class="badge badge-warning btn-sm btn" v-b-modal.modal-update @click="getUpdate(data.item.id)"><i class="fa fa-lg fa-edit"></i></a>
+                        <a class="badge badge-danger btn-sm btn text-black font-weight-light" @click="delTopic(data.item.id)"><i class="fa fa-lg fa-trash"></i></a>
+                    </div>
+                </template>
+
+                <template v-slot:row-details="data">
+                    <!-- <b-card> -->
+                    <ul>
+                        <li v-for="(value, key) in data.item" :key="key">{{ key }}: {{ value }}</li>
+                    </ul>
+                    <!-- </b-card> -->
+                </template>
+            </b-table>
+        </b-row>
+        <!-- Phân trang hiện thị -->
+        <b-row class="mx-1 my-2 float-y">
+            <!-- Số dòng hiển thị -->
+            <div>
+                <b-form-group label="Hiển thị: " label-size="sm" label-for="perPageSelect" class="mb-0 form-row">
+                    <b-form-select v-model="perPage" id="perPageSelect" size="sm" :options="pageOptions"></b-form-select>
+                </b-form-group>
+            </div>
+            <!-- end -->
+            <!-- phân trang -->
+            <div>
+                <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" align="fill" size="sm" class="my-0"></b-pagination>
+            </div>
+            <!-- phân trang -->
+        </b-row>
+        <!-- kết thúc dữ liệu table -->
+
+        <!-- modal sửa dữ liệu-->
+        <b-modal ref="modal" id="modal-update" centered size="sm" hide-header hide-footer>
+            <b-form @submit.stop.prevent>
+                <div class="row">
+                    <h6 class="text-center mt-2 col-10">Cập nhật đề tài</h6>
+                    <i @click="hide_modal" class="fa fa-times col-2 text-right" aria-hidden="true"></i>
+                    <!-- <b-form-group class="col-12 mb-0" label-size="sm" id="fieldset-1" label="Chọn đề tài:" label-for="input-1">
                                 <select v-model="postTopic.id_topic" class="form-control form-control-sm">
                                     <option value="null">-----------</option>
                                     <option v-for="(item, index) in optionCreate" :key="index" :value="item.id">{{item.name}}</option>
                                 </select>
-                            </b-form-group>
-                            <div class="col-12 text-center mt-2">
-                                <b-button size="sm" variant="info" @click="insertTopic">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Xong
-                                </b-button>
-                            </div>
-                        </div>
-                    </b-form>
-                    <!-- footer -->
-                    <template v-slot:modal-footer="{ ok, cancel, hide }">
-                        <b-button size="sm" variant="info" @click="insertReg">
-                            <i class="fa fa-plus-square" aria-hidden="true"></i> Xong
+                            </b-form-group> -->
+                    <div class="col-12 text-center mt-2">
+                        <b-button size="sm" variant="warning">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Xong
                         </b-button>
-                    </template>
-                </b-modal>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-hover table-bordered no-footer table-responsive-md">
-                <thead>
-                    <tr role="row" class="text-center">
-                        <th>STT</th>
-                        <th>Tên đề tài</th>
-                        <th>Nội dung</th>
-                        <th>Trạng thái</th>
-                        <th>Chọn</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(v,i) in topics" :key="i">
-                        <td class="text-center">{{i+1}}</td>
-                        <td>{{v.name}}</td>
-                        <td class="text-center">{{v.content}}</td>
-                        <td class="text-center">{{v.status}}</td>
-                        <td class="text-center">
-                            <div class="btn-group">
-                                <a class="badge badge-danger btn-sm btn" @click="delTopic(v.id)">
-                                    <i class="fa fa-lg fa-trash"></i></a>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+                    </div>
+                </div>
+            </b-form>
+        </b-modal>
+        <!-- kết thúc modal thêm dữ liệu -->
+    </b-container>
+    <!-- ============================================================================================ -->
+    <!-- ============================================================================================ -->
 </div>
 </template>
 
@@ -91,22 +131,103 @@ export default {
             topics: [],
             optionCreate: [],
             postTopic: {
-                id_user: 1,
+                id_user: 3,
                 id_internship_time: this.$route.params.id,
                 id_topic: null
-            }
+            },
+            // -----------------------------------------------
+            fields: [{
+                field: 'index',
+                key: 'index',
+                label: 'STT',
+                class: 'text-center',
+                thStyle: {
+                    color: '#fff',
+                    background: '#2980b9'
+                }
+            }, {
+                field: 'name',
+                key: 'name',
+                label: 'Tê đề tài',
+                sortDirection: 'desc',
+                sortable: true,
+                thStyle: {
+                    color: '#fff',
+                    background: '#2980b9'
+                },
+                thClass: 'text-center'
+            }, {
+                field: 'content',
+                key: 'content',
+                class: 'text-center',
+                label: 'Nội dung',
+                sortable: true,
+                thStyle: {
+                    color: '#fff',
+                    background: '#2980b9'
+                },
+                thClass: 'text-center'
+            }, {
+                field: 'status',
+                key: 'status',
+                class: 'text-center',
+                label: 'Trạng thái',
+                sortable: true,
+                thStyle: {
+                    color: '#fff',
+                    background: '#2980b9'
+                },
+                thClass: 'text-center'
+            }, {
+                key: 'actions',
+                label: 'Chọn',
+                class: 'text-center',
+                thStyle: {
+                    color: '#fff',
+                    background: '#2980b9'
+                },
+                thClass: 'text-center'
+            }],
+
+            totalRows: 1,
+            currentPage: 1,
+            perPage: 10,
+            pageOptions: [10, 15, 20],
+            sortBy: '',
+            sortDesc: false,
+            sortDirection: 'asc',
+            filter: null,
+            filterOn: []
+        }
+    },
+    computed: {
+        sortOptions() {
+            // Create an options list from our fields
+            return this.fields
+                .filter(f => f.sortable)
+                .map(f => {
+                    return {
+                        text: f.label,
+                        value: f.key
+                    }
+                })
         }
     },
     methods: {
-        hide_modal_topic() {
+        importExcel(data) {
+            console.log(data.body)
+        },
+        hide_modal() {
             //ẩn modal update
-            this.$refs['modal-topic'].hide();
+            this.$refs['modal'].hide();
         },
         getAllTopic() {
             // Lấy danh sách đề tài của thực tập này
             this.$http.get("api/internship_topic/" + this.$route.params.id).then(
                 response => {
                     this.topics = response.body;
+                    // Lấy tổng số bản ghi
+                    this.totalRows = this.topics.length
                 }
             );
             // Lấy danh sách đề tài chưa đăng ký của tt này
@@ -151,5 +272,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+.table {
+    font-size: 0.9rem !important;
+}
 </style>

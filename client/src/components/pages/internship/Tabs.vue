@@ -5,66 +5,67 @@
         <p>Thời gian: {{time.start_time}} - {{time.end_time}}</p>
         <hr width="10%">
     </div>
-    <div>
-        <b-tabs content-class="mt-3" align="center">
-            <b-tab title="Sinh viên đăng ký">
-                <!-- content -->
-                <student-reg />
-            </b-tab>
-
-            <b-tab title="Doanh nghiệp đăng ký">
-                <!-- content -->
-                <company-reg />
-            </b-tab>
-
-            <b-tab title="Hồ sơ điểm">
-                <!-- content -->
-                <internship-point />
-            </b-tab>
-
-            <b-tab title="Phân GVHD">
-                <!-- content -->
-                <instructor />
-            </b-tab>
-
-            <b-tab title="Cập nhật đề tài">
-                <!-- content -->
-                <internship-topic />
-            </b-tab>
-
-            <b-tab title="Sinh viên hưỡng dẫn">
-                <!-- content -->
-                <student-instructor />
-            </b-tab>
-        </b-tabs>
+    <div class="mx-3" style="display: -webkit-inline-box">
+        <label class="col-form-label-sm">Hồ sơ:</label>
+        <select @change="selectRouter" placeholder aria-controls="sampleTable" class="form-control form-control-sm">
+            <option value="1">Sinh viên đăng ký</option>
+            <option value="2">Doanh nghiệp đăng ký</option>
+            <option value="3">Hồ sơ điểm</option>
+            <option value="4">Phân GVHD</option>
+            <option value="5">Cập nhật đề tài</option>
+            <option value="6">Sinh viên hưỡng dẫn</option>
+        </select>
     </div>
-
+    <hr width="100%">
+    <!-- Hồ sơ thực tập -->
+    <router-view></router-view>
+    <!-- Hồ sơ thực tập -->
 </div>
 </template>
 
 <script>
-import StudentReg from './StudentReg'
-import CompanyReg from './CompanyReg'
-import InternshipPoint from './InternshipPoint'
-import Instructor from './Instructor'
-import InternshipTopic from './InternshipTopic'
-import StudentInstructor from './StudentInstructor'
-// import CompanyReg from './CompanyReg'
 export default {
     data() {
         return {
             id: this.$route.params.id,
             time: {},
-            type: {}
+            type: {},
+            role: {
+                sr: false,
+                cr: false,
+                ip: false,
+                i: false,
+                it: false,
+                si: false
+            }
         };
     },
-    components: {
-        StudentReg,
-        CompanyReg,
-        InternshipPoint,
-        InternshipTopic,
-        Instructor,
-        StudentInstructor
+    methods: {
+        selectRouter(event) {
+            var val = event.target.value;
+            switch (val) {
+                case '1':
+                    this.$router.push('/teacher/create/internship/student-reg/' + this.id);
+                    break;
+                case '2':
+                    this.$router.push('/teacher/create/internship/company-reg/' + this.id);
+                    break;
+                case '3':
+                    this.$router.push('/teacher/create/internship/point/' + this.id);
+                    break;
+                case '4':
+                    this.$router.push('/teacher/create/internship/instructor/' + this.id);
+                    break;
+                case '5':
+                    this.$router.push('/teacher/create/internship/topic-reg/' + this.id);
+                    break;
+                case '6':
+                    this.$router.push('/teacher/create/internship/guide-student/' + this.id);
+                    break;
+                    // default:
+                    //     this.$router.push('/teacher/create/internship/student-reg/' + this.id);
+            }
+        }
     },
     created() {
         // Lấp thông tin thực tập

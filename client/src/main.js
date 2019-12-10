@@ -20,12 +20,16 @@ import 'vuejs-noty/dist/vuejs-noty.css'
 //vue modal
 import VModal from 'vue-js-modal'
 
-//vue execl
+//vue download execl
 import VueExcelXlsx from "vue-excel-xlsx";
 
 //vue VueCookie
 import VueCookie from 'vue-cookie'
 
+// vue import execl
+import vueXlsxTable from 'vue-xlsx-table'
+
+Vue.use(vueXlsxTable, {rABS: false})
 Vue.use(VueCookie);
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Instructor;
 
 use App\Http\Controllers\Controller;
 use App\Model\Instructor;
+use App\Model\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
@@ -12,6 +14,8 @@ class InstructorController extends Controller
 {
     public function getAll($id, $time, $subject)
     {
+        $role = Role::find(Auth::user()->id_role);
+        if($role->name)
         $data = DB::table('users as u')
             ->selectRaw('i.id,u.name,u.email,s.mssv,u.phone,s.birthday,s.class,sr.total_point')
             ->join('students as s', 's.id_user', 'u.id')

@@ -1,89 +1,109 @@
 <template>
 <div class="content">
-    <div class="row mb-3">
-        <div class="col-sm-12 col-md-6">
-            <div id="sampleTable_length" class="dataTables_length">
-                <!-- search -->
-                <label>
-                    Tìm kiếm:
-                    <input style="display: inline-block;width: 100%;box-shadow: none;" placeholder aria-controls="sampleTable" class="form-control form-control-sm" />
-                </label>
-                <!-- end search -->
+    <b-container fluid>
+        <!-- search -->
+        <b-row class="mx-1 my-2 float-y">
+            <div>
+                <b-form-group label-for="filterInput" class="mb-0">
+                    <b-input-group size="sm">
+                        <b-form-input v-model="filter" type="search" id="filterInput" placeholder="Tìm kiếm"></b-form-input>
+                        <b-input-group-append>
+                            <b-button :disabled="!filter" @click="filter = ''"><i class="icon ion-md-backspace"></i></b-button>
+                        </b-input-group-append>
+                    </b-input-group>
+                </b-form-group>
             </div>
-        </div>
+            <!-- controls -->
+            <b-button-group size="sm">
+                <!-- button mở modal thêm dữ liệu -->
+                <b-button v-b-modal.modal-insert variant="primary"><i class="fa fa-lg fa-plus"></i></b-button>
 
-        <div class="col-sm-12 col-md-6">
-            <div id="sampleTable_filter" class="dataTables_filter">
-                <!-- btn modal -->
-                <b-button-group size="sm">
-                    <b-button v-b-modal.modal-lg-add-point variant="primary"><i class="fa fa-lg fa-plus"></i></b-button>
-                    <b-button variant="success"><i class="fa fa-cloud-upload" aria-hidden="true"></i></b-button>
-                    <b-button variant="dark"><i class="fa fa-file-excel-o" aria-hidden="true"></i></b-button>
-                </b-button-group>
-                <!-- modal -->
-                <b-modal id="modal-lg-add-point" centered size="lg" title="Thêm sinh viên đăng ký">
-                    <b-form @submit.stop.prevent>
-                        <div class="row">
+                <!-- button import excel -->
+                <!-- <b-button variant="success" @click="$refs.importExcel.$el.dblclick()"> -->
+                <vue-xlsx-table class="btn p-0" @on-select-file="importExcel">
+                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                </vue-xlsx-table>
+                <!-- </b-button> -->
 
-                        </div>
-                    </b-form>
-                    <!-- footer -->
-                    <template v-slot:modal-footer="{ ok, cancel, hide }">
-                        <b-button size="sm" variant="info" @click="insertReg">
-                            <i class="fa fa-plus-square" aria-hidden="true"></i> Xong
-                        </b-button>
-                    </template>
-                </b-modal>
+                <!-- button export execl -->
+                <b-button variant="success" @click="$refs.exportExcel.$el.click()">
+                    <i class="icon ion-md-download"></i>
+                    <vue-excel-xlsx class="d-none" ref="exportExcel" :data="items" :columns="fields" :filename="'DS điểm sinh viên TT'" :sheetname="'sheetname'"></vue-excel-xlsx>
+                </b-button>
+            </b-button-group>
+        </b-row>
+
+        <!-- modal thêm dữ liệu-->
+        <b-modal id="modal-insert" centered size="lg" title="Thêm dữ liệu">
+            <b-form @submit.stop.prevent>
+
+            </b-form>
+            <!-- footer -->
+            <template v-slot:modal-footer="{ ok, cancel, hide }">
+                <b-button size="sm" variant="info" @click="insert">
+                    <i class="fa fa-plus-square" aria-hidden="true"></i> Xong
+                </b-button>
+            </template>
+        </b-modal>
+        <!-- kết thúc modal thêm dữ liệu -->
+
+        <!-- table hiển thị dữ liệu -->
+        <b-row>
+            <b-table sticky-header class="col-md-12 table" show-empty small striped bordered responsive :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" :filterIncludedFields="filterOn" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection">
+                <template v-slot:cell(index)="data">
+                    {{ data.index + 1 }}
+                </template>
+
+                <template v-slot:cell(actions)="data">
+                    <div class="btn-group">
+                        <a class="badge badge-warning btn-sm btn bg-dark text-light font-weight-light px-2" @click="data.toggleDetails" style="font-size: 13px !important">@</a>
+                        <a class="badge badge-warning btn-sm btn" v-b-modal.modal-update @click="getUpdate(data.item.id)"><i class="fa fa-lg fa-edit"></i></a>
+                        <a class="badge badge-danger btn-sm btn text-black font-weight-light" @click="del(data.item.id)"><i class="fa fa-lg fa-trash"></i></a>
+                    </div>
+                </template>
+
+                <template v-slot:row-details="data">
+                    <!-- <b-card> -->
+                    <ul>
+                        <li v-for="(value, key) in data.item" :key="key">{{ key }}: {{ value }}</li>
+                    </ul>
+                    <!-- </b-card> -->
+                </template>
+            </b-table>
+        </b-row>
+        <!-- Phân trang hiện thị -->
+        <b-row class="mx-1 my-2 float-y">
+            <!-- Số dòng hiển thị -->
+            <div>
+                <b-form-group label="Hiển thị: " label-size="sm" label-for="perPageSelect" class="mb-0 form-row">
+                    <b-form-select v-model="perPage" id="perPageSelect" size="sm" :options="pageOptions"></b-form-select>
+                </b-form-group>
             </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-hover table-bordered no-footer table-responsive-md">
-                <thead>
-                    <tr role="row" class="text-center">
-                        <th>STT</th>
-                        <th>Mssv</th>
-                        <th>Họ & Tên</th>
-                        <th>Tên đề tài</th>
-                        <th>GVHD</th>
-                        <th>Điểm GV</th>
-                        <th>Điểm DN</th>
-                        <th>Chọn</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(v,i) in reg" :key="i">
-                        <td class="text-center">{{i+1}}</td>
-                        <td>{{v.mssv}}</td>
-                        <td>{{v.name}}</td>
-                        <td>{{v.birthday}}</td>
-                        <td class="text-center">{{v.class}}</td>
-                        <td class="text-center">{{v.phone}}</td>
-                        <td>{{v.email}}</td>
-                        <td class="text-center">{{v.total_point}}</td>
-                        <td class="text-center">
-                            <div class="btn-group">
-                                <a class="badge badge-warning btn-sm btn" v-b-modal.modal-sm-update-point @click="getRegUpdate(v.id)"><i class="fa fa-lg fa-edit"></i></a>
-                                <a class="badge badge-danger btn-sm btn" @click="deleteReg(v.id)"><i class="fa fa-lg fa-trash"></i></a>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <!-- modal -->
-    <b-modal ref="modal-update-point" id="modal-sm-update-point" centered size="sm" title="Sửa thông tin sinh viên" hide-header hide-footer>
-        <b-form @submit.stop.prevent>
-            <div class="row">
-
+            <!-- end -->
+            <!-- phân trang -->
+            <div>
+                <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" align="fill" size="sm" class="my-0"></b-pagination>
             </div>
-        </b-form>
+            <!-- phân trang -->
+        </b-row>
+        <!-- kết thúc dữ liệu table -->
 
-    </b-modal>
+        <!-- modal sửa dữ liệu-->
+        <b-modal id="modal-update" centered size="lg" title="Sửa dữ liệu">
+            <b-form @submit.stop.prevent>
+
+            </b-form>
+            <!-- footer -->
+            <template v-slot:modal-footer="{ ok, cancel, hide }">
+                <b-button size="sm" variant="info" @click="update">
+                    <i class="fa fa-plus-square" aria-hidden="true"></i> Xong
+                </b-button>
+            </template>
+        </b-modal>
+        <!-- kết thúc modal thêm dữ liệu -->
+    </b-container>
+    <!-- ============================================================================================ -->
+    <!-- ============================================================================================ -->
 </div>
 </template>
 
@@ -92,20 +112,172 @@ export default {
     data() {
         return {
             id: this.$route.params.id,
+            items: [],
+            fields: [{
+                field: 'index',
+                key: 'index',
+                label: 'STT',
+                class: 'text-center',
+                thStyle: {
+                    color: '#fff',
+                    background: '#2980b9'
+                }
+            }, {
+                field: 'mssv',
+                key: 'mssv',
+                label: 'Mssv',
+                sortDirection: 'desc',
+                sortable: true,
+                thStyle: {
+                    color: '#fff',
+                    minWidth: '100px',
+                    background: '#2980b9'
+                },
+                thClass: 'text-center'
+            }, {
+                field: 'name',
+                key: 'name',
+                label: 'Họ & Tên',
+                sortable: true,
+                thStyle: {
+                    color: '#fff',
+                    background: '#2980b9',
+                    minWidth: '190px'
+                },
+                thClass: 'text-center'
+            }, {
+                field: 'topic',
+                key: 'topic',
+                label: 'Tên đề tài',
+                sortable: true,
+                thStyle: {
+                    color: '#fff',
+                    background: '#2980b9',
+                    minWidth: '190px'
+                },
+                thClass: 'text-center'
+            }, {
+                field: 'gvhd',
+                key: 'gvhd',
+                label: 'GVHD',
+                sortable: true,
+                thStyle: {
+                    color: '#fff',
+                    background: '#2980b9',
+                    minWidth: '190px'
+                },
+                thClass: 'text-center'
+            }, {
+                field: 'dnhd',
+                key: 'dnhd',
+                label: 'DNHD',
+                sortable: true,
+                thStyle: {
+                    color: '#fff',
+                    background: '#2980b9',
+                    minWidth: '190px'
+                },
+                thClass: 'text-center'
+            }, {
+                field: 'teacher_point',
+                key: 'teacher_point',
+                label: 'Điểm GV',
+                class: 'text-center',
+                sortable: true,
+                thStyle: {
+                    color: '#fff',
+                    background: '#2980b9',
+                    minWidth: '35px'
+                },
+                thClass: 'text-center'
+            }, {
+                field: 'company_point',
+                key: 'company_point',
+                label: 'Điểm DN',
+                class: 'text-center',
+                sortable: true,
+                thStyle: {
+                    color: '#fff',
+                    background: '#2980b9',
+                    minWidth: '35px'
+                },
+                thClass: 'text-center'
+            }, , {
+                field: 'total_point',
+                key: 'total_point',
+                label: 'Tổng',
+                class: 'text-center',
+                sortable: true,
+                thStyle: {
+                    color: '#fff',
+                    background: '#2980b9',
+                    minWidth: '35px'
+                },
+                thClass: 'text-center'
+            }, {
+                key: 'actions',
+                label: 'Chọn',
+                class: 'text-center',
+                thStyle: {
+                    color: '#fff',
+                    background: '#2980b9'
+                },
+                thClass: 'text-center'
+            }],
+
+            totalRows: 1,
+            currentPage: 1,
+            perPage: 10,
+            pageOptions: [10, 15, 20],
+            sortBy: '',
+            sortDesc: false,
+            sortDirection: 'asc',
+            filter: null,
+            filterOn: []
         }
     },
     methods: {
-        // getAllPoint() {
-        //     this.$http.get("").then(
-        //         response => {},
-        //         response => {});
-        // }
+        importExcel(data) {
+            console.log(data.body)
+        },
+        insert() {
+            // chèn dữ liệu vào database
+        },
+        getUpdate(id) {
+            // lấy dữ liệu update
+        },
+        update() {
+            // Sửa dữ liệu
+        },
+        del() {
+            // xóa dữ liệu
+        }
     },
-    created: {
+    computed: {
+        sortOptions() {
+            // Create an options list from our fields
+            return this.fields
+                .filter(f => f.sortable)
+                .map(f => {
+                    return {
+                        text: f.label,
+                        value: f.key
+                    }
+                })
+        }
+    },
+    mounted() {
+        // Lấy tổng số bản ghi
+        this.totalRows = this.items.length
+    },
+    created() {
 
     }
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+.table {
+    font-size: 0.9rem !important;
+}
 </style>
