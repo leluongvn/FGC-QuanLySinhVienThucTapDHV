@@ -92,6 +92,10 @@ class TopicController extends Controller
     public function doDownload($id){
         $file=Topic::find($id);
         $path='upload/'.$file->content;
-        return response()->download(env('PUBLIC_PATH', base_path('public')) . ($path ? '/' . $path : $path));
+        $path2=env('PUBLIC_PATH', base_path('public')) . ($path ? '/' . $path : $path);
+        return response()->download($path2,'download.zip',array(
+            'Content-Type: application/octet-stream',
+            'Content-Length: '. filesize($path2)
+        ));
     }
 }
