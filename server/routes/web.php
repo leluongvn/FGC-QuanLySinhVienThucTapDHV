@@ -125,6 +125,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         // Bá code
         $router->get('/{type:[0-9]+}', ['uses' => 'Topic\TopicController@show', 'as' => 'admin.topic.show']);
         $router->get('one/{id:[0-9]+}', ['uses' => 'Topic\TopicController@showOne', 'as' => 'admin.topic.showOne']);
+        $router->get('/download/{id:[0-9]+}', ['uses' => 'Topic\TopicController@doDownload', 'as' => 'admin.topic.download']);
         $router->post('/', ['uses' => 'Topic\TopicController@create', 'as' => 'admin.topic.create']);
         $router->put('/{id:[0-9]+}', ['uses' => 'Topic\TopicController@edit', 'as' => 'admin.topic.edit']);
         $router->delete('/{id: [0-9]+}', ['uses' => 'Topic\TopicController@destroy', 'as' => 'admin.topic.destroy']);

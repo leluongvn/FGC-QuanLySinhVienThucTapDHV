@@ -88,4 +88,10 @@ class TopicController extends Controller
         Topic::find($id)->delete();
         return 1;
     }
+
+    public function doDownload($id){
+        $file=Topic::find($id);
+        $path='upload/'.$file->content;
+        return response()->download(env('PUBLIC_PATH', base_path('public')) . ($path ? '/' . $path : $path));
+    }
 }
