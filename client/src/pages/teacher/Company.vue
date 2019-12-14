@@ -24,18 +24,18 @@
         <!-- Thao tác -->
         <b-button-group size="sm">
             <!-- thêm dữ liệu -->
-            <b-button v-b-modal.modal-insert variant="primary"><i class="fa fa-lg fa-plus"></i></b-button>
+            <b-button title="Thêm mới" v-b-modal.modal-insert variant="primary"><i class="fa fa-lg fa-plus"></i></b-button>
             <!--End thêm dữ liệu-->
             <!-- import excel -->
             <!-- <b-button variant="success" @click="$refs.importExcel.$el.dblclick()"> -->
-            <vue-xlsx-table class="btn p-0" @on-select-file="importExcel">
+            <vue-xlsx-table title="Import Excel" class="btn p-0" @on-select-file="importExcel">
                 <i class="fa fa-file-excel-o" aria-hidden="true"></i>
             </vue-xlsx-table>
             <!-- </b-button> -->
             <!--End import excel-->
 
             <!--export execl -->
-            <b-button variant="success" @click="$refs.exportExcel.$el.click()">
+            <b-button title="Export Excel" variant="success" @click="$refs.exportExcel.$el.click()">
                 <i class="icon ion-md-download"></i>
                 <vue-excel-xlsx class="d-none" ref="exportExcel" :data="items" :columns="fieldsExportExcel" :filename="'Doanhnghiep'" :sheetname="'sheetname'"></vue-excel-xlsx>
             </b-button>
@@ -167,9 +167,9 @@
             <!--btn Thao tác-->
             <template v-slot:cell(actions)="data">
                 <div class="btn-group">
-                    <a class="badge badge-warning btn-sm btn bg-dark text-light font-weight-light px-2" @click="data.toggleDetails" style="font-size: 13px !important">@</a>
-                    <a class="badge badge-warning btn-sm btn" v-b-modal.modal-update @click="getOne(data.item.id)"><i class="fa fa-lg fa-edit"></i></a>
-                    <a class="badge badge-danger btn-sm btn text-black font-weight-light" @click="delData(data.item.id)"><i class="fa fa-lg fa-trash"></i></a>
+                    <a title="Chi tiết" class="badge badge-warning btn-sm btn bg-dark text-light font-weight-light px-2" @click="data.toggleDetails" style="font-size: 13px !important">@</a>
+                    <a title="Cập nhật" class="badge badge-warning btn-sm btn" v-b-modal.modal-update @click="getOne(data.item.id)"><i class="fa fa-lg fa-edit"></i></a>
+                    <a title="Xóa" class="badge badge-danger btn-sm btn text-black font-weight-light" @click="delData(data.item.id)"><i class="fa fa-lg fa-trash"></i></a>
                 </div>
             </template>
             <!--End btn Thao tác-->
