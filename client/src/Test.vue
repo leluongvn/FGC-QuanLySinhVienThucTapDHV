@@ -60,8 +60,8 @@
             <template v-slot:cell(actions)="data">
                 <div class="btn-group">
                     <a class="badge badge-warning btn-sm btn bg-dark text-light font-weight-light px-2" @click="data.toggleDetails" style="font-size: 13px !important">@</a>
-                    <a class="badge badge-warning btn-sm btn" v-b-modal.modal-update @click="getUpdate(data.value.id)"><i class="fa fa-lg fa-edit"></i></a>
-                    <a class="badge badge-danger btn-sm btn text-black font-weight-light"><i class="fa fa-lg fa-trash"></i></a>
+                    <a class="badge badge-warning btn-sm btn" v-b-modal.modal-update @click="getUpdate(data.item.id)"><i class="fa fa-lg fa-edit"></i></a>
+                    <a class="badge badge-danger btn-sm btn text-black font-weight-light" @click="del(data.item.id)"><i class="fa fa-lg fa-trash"></i></a>
                 </div>
             </template>
 
@@ -318,7 +318,7 @@ export default {
         update() {
             // Sửa dữ liệu
         },
-        delete() {
+        del() {
             // xóa dữ liệu
         }
     }

@@ -1,9 +1,9 @@
 <template>
 <div class="content">
-    <div class="text-center mb-4">
+    <div class="text-center">
         <h4 style="color: rgb(41, 128, 185);text-transform: uppercase;">{{type.name}} - khóa {{time.course}} - ngành công nghệ thông tin</h4>
         <p>Thời gian: {{time.start_time}} - {{time.end_time}}</p>
-        <hr width="10%">
+        <hr class="mb-0" width="10%">
     </div>
     <div class="mx-3" style="display: -webkit-inline-box">
         <label class="col-form-label-sm">Hồ sơ:</label>

@@ -4,102 +4,73 @@ namespace App\Http\Controllers\Company;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Model\Company;
 use App\Model\Company_Reg;
 use App\Model\Internship_Company;
-use App\Model\Internship_Time;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CompanyRegController extends Controller
 {
+    public function getAll($id)
+    {
+        $data = DB::select('SELECT ic.id,u.name,c.address,c.fields,ic.limit,ic.reg,ic.targets FROM users u
+        JOIN companies c ON c.id_user = u.id
+        JOIN internship_company ic ON ic.id_company = c.id
+        WHERE ic.id_internship_time = ?', [$id]);
+
+        return $data;
+    }
+
+    public function getReg($id)
+    {
+        $data = DB::select('SELECT cr.id,u.name,c.address,c.fields,ic.limit,ic.reg,ic.targets 
+        FROM users u JOIN companies c ON c.id_user = u.id 
+        JOIN internship_company ic ON ic.id_company = c.id 
+        JOIN company_reg cr ON cr.id_internship_company = ic.id 
+        WHERE cr.id_student_reg = ?', [$id]);
+
+        return $data;
+    }
 
     public function create(Request $request)
     {
-        $this->validate(
-            $request,
-            [
-                'limit' => 'required'
+        $tg = Internship_Company::find($request->id_internship_company);
+        if ($tg->reg >= $tg->limit) {
+            return 0;
+        } else {
+            $companyreg = new Company_Reg();
+            $companyreg->fill($request->all());
+            $companyreg->save();
 
-            ],
-            [
-                'limit.required' => 'Thất bại, Mời nhập sĩ số của doanh nghiệp'
-            ]
-        );
-        Internship_Company::create($request->all());
+            $internship = Internship_Company::find($request->id_internship_company);
 
-        return 1;
-        // return response()->json($results, 201);
+            $internship->reg = $internship->reg + 1;
+            $internship->save();
+
+            return 1;
+        }
+
     }
 
     public function update($id, Request $request)
     {
-        $this->validate(
-            $request,
-            [
-                'limit' => 'required'
+        $companyreg = Company_Reg::findOrFail($id);
+        $companyreg->update($request->all());
 
-            ],
-            [
-                'limit.required' => 'Thất bại, Mời nhập sĩ số của doanh nghiệp'
-            ]
-        );
-        $company = Internship_Company::findOrFail($id);
-        $company->id_company = $request->id_company;
-        $company->limit = $request->limit;
-
-        $company->update();
         return 1;
-    }
-
-    public function showOne($id)
-    {
-        $data = DB::table('users as u')
-            ->select('ci.id', 'c.id as id_company', 'u.name', 'ci.limit')
-            ->join('companies as c', 'c.id_user', 'u.id')
-            ->join('internship_company as ci', 'ci.id_company', 'c.id')
-            ->where('ci.id', $id)
-            ->get();
-        return response()->json($data);
-    }
-
-    public function show($id)
-    {
-        $data = DB::table('users as u')
-            ->select('ci.id', 'u.name', 'u.phone', 'u.email', 'c.address', 'ci.limit', 'ci.reg')
-            ->join('companies as c', 'c.id_user', 'u.id')
-            ->join('internship_company as ci', 'ci.id_company', 'c.id')
-            ->where('ci.id_internship_time', $id)
-            ->get();
-        return response()->json($data);
-    }
-
-    // Lấy danh sách công ty chưa đăng ký trong kỳ thực tập $id
-    public function getCompany($id)
-    {
-        $data = DB::select('select c.id,u.name from users u join companies c on c.id_user=u.id
-            where c.id not in (select id_company from internship_company where id_internship_time = ?)', [$id]);
-        return $data;
-        $data = DB::table('users as u')
-            ->select('c.id', 'u.name', 'ci.limit')
-            ->join('companies as c', 'c.id_user', 'u.id')
-            ->join('internship_company as ci', 'ci.id_company', 'c.id')
-            ->where('ci.id_internship_time', $id)
-            ->get();
-        return response()->json($data);
     }
 
     public function delete($id)
     {
-        Internship_Company::findOrFail($id)->delete();
-        return response('Xóa thành công', 200);
-    }
+        $companyreg = Company_Reg::find($id);
+        $companyreg->delete();
 
-    /*
-        http://localhost:8000/companyreg/search/company/reg?tukhoa=(id) => để tìm kiếm theo id
-    */
-    public function search(Request $request)
-    {
-        $company = Internship_Company::where('id', 'like', '%' . $request->tukhoa . '%')->get();
-        return response($company, 200);
+        $internship = Internship_Company::find($companyreg->id_internship_company);
+        if ($internship->reg > 0) {
+            $internship->reg = $internship->reg - 1;
+            $internship->save();
+        }
+
+        return 1;
     }
 }

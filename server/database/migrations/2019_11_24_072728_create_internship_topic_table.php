@@ -18,7 +18,6 @@ class CreateInternshipTopicTable extends Migration
             $table->integer('id_user');
             $table->integer('id_topic');
             $table->integer('id_internship_time');
-            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }

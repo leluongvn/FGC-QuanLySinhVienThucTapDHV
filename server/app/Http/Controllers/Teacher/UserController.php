@@ -3,22 +3,49 @@
 namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
+use App\Model\Role;
 use App\Model\Teacher;
 use App\Model\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
 class UserController extends Controller
 {
+    public function getTeachers(){
+        $role = Role::find(Auth::user()->id_role);
+        if ($role->name === "Trưởng bộ môn") {
+            $sub = Teacher::where('id_user', Auth::user()->id)->get();
+            $data = DB::table('users as u')
+                ->select('t.id', 't.msgv', 't.id_user', 'u.name', 'u.email', 'u.phone', 't.fields', 'u.status', 'u.note')
+                ->join('teachers as t', 't.id_user', 'u.id')
+                ->where('u.status', 1)
+                ->where('t.id_subject', $sub[0]->id_subject)
+                ->get();
+            return $data;
+        } else if ($role->name === "Admin") {
+            $data = DB::table('users as u')
+                ->select('t.id', 't.msgv', 't.id_user', 'u.name', 'u.email', 'u.phone', 't.fields', 'u.status', 'u.note')
+                ->join('teachers as t', 't.id_user', 'u.id')
+                ->where('u.status', 1)
+                ->get();
+            return $data;
+        }
+    }
+
     public function showAllTeachers($subject)
     {
-        $data = DB::table('users as u')
-            ->select('t.id', 't.msgv', 't.id_user', 'u.name', 'u.email', 'u.phone', 't.fields', 'u.status', 'u.note')
-            ->join('teachers as t', 't.id_user', 'u.id')
-            ->where('t.id_subject', $subject)
-            ->get();
-        return $data;
+        $role = Role::find(Auth::user()->id_role);
+        if ($role->name === "Admin") {
+            $data = DB::table('users as u')
+                ->select('t.id', 't.msgv', 't.id_user', 'u.name', 'u.email', 'u.phone', 't.fields', 'u.status', 'u.note')
+                ->join('teachers as t', 't.id_user', 'u.id')
+                ->where('u.status', 1)
+                ->where('t.id_subject', $subject)
+                ->get();
+            return $data;
+        }
     }
 
     public function showOneTeachers($id)

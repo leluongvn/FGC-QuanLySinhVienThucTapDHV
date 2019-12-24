@@ -8,7 +8,7 @@ class Topic extends Model
 {
     protected $table = 'topics';
 
-    protected $fillable = ['id_internship_type','name','content','status'];
+    protected $fillable = ['id_internship_type','name','file','note','status'];
 
     public $timestamps=true;
 }

@@ -1,49 +1,53 @@
 <template>
-<section class="login-content">
-    <div class="logo">
-        <h1>Vali</h1>
-    </div>
-    <div class="login-box">
-        <div class="login-form">
-            <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>
-            <div class="form-group">
-                <label class="control-label">USERNAME</label>
-                <input v-model="user.email" value="phongba@gmail.com" class="form-control" type="text" placeholder="Email" autofocus>
-            </div>
-            <div class="form-group">
-                <label class="control-label">PASSWORD</label>
-                <input v-model="user.password" value="123456" class="form-control" type="password" placeholder="Password">
-            </div>
-            <div class="form-group">
-                <div class="utility">
-                    <div class="animated-checkbox">
-                        <label>
-                            <input type="checkbox"><span class="label-text">Stay Signed in</span>
-                        </label>
-                    </div>
-                    <p class="semibold-text mb-2"><a href="#" data-toggle="flip">Forgot Password ?</a></p>
+<div>
+    <!-- header -->
+    <nav class="navbar navbar-expand-sm">
+        <a class="navbar-brand ml-auto" href="#"><img src="../assets/logo.png" alt=""> </a>
+        <ul class="navbar-nav mr-auto">
+
+            <li class="nav-item d-none d-md-block">
+                <h4 class="text-light">
+                    <span class="nav-text">
+                        TRƯỜNG ĐẠI HỌC VINH</span> <br>
+                    CỔNG THÔNG TIN SINH VIÊN THỰC TẬP
+                </h4>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- login -->
+    <div class="login-content">
+        <div class="login login-box">
+            <h4 class="text-center">Đăng nhập</h4>
+            <hr class="mt-0" width="100%">
+            <div class="input-group mb-3 ">
+                <div class="input-group-prepend ">
+                    <span class="input-group-text " id="basic-addon1 ">
+                        <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                    </span>
                 </div>
+                <input v-model="user.email" value="" class="form-control" type="text" placeholder="Email" autofocus>
             </div>
-            <div class="form-group btn-container">
-                <button @click="login" class="btn btn-primary btn-block"><i class="fa fa-sign-in fa-lg fa-fw"></i>SIGN IN</button>
+
+            <div class="input-group mb-3 ">
+                <div class="input-group-prepend ">
+                    <span class="input-group-text " id="basic-addon1 ">
+                        <i class="fa fa-key" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <input v-model="user.password" value="123456" class="form-control" type="password" placeholder="Mật khẩu">
             </div>
+            <div class="clearfix ">
+                <span class="float-left"><a href="#" style="text-decoration:none">Quên mật khẩu</a></span>
+                <span class="float-right">
+                    <button class="btn text-light" style="background:#2980b9" @click="login">Đăng nhập</button>
+                </span>
+            </div>
+            <hr>
+            <div class="text-center"><span class="mx-auto ">Email hỗ trợ: sv.internship@vinhuni.edu.vn</span></div>
         </div>
-        <form class="forget-form" action="index.html">
-            <h3 class="login-head"><i class="fa fa-lg fa-fw fa-lock"></i>Forgot Password ?</h3>
-            <div class="form-group">
-                <label class="control-label">EMAIL</label>
-                <input class="form-control" type="text" placeholder="Email">
-            </div>
-            <div class="form-group btn-container">
-                <button class="btn btn-primary btn-block"><i class="fa fa-unlock fa-lg fa-fw"></i>RESET</button>
-            </div>
-            <div class="form-group mt-3">
-                <p class="semibold-text mb-0"><a href="#" data-toggle="flip"><i class="fa fa-angle-left fa-fw"></i> Back
-                        to Login</a></p>
-            </div>
-        </form>
     </div>
-</section>
+</div>
 </template>
 
 <script>
@@ -51,7 +55,7 @@ export default {
     data() {
         return {
             user: {
-                email: "phongba@gmail.com",
+                email: "admin@gmail.com",
                 password: "123456"
             },
             str: ''
@@ -82,7 +86,7 @@ export default {
                 },
                 response => {
                     console.log(response);
-                    
+
                     this.$noty.error("Thất bại, Kiểm tra lại email và mật khẩu :(");
                 }
             );
@@ -100,6 +104,52 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+/*  */
 
+body,
+html {
+    height: 100%;
+    background-color: #ecf0f1 !important;
+    ;
+}
+
+/*  */
+.navbar {
+    background-color: #2980b9;
+}
+
+.navbar-brand img {
+    width: 100px;
+}
+
+h4 {
+    font-weight: 600;
+}
+
+.nav-text {
+    color: white;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+.navbar-brand {
+    color: white;
+}
+
+/*  */
+
+.login {
+    display: block;
+    background-color: white;
+    width: 400px;
+    padding: 20px;
+}
+
+.login {
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+}
 </style>

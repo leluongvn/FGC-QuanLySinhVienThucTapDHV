@@ -4,7 +4,7 @@
     <div class="row header">
         <div class="col-sm-12 text-center">
             <h4 style="color: rgb(41, 128, 185);text-transform: uppercase;">Hồ sơ thực tập ngành Công nghệ thông tin</h4>
-            <hr width="10%">
+            <hr width="10%" class="mt-0 mb-0">
             <div style="display:inline-block">
                 <label>Học phần:</label>
                 <select style="width:200px" v-model="select_id" placeholder aria-controls="sampleTable" class="form-control form-control-sm" @change="pushID($event)">

@@ -17,6 +17,8 @@ class CreateCompanyRegTable extends Migration
             $table->bigIncrements('id');
             $table->integer('id_student_reg');
             $table->integer('id_internship_company');
+            $table->integer('review_star')->default(0);
+            $table->string('review_comment')->nullable();
             $table->timestamps();
         });
     }

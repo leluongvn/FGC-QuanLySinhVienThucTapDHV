@@ -311,7 +311,7 @@ export default {
         },
         getInstructor() {
             //lấy danh sách sinh viên của giáo viên hưỡng dẫn
-            this.$http.get("api/instructor/" + this.insert_instructor.id_teacher + "/" + this.$route.params.id + "/" + 1).then(
+            this.$http.get("api/instructor/" + this.insert_instructor.id_teacher + "/" + this.$route.params.id).then(
                 response => {
                     this.instructor = response.body;
                     // Lấy tổng số bản ghi
@@ -319,7 +319,11 @@ export default {
                 }
             );
             //lấy danh sách sinh viên của hệ thống thông tin chưa có giáo viên hưỡng dẫn
-            this.$http.get("api/student/not-instructor/" + this.$route.params.id + "/" + 1).then(
+            this.$http.get("api/student/not-instructor/" + this.$route.params.id + "/" + 1, {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(
                 response => {
                     this.option_student_instructor = response.body;
                 }
@@ -328,12 +332,16 @@ export default {
     },
     created() {
         // lấy danh sách giáo viên của hệ thống thông tin
-        this.$http.get('api/teacher/1').then(
+        this.$http.get('api/teacher', {
+            headers: {
+                Authorization: this.$cookie.get('token')
+            }
+        }).then(
             response => {
                 this.option_teacher = response.body;
                 this.insert_instructor.id_teacher = this.option_teacher[0].id;
                 //lấy danh sách sinh viên của giáo viên hưỡng dẫn
-                this.$http.get("api/instructor/" + this.insert_instructor.id_teacher + "/" + this.$route.params.id + "/" + 1, {
+                this.$http.get("api/instructor/" + this.insert_instructor.id_teacher + "/" + this.$route.params.id, {
                     headers: {
                         Authorization: this.$cookie.get('token')
                     }
@@ -342,8 +350,6 @@ export default {
                         this.instructor = response.body;
                         // Lấy tổng số bản ghi
                         this.totalRows = this.instructor.length;
-                        console.log(response.body);
-                        
                     }
                 );
             }

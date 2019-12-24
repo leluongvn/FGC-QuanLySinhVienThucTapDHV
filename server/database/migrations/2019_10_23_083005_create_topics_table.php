@@ -17,8 +17,9 @@ class CreateTopicsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('id_internship_type');
             $table->string('name');
-            $table->string('content');
+            $table->string('file')->nullable();
             $table->integer('status')->default(1);
+            $table->string('note');
             $table->timestamps();
         });
     }

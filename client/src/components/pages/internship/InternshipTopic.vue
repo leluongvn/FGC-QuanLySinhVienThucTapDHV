@@ -47,7 +47,7 @@
                     </b-form-group>
                     <div class="col-12 text-center mt-2">
                         <b-button size="sm" variant="info" @click="insertTopic">
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Xong
+                            <i class="fa fa-plus-square" aria-hidden="true"></i> Xong
                         </b-button>
                     </div>
                 </div>
@@ -62,21 +62,23 @@
                     {{ data.index + 1 }}
                 </template>
 
+                <template v-slot:cell(note)="data">
+                    <span class="d-inline-block text-truncate" style="max-width: 150px;">
+                        {{data.value}}
+                    </span>
+                </template>
+
+                <template v-slot:cell(file)="data">
+                    <a class="badge badge-success btn-sm btn text-light font-weight-light" @click="download(data.item.id_topic,data.item.file)"><i class="icon ion-md-download m-0"></i></a>
+                </template>
+
                 <template v-slot:cell(actions)="data">
                     <div class="btn-group">
-                        <a class="badge badge-warning btn-sm btn bg-dark text-light font-weight-light px-2" @click="data.toggleDetails" style="font-size: 13px !important">@</a>
-                        <a class="badge badge-warning btn-sm btn" v-b-modal.modal-update @click="getUpdate(data.item.id)"><i class="fa fa-lg fa-edit"></i></a>
+                        <a class="badge badge-warning btn-sm btn" v-b-modal.modal-update @click="getUpdate(data.item.id_topic)"><i class="fa fa-lg fa-edit"></i></a>
                         <a class="badge badge-danger btn-sm btn text-black font-weight-light" @click="delTopic(data.item.id)"><i class="fa fa-lg fa-trash"></i></a>
                     </div>
                 </template>
 
-                <template v-slot:row-details="data">
-                    <!-- <b-card> -->
-                    <ul>
-                        <li v-for="(value, key) in data.item" :key="key">{{ key }}: {{ value }}</li>
-                    </ul>
-                    <!-- </b-card> -->
-                </template>
             </b-table>
         </b-row>
         <!-- Phân trang hiện thị -->
@@ -97,19 +99,33 @@
         <!-- kết thúc dữ liệu table -->
 
         <!-- modal sửa dữ liệu-->
-        <b-modal ref="modal" id="modal-update" centered size="sm" hide-header hide-footer>
+        <b-modal ref="modal" id="modal-update" centered size="md" hide-header hide-footer>
             <b-form @submit.stop.prevent>
                 <div class="row">
                     <h6 class="text-center mt-2 col-10">Cập nhật đề tài</h6>
                     <i @click="hide_modal" class="fa fa-times col-2 text-right" aria-hidden="true"></i>
-                    <!-- <b-form-group class="col-12 mb-0" label-size="sm" id="fieldset-1" label="Chọn đề tài:" label-for="input-1">
-                                <select v-model="postTopic.id_topic" class="form-control form-control-sm">
-                                    <option value="null">-----------</option>
-                                    <option v-for="(item, index) in optionCreate" :key="index" :value="item.id">{{item.name}}</option>
-                                </select>
-                            </b-form-group> -->
+                    <hr class="my-1" width="90%">
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <b-form-group label-size="sm" label="Tên đề tài:" label-for="input-1">
+                            <b-form-input v-model="updateTopic.name" size="sm" id="input-1" trim></b-form-input>
+                        </b-form-group>
+                        <!-- file đính kèm -->
+                        <div class="input-group input-group-sm">
+                            <div class="custom-file">
+                                <input browser="chọn" type="file" ref="file" v-on:change="onChangeFileUpload()" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                                <label class="custom-file-label " for="inputGroupFile01">{{ file ? newFile : oldFile }}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <b-form-group label-size="sm" class="mb-0" label="Mô tả:" label-for="textarea-formatter">
+                            <b-form-textarea rows="3" id="textarea-formatter" v-model.trim="updateTopic.note"></b-form-textarea>
+                        </b-form-group>
+                    </div>
                     <div class="col-12 text-center mt-2">
-                        <b-button size="sm" variant="warning">
+                        <b-button size="sm" type="submit" variant="warning" @click="update(updateTopic.id)">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Xong
                         </b-button>
                     </div>
@@ -131,10 +147,14 @@ export default {
             topics: [],
             optionCreate: [],
             postTopic: {
-                id_user: 3,
+                id_user: 4,
                 id_internship_time: this.$route.params.id,
                 id_topic: null
             },
+            updateTopic: {
+                file: ''
+            },
+            file: '',
             // -----------------------------------------------
             fields: [{
                 field: 'index',
@@ -148,34 +168,49 @@ export default {
             }, {
                 field: 'name',
                 key: 'name',
-                label: 'Tê đề tài',
+                label: 'Tên đề tài',
                 sortDirection: 'desc',
                 sortable: true,
                 thStyle: {
                     color: '#fff',
-                    background: '#2980b9'
+                    background: '#2980b9',
+                    minWidth: '200px'
                 },
                 thClass: 'text-center'
             }, {
-                field: 'content',
-                key: 'content',
-                class: 'text-center',
-                label: 'Nội dung',
+                field: 'create_by',
+                key: 'create_by',
+                label: 'Người tạo',
+                sortDirection: 'desc',
                 sortable: true,
                 thStyle: {
                     color: '#fff',
-                    background: '#2980b9'
+                    background: '#2980b9',
+                    minWidth: '120px'
                 },
                 thClass: 'text-center'
             }, {
-                field: 'status',
-                key: 'status',
+                field: 'note',
+                key: 'note',
                 class: 'text-center',
-                label: 'Trạng thái',
+                label: 'Mô tả',
                 sortable: true,
                 thStyle: {
                     color: '#fff',
-                    background: '#2980b9'
+                    background: '#2980b9',
+                    minWidth: '150px'
+                },
+                thClass: 'text-center'
+            }, {
+                field: 'file',
+                key: 'file',
+                class: 'text-center',
+                label: 'File đính kèm',
+                sortable: true,
+                thStyle: {
+                    color: '#fff',
+                    background: '#2980b9',
+                    minWidth: '100px'
                 },
                 thClass: 'text-center'
             }, {
@@ -211,6 +246,14 @@ export default {
                         value: f.key
                     }
                 })
+        },
+        newFile() {
+            var str = this.file.name;
+            return str.substring(0, 15) + ' ...';
+        },
+        oldFile() {
+            var str = this.updateTopic.file;
+            return str.substring(0, 15) + ' ...';
         }
     },
     methods: {
@@ -221,9 +264,82 @@ export default {
             //ẩn modal update
             this.$refs['modal'].hide();
         },
+        download(id, name) {
+            this.$http.get("api/topic/download/" + id, {
+                responseType: 'blob'
+            }).then(
+                response => {
+                    var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+                    var fileLink = document.createElement('a');
+
+                    fileLink.href = fileURL;
+
+                    fileLink.setAttribute('download', name.substring(0, name.length - 4) + '.zip');
+                    document.body.appendChild(fileLink);
+
+                    fileLink.click();
+                    this.$noty.success("Thành công :)");
+                },
+                response => {
+                    this.$noty.error("Thất bại :)");
+                }
+            );
+        },
+        onChangeFileUpload() {
+            this.file = this.$refs.file.files[0];
+        },
+        getUpdate(id) {
+            // Lấy thông tin đề tài
+            this.$http.get("api/topic/one/" + id, {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(
+                response => {
+                    this.updateTopic = response.body;
+                }
+            );
+        },
+        update(id) {
+            this.$http.put("api/topic/" + id, this.updateTopic, {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(
+                response => {
+                    let formData = new FormData();
+                    formData.append('file', this.file);
+
+                    formData.set('_method', 'post')
+                    this.$http.post("api/topic/" + id, formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            Authorization: this.$cookie.get('token')
+                        }
+                    }).then(
+                        response => {
+                            this.getAllTopic();
+                            this.$noty.success("Thành công :)");
+                        }, response => {
+                            if (response.body.file !== undefined)
+                                this.$noty.error(response.body.file);
+                            else
+                                this.$noty.error("Thất bại :(");
+                        }
+                    );
+                },
+                response => {
+                    this.$noty.error("Thất bại :(");
+                }
+            );
+        },
         getAllTopic() {
             // Lấy danh sách đề tài của thực tập này
-            this.$http.get("api/internship_topic/" + this.$route.params.id).then(
+            this.$http.get("api/internship_topic/" + this.$route.params.id, {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(
                 response => {
                     this.topics = response.body;
                     // Lấy tổng số bản ghi
@@ -275,5 +391,9 @@ export default {
 <style lang="less" scoped>
 .table {
     font-size: 0.9rem !important;
+}
+
+.custom-file-input~.custom-file-label::after {
+    content: "File";
 }
 </style>

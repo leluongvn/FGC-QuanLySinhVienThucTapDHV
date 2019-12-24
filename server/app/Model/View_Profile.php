@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Model;
+
 use Illuminate\Database\Eloquent\Model;
 
-class File extends Model 
+class View_Profile extends Model
 {
-    protected $table='file';
+    protected $table = 'view_profile';
 }

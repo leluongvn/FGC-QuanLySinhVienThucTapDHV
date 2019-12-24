@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Topic;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Topic;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class TopicController extends Controller
@@ -13,7 +14,7 @@ class TopicController extends Controller
     public function show($type)
     {
         $data = DB::table('topics as t')
-            ->select('t.id', 't.name', 't.content', 't.status')
+            ->select('t.id', 't.name', 't.file', 't.note', 't.status')
             ->join('internship_type as i', 'i.id', 't.id_internship_type')
             ->where('i.id', $type)
             ->get();
@@ -25,6 +26,13 @@ class TopicController extends Controller
         return response()->json(Topic::find($id));
     }
 
+    public function download($id)
+    {
+        $file = Topic::find($id);
+        $path = 'upload/' . $file->file;
+        return response()->download($path);
+    }
+
     public function create(Request $request)
     {
         $this->validate(
@@ -32,26 +40,65 @@ class TopicController extends Controller
             [
                 'name' => 'required',
                 'id_internship_type' => 'required|exists:internship_type,id',
-                'content' => 'required|mimes:zip,rar'
+                'note' => 'required'
             ],
             [
                 'name.required' => 'Bạn chưa nhập tên đề tài',
                 'id_internship_type.required' => 'Mời nhập mã loại thực tập',
                 'id_internship_type.exists' => 'Bộ môn thực tập không tồn tại',
-                'content.required' => 'Bạn chưa chọn file cho đề tài',
-                'content.mimes' => 'Chỉ cho phép tệp nén zip,rar' 
+                'note.required' => 'Bạn chưa nhập phần mô tả cho đề tài'
             ]
         );
+
         $data = new Topic;
         $data->name = $request->name;
         $data->id_internship_type = $request->id_internship_type;
-        $file = $request->content;
-        $newName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '_' . $file->hashName();
-        $file->move('upload', $newName);
-        $data->content = $newName;
+        $data->note = $request->note;
+
         $data->save();
+
+        return $data;
+    }
+
+    public function status($id, Request $request)
+    {
+        $tus = Topic::find($id);
+        if ($request->status == 1) {
+            $tus->status = 0;
+            $tus->save();
+            return $tus->status;
+        } else if ($request->status == 0) {
+            $tus->status = 1;
+            $tus->save();
+            return $tus->status;
+        }
+    }
+
+    public function file($id, Request $request)
+    {
+        $this->validate(
+            $request,
+            [
+                'file' => 'mimes:zip,rar'
+            ],
+            [
+                'file.mimes' => 'Chỉ cho phép tệp nén zip/rar'
+            ]
+        );
+        if ($request->file != '') {
+            $data = Topic::find($id);
+            //file đính kèm
+            $file = $request->file;
+            $newName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '_' . $file->hashName();
+            $file->move('upload', $newName);
+            $data->file = $newName;
+
+            $data->save();
+        }
+
         return 1;
     }
+
     public function edit($id, Request $request)
     {
         $this->validate(
@@ -59,43 +106,28 @@ class TopicController extends Controller
             [
                 'name' => 'required',
                 'id_internship_type' => 'required|exists:internship_type,id',
-                'content' => 'required|mimes:zip,rar'
+                'note' => 'required'
             ],
             [
                 'name.required' => 'Bạn chưa nhập tên đề tài',
-                'id_internship_type.required' => 'Bạn chưa chọn loại thực tập',
-                'id_internship_type.exists' => 'Loại thực tập không có',
-                'content.required' => 'Bạn chưa chọn file cho đề tài',
-                'content.mimes' => 'Chỉ cho phép tệp nén zip,rar' 
+                'id_internship_type.required' => 'Mời nhập mã loại thực tập',
+                'id_internship_type.exists' => 'Bộ môn thực tập không tồn tại',
+                'note.required' => 'Bạn chưa nhập phần mô tả cho đề tài'
             ]
         );
 
         $data = Topic::find($id);
         $data->name = $request->name;
         $data->id_internship_type = $request->id_internship_type;
-        $path='upload/'.$data->content;
-        unlink(env('PUBLIC_PATH', base_path('public')) . ($path ? '/' . $path : $path));
-        $file = $request->content;
-        $newName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '_' . $file->hashName();
-        $file->move('upload', $newName);
-        $data->content = $newName;
+        $data->note = $request->note;
+
         $data->save();
-        return 1;
+        return $id;
     }
 
     public function destroy($id)
     {
         Topic::find($id)->delete();
         return 1;
-    }
-
-    public function doDownload($id){
-        $file=Topic::find($id);
-        $path='upload/'.$file->content;
-        $path2=env('PUBLIC_PATH', base_path('public')) . ($path ? '/' . $path : $path);
-        return response()->download($path2,'download.zip',array(
-            'Content-Type: application/octet-stream',
-            'Content-Length: '. filesize($path2)
-        ));
     }
 }

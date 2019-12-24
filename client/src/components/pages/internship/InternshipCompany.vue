@@ -255,7 +255,7 @@ export default {
         },
         delCompany(id) {
             //xóa doanh nghiệp ra khỏi ds đăng ký của sinh viên
-            this.$http.delete("api/companyreg/" + id).then(
+            this.$http.delete("api/internship_company/" + id).then(
                 response => {
                     this.$noty.success("Thành công :)");
                     this.getAllCompanyReg();
@@ -267,7 +267,7 @@ export default {
         },
         updateCompany() {
             // lấy thông tin công ty chưa đăng ký
-            this.$http.put("api/companyreg/" + this.getUpdateCompany.id, this.getUpdateCompany).then(
+            this.$http.put("api/internship_company/" + this.getUpdateCompany.id, this.getUpdateCompany).then(
                 response => {
                     this.$noty.success("Thành công :)");
                     this.getAllCompanyReg();
@@ -282,7 +282,7 @@ export default {
         },
         getUpCompany(id) {
             // lấy thông tin công ty chưa đăng ký
-            this.$http.get("api/companyreg/one/" + id).then(
+            this.$http.get("api/internship_company/one/" + id).then(
                 response => {
                     console.log(response.body);
                     this.getUpdateCompany = response.body[0];
@@ -294,7 +294,7 @@ export default {
                 this.$noty.error("Thất bại, Mời chon doanh nghiệp :(");
             else {
                 //Nhập thông tin doanh nghiệp có thể đăng ký
-                this.$http.post("api/companyreg", this.postCreateCompany).then(
+                this.$http.post("api/internship_company", this.postCreateCompany).then(
                     response => {
                         this.$noty.success("Thành công :)");
                         this.postCreateCompany.id_company = null;
@@ -311,7 +311,7 @@ export default {
         },
         getAllCompanyReg() {
             // lấy thông tin công ty đăng ký
-            this.$http.get("api/companyreg/" + this.id).then(
+            this.$http.get("api/internship_company/" + this.id).then(
                 respone => {
                     this.company_reg = respone.body;
                     // Lấy tổng số bản ghi
@@ -319,7 +319,7 @@ export default {
                 }
             );
             // lấy thông tin công ty chưa đăng ký
-            this.$http.get("api/companyreg/create/" + this.id).then(
+            this.$http.get("api/internship_company/create/" + this.id).then(
                 response => {
                     this.getCreateCompany = response.body;
                 }

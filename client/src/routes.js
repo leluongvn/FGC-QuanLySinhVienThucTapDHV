@@ -1,6 +1,7 @@
 // Home Page
 import HomePage from "./layout/HomeDefault.vue";
 import Login from "./pages/Login.vue";
+import Home from "./components/pages/Home.vue"
 // Teacher
 import Teacher from "./pages/teacher/Home.vue";
 //Tra cứu TT
@@ -14,7 +15,7 @@ import Create from "./pages/teacher/CreateInternship.vue";
 import Internship from "./components/pages/internship/InternshipTime.vue";
 import Tabs from "./components/pages/internship/Tabs.vue";
 import StudentReg from "./components/pages/internship/StudentReg.vue";
-import CompanyReg from "./components/pages/internship/CompanyReg.vue";
+import InternshipCompany from "./components/pages/internship/InternshipCompany.vue";
 import Point from "./components/pages/internship/InternshipPoint.vue";
 import Instructor from "./components/pages/internship/Instructor.vue";
 import InternshipTopic from "./components/pages/internship/InternshipTopic.vue";
@@ -43,7 +44,13 @@ const routes = [
         path: "/teacher",
         name: "teacher",
         component: Teacher,
+        redirect: "teacher/home",
         children: [
+          {
+            path: "home",
+            name: "home",
+            component: Home
+          },
           {
             path: "create",
             name: "create",
@@ -69,7 +76,7 @@ const routes = [
                   {
                     path: "company-reg/:id",
                     name: "company-reg",
-                    component: CompanyReg
+                    component: InternshipCompany
                   },
                   {
                     path: "point/:id",
@@ -131,7 +138,13 @@ const routes = [
         path: "student",
         name: "student",
         component: Student,
+        redirect: "student/home",
         children: [
+          {
+            path: "home",
+            name: "home",
+            component: Home
+          },
           {
             path: "company",
             name: "company",

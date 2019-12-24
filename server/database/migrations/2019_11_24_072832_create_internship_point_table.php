@@ -15,6 +15,7 @@ class CreateInternshipPointTable extends Migration
     {
         Schema::create('internship_point', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('id_student_reg');
             $table->integer('id_internship_topic');
             $table->string('product');
             $table->string('teacher_comment')->nullable();

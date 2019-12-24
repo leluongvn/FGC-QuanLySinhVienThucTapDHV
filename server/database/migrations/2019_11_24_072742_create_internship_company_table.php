@@ -19,6 +19,7 @@ class CreateInternshipCompanyTable extends Migration
             $table->integer('id_internship_time');
             $table->integer('limit');
             $table->integer('reg')->nullable();
+            $table->string('targets')->nullable();
             $table->timestamps();
         });
     }

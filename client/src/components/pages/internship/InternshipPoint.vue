@@ -146,8 +146,8 @@ export default {
                 },
                 thClass: 'text-center'
             }, {
-                field: 'topic',
-                key: 'topic',
+                field: 'topic_name',
+                key: 'topic_name',
                 label: 'Tên đề tài',
                 sortable: true,
                 thStyle: {
@@ -157,8 +157,9 @@ export default {
                 },
                 thClass: 'text-center'
             }, {
-                field: 'gvhd',
-                key: 'gvhd',
+                field: 'teacher_name',
+                key: 'teacher_name',
+                class: 'text-center',
                 label: 'GVHD',
                 sortable: true,
                 thStyle: {
@@ -168,8 +169,8 @@ export default {
                 },
                 thClass: 'text-center'
             }, {
-                field: 'dnhd',
-                key: 'dnhd',
+                field: 'company_name',
+                key: 'company_name',
                 label: 'DNHD',
                 sortable: true,
                 thStyle: {
@@ -240,6 +241,19 @@ export default {
         importExcel(data) {
             console.log(data.body)
         },
+        getDataTable() {
+            this.$http.get('api/internship_point/' + this.id, {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(
+                response => {
+                    this.items = response.body;
+                }, response => {
+
+                }
+            );
+        },
         insert() {
             // chèn dữ liệu vào database
         },
@@ -271,7 +285,7 @@ export default {
         this.totalRows = this.items.length
     },
     created() {
-
+        this.getDataTable();
     }
 };
 </script>

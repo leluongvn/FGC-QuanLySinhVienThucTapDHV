@@ -29,13 +29,13 @@ class StudentController extends Controller
             JOIN student_reg sr on sr.id_student=s.id
             WHERE sr.id_internship_time = ? and sr.id_subject = ?
             AND sr.id NOT in (SELECT i.id_student_reg from instructor i)", [$time, $subject]);
-        $data = DB::table('users as u')
-            ->select('sr.id', 'sr.id_student', 's.id_user', 'u.name', 'u.email', 'u.phone', 's.mssv', 's.birthday', 's.class', 'sr.total_point', 'u.status')
-            ->join('students as s', 's.id_user', 'u.id')
-            ->join('student_reg as sr', 'sr.id_student', 's.id')
-            ->where('sr.id_internship_time', $time)
-            ->where('sr.id_subject', $subject)
-            ->get();
+        // $data = DB::table('users as u')
+        //     ->select('sr.id', 'sr.id_student', 's.id_user', 'u.name', 'u.email', 'u.phone', 's.mssv', 's.birthday', 's.class', 'sr.total_point', 'u.status')
+        //     ->join('students as s', 's.id_user', 'u.id')
+        //     ->join('student_reg as sr', 'sr.id_student', 's.id')
+        //     ->where('sr.id_internship_time', $time)
+        //     ->where('sr.id_subject', $subject)
+        //     ->get();
 
         return $a;
     }
