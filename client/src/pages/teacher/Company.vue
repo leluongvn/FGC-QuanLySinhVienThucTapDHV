@@ -333,7 +333,8 @@ export default {
                     //css
                     thStyle: {
                         color: '#fff',
-                        background: '#2980b9'
+                        background: '#2980b9',
+                        width: '5%'
                     }
                 },
                 {
@@ -344,7 +345,8 @@ export default {
                     class: 'text-center',
                     thStyle: {
                         color: '#fff',
-                        background: '#2980b9'
+                        background: '#2980b9',
+                        width: '10%'
                     },
                     // thClass: 'text-center'
                 },
@@ -357,7 +359,8 @@ export default {
                     class: 'text-center',
                     thStyle: {
                         color: '#fff',
-                        background: '#2980b9'
+                        background: '#2980b9',
+                        width: '15%'
                     },
                     // thClass: 'text-center'
                 },
@@ -368,7 +371,8 @@ export default {
                     label: 'Số điện thoại',
                     thStyle: {
                         color: '#fff',
-                        background: '#2980b9'
+                        background: '#2980b9',
+                        width: '10%'
                     },
                     // thClass: 'text-center'
                 },
@@ -379,7 +383,8 @@ export default {
                     label: 'Địa chỉ',
                     thStyle: {
                         color: '#fff',
-                        background: '#2980b9'
+                        background: '#2980b9',
+                        width: '20%'
                     },
                     // thClass: 'text-center'
                 },
@@ -390,7 +395,8 @@ export default {
                     label: 'Lĩnh vực',
                     thStyle: {
                         color: '#fff',
-                        background: '#2980b9'
+                        background: '#2980b9',
+                        width: '10%'
                     },
 
                 },
@@ -401,7 +407,8 @@ export default {
                     label: 'Giới thiệu',
                     thStyle: {
                         color: '#fff',
-                        background: '#2980b9'
+                        background: '#2980b9',
+                        width: '25%'
                     },
 
                 },
@@ -412,7 +419,8 @@ export default {
                     label: 'Chọn',
                     thStyle: {
                         color: '#fff',
-                        background: '#2980b9'
+                        background: '#2980b9',
+                        width: '5%'
                     },
                     // thClass: 'text-center'
                 }

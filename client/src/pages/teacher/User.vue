@@ -313,7 +313,7 @@ export default {
             response => {
                 this.subject = response.body;
                 this.getAllData();
-                this.getOne(1);
+                this.getOne(5);
             }
         );
     }
