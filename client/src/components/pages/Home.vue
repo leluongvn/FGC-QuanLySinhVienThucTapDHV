@@ -5,12 +5,12 @@
             <!-- content : GIÁO VIÊN-->
             <div class="content1">
                 <div class="ct_header">
-                    <div class="ct_header1"> GIÁO VIÊN </div>
+                    <div class="ct_header1"><b> GIÁO VIÊN </b></div>
                     <div class="ct_header2"> <a href=""> Xem tất cả</a> </div>
                     <div style=" clear: both;"></div>
                 </div>
                 <div class="ct_base">
-                    <h4>Thông tin đáng chú ý</h4>
+                    <h4><b>Thông tin đáng chú ý</b></h4>
                     <ul class="list-unstyled">
                         <li>
                             <i class="fa fa-arrow-right"></i> <a href="demo_content.html">Thông báo
@@ -50,12 +50,12 @@
             <!-- content:  KHOA  -->
             <div class="content2">
                 <div class="ct_header">
-                    <div class="ct_header1">KHOA </div>
+                    <div class="ct_header1"><b>KHOA </b></div>
                     <div class="ct_header2"> <a href=""> Xem tất cả</a> </div>
                     <div style=" clear: both;"></div>
                 </div>
                 <div class="ct_base">
-                    <h4>Thông tin đáng chú ý</h4>
+                    <h4><b>Thông tin đáng chú ý</b></h4>
                     <ul class="list-unstyled">
                         <li>
                             <i class="fa fa-arrow-right"></i> <a href="demo_content.html">Thông báo
@@ -89,12 +89,12 @@
             <!-- content: CONGTY -->
             <div class="content3">
                 <div class="ct_header">
-                    <div class="ct_header1"> CÔNG TY </div>
+                    <div class="ct_header1"> <b>CÔNG TY </b></div>
                     <div class="ct_header2"> <a href=""> Xem tất cả</a> </div>
                     <div style=" clear: both;"></div>
                 </div>
                 <div class="ct_base">
-                    <h4>Thông tin đáng chú ý</h4>
+                    <h4><b>Thông tin đáng chú ý</b></h4>
                     <ul class="list-unstyled">
                         <li>
                             <i class="fa fa-arrow-right"></i> <a href="demo_content.html">Phân công
@@ -124,12 +124,12 @@
             <!-- content : thực tập -->
             <div class="content4">
                 <div class="ct_header">
-                    <div class="ct_header1"> THỰC TẬP </div>
+                    <div class="ct_header1"><b> THỰC TẬP</b> </div>
                     <div class="ct_header2"> <a href=""> Xem tất cả</a> </div>
                     <div style=" clear: both;"></div>
                 </div>
                 <div class="ct_base">
-                    <h4>Thông tin đáng chú ý</h4>
+                    <h4><b>Thông tin đáng chú ý</b></h4>
                     <ul class="list-unstyled">
                         <li>
                             <i class="fa fa-arrow-right"></i> <a href="demo_content.html">Phân nhóm
@@ -162,7 +162,10 @@ export default {
 /* content */
 
 /* header content */
-
+.content div h4{
+    font-size: 18px;
+    padding-top: 20px;
+}
 .ct_header1 {
     width: 50%;
     background: #2980b9;
@@ -171,7 +174,12 @@ export default {
     padding: 5px 10px 5px 10px;
     color: white;
 }
-
+ul li{
+    padding-top: 7px;
+}
+ul li a{
+    font-size: 14px;
+}
 .ct_header2 {
     text-align: right;
     width: 50%;
@@ -183,8 +191,11 @@ export default {
 
 .ct_header2 a {
     color: white;
+    font-size: 12px;
 }
-
+.ct_header1 b{
+    font-size: 14px;
+}
 .ct_header2 a:hover {
     text-decoration: none;
     color: 1c148d;
