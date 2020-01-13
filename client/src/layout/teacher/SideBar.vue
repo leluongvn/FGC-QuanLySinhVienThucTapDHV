@@ -25,30 +25,30 @@
             <nav-link :title="title.tctt">
                 <!-- item -->
                 <li>
-                    <router-link active-class="active" class="treeview-item" to="/teacher/user">
+                    <router-link v-if="role != 'Admin'" active-class="active" class="treeview-item" to="/teacher/user">
                         <i class="icon fa fa-circle-o"></i> Thông tin cá nhân
                     </router-link>
                 </li>
                 <!-- item -->
-                <li>
+                <li v-if="role == 'Admin'">
                     <router-link active-class="active" class="treeview-item" to="/teacher/list-teacher">
                         <i class="icon fa fa-circle-o"></i> Tra cứu giáo viên
                     </router-link>
                 </li>
                 <!-- item -->
-                <li>
+                <li v-if="role == 'Admin'">
                     <router-link active-class="active" class="treeview-item" to="/teacher/list-company">
                         <i class="icon fa fa-circle-o"></i> Tra cứu doanh nghiệp
                     </router-link>
                 </li>
                 <!-- item -->
-                <li>
+                <li v-if="role == 'Admin'">
                     <router-link active-class="active" class="treeview-item" to="/teacher/list-topic">
                         <i class="icon fa fa-circle-o"></i> Tra cứu đề tài
                     </router-link>
                 </li>
                 <!-- item -->
-                <li>
+                <li v-if="role == 'Admin'">
                     <router-link active-class="active" class="treeview-item" to="/teacher/list-student">
                         <i class="icon fa fa-circle-o"></i> Tra cứu sinh viên
                     </router-link>
@@ -67,7 +67,8 @@ export default {
             title: {
                 hstt: "Hồ sơ thực tập",
                 tctt: "Tra cứu thông tin"
-            }
+            },
+            role: this.$cookie.get('role')
         };
     },
     methods: {},

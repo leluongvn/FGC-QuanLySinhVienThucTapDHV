@@ -55,15 +55,15 @@
                         </h6>
                         <div class="row" style="border-right: 1px solid #dee2e6">
                             <!-- v-if="insert_info_reg.mssv === '' || insert_info_reg.mssv === null" -->
-                            <b-form-group class="col-md-12 mb-0" label-size="sm" id="fieldset-1" label="Chọn sinh viên:" label-for="input-1">
+                            <b-form-group class="col-md-12 mb-0" label-size="sm" label="Chọn sinh viên:" label-for="input-1">
                                 <select v-model.trim="insert_reg.id_student" class="form-control form-control-sm">
                                     <option value="null">----------</option>
                                     <option v-for="(item, index) in option_student" :key="index" :value="item.id">{{item.mssv}} - {{item.name}}</option>
                                 </select>
                             </b-form-group>
                             <!-- end -->
-                            <b-form-group class="col-md-12 mb-0" label-size="sm" id="fieldset-1" label="Điểm hệ 4:" label-for="input-1">
-                                <b-form-input v-model.trim="insert_reg.total_point" placeholder="3.20" type="number" id="input-1" size="sm" trim></b-form-input>
+                            <b-form-group class="col-md-12 mb-0" label-size="sm"label="Điểm hệ 4:" label-for="input-1">
+                                <b-form-input v-model.trim="insert_reg.total_point" placeholder="3.20" type="number" size="sm" trim></b-form-input>
                             </b-form-group>
                         </div>
                     </div>
@@ -73,24 +73,24 @@
                             <mark>- Thông tin sinh viên -</mark>
                         </h6>
                         <div class="row">
-                            <b-form-group class="col-md-6 mb-0" label-size="sm" id="fieldset-1" label="Mssv:" label-for="input-1">
-                                <b-form-input v-model.trim="insert_info_reg.mssv" placeholder="155D4802010135" type="text" id="input-1" size="sm" trim></b-form-input>
+                            <b-form-group class="col-md-6 mb-0" label-size="sm" label="Mssv:" label-for="input-1">
+                                <b-form-input v-model.trim="insert_info_reg.mssv" placeholder="155D4802010135" type="text" size="sm" trim></b-form-input>
                             </b-form-group>
                             <!-- end -->
-                            <b-form-group class="col-md-6 mb-0" label-size="sm" id="fieldset-1" label="Họ & tên:" label-for="input-1">
-                                <b-form-input v-model.trim="insert_info_reg.name" placeholder="Nguyễn Xuân Hạnh" type="text" id="input-1" size="sm" trim></b-form-input>
+                            <b-form-group class="col-md-6 mb-0" label-size="sm" label="Họ & tên:" label-for="input-1">
+                                <b-form-input v-model.trim="insert_info_reg.name" placeholder="Nguyễn Xuân Hạnh" type="text" size="sm" trim></b-form-input>
                             </b-form-group>
                             <!-- end -->
-                            <b-form-group class="col-md-2  mb-0" label-size="sm" id="fieldset-1" label="Lớp:" label-for="input-1">
-                                <b-form-input v-model.trim="insert_info_reg.class" type="text" placeholder="56K4" id="input-1" size="sm" trim></b-form-input>
+                            <b-form-group class="col-md-2  mb-0" label-size="sm" label="Lớp:" label-for="input-1">
+                                <b-form-input v-model.trim="insert_info_reg.class" type="text" placeholder="56K4" size="sm" trim></b-form-input>
                             </b-form-group>
                             <!-- end -->
-                            <b-form-group class="col-md-4 pl-md-0 mb-0" label-size="sm" id="fieldset-1" label="Ngày sinh:" label-for="input-1">
-                                <b-form-input v-model.trim="insert_info_reg.birthday" type="date" id="input-1" size="sm" trim></b-form-input>
+                            <b-form-group class="col-md-4 pl-md-0 mb-0" label-size="sm" label="Ngày sinh:" label-for="input-1">
+                                <b-form-input v-model.trim="insert_info_reg.birthday" type="date" size="sm" trim></b-form-input>
                             </b-form-group>
                             <!-- end -->
-                            <b-form-group class="col-md-6 mb-0" label-size="sm" id="fieldset-1" label="Email:" label-for="input-1">
-                                <b-form-input v-model.trim="insert_info_reg.email" placeholder="xuanhanh.setdy@gmail.com" type="email" id="input-1" size="sm" trim></b-form-input>
+                            <b-form-group class="col-md-6 mb-0" label-size="sm" label="Email:" label-for="input-1">
+                                <b-form-input v-model.trim="insert_info_reg.email" placeholder="xuanhanh.setdy@gmail.com" type="email" size="sm" trim></b-form-input>
                             </b-form-group>
                             <!-- end -->
                         </div>

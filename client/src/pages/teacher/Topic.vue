@@ -29,7 +29,7 @@
                     <!-- end search -->
                     <!--  -->
                     <div class="col-md-4 col-lg-3 col-6" style="display:-webkit-inline-box">
-                        <label class="d-none d-md-block col-form-label-sm">Bộ môn:</label>
+                        <label class="d-none d-md-block col-form-label-sm">Bộ môn: </label>
                         <select v-model="type_id" @change="getData" placeholder aria-controls="sampleTable" class="form-control form-control-sm d-md-inline">
                             <option v-for="(item,index) in type" :key="index" :value="item.id">{{item.name}}</option>
                         </select>

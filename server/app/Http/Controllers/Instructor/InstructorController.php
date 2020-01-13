@@ -35,7 +35,6 @@ class InstructorController extends Controller
                 ->join('student_reg as sr', 'sr.id_student', 's.id')
                 ->join('instructor as i', 'i.id_student_reg', 'sr.id')
                 ->where('sr.id_internship_time', $time)
-//                ->where('sr.id_subject', $subject)
                 ->where('i.id_teacher', $id)
                 ->get();
             return response()->json($data);
@@ -58,7 +57,7 @@ class InstructorController extends Controller
         $instructor = Instructor::findOrFail($id);
         $instructor->update($request->all());
 
-        return response()->json($instructor, 200);
+        return 1;
     }
 
     public function delete($id)

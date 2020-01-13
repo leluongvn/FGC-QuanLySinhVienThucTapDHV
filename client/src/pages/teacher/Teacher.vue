@@ -7,21 +7,69 @@
                     <h4>
                         Quản lý giảng viên
                     </h4>
+                    <div class="d-flex justify-content-center" style="align-items: baseline">
+                        <div class="d-flex justify-content-center" style="align-items: baseline">
+                        <h6>Trợ lý đào tạo: {{tldt.name}}</h6>
+                        <i v-b-modal.modal-tldt class="fa fa-pencil-square text-warning ml-2" aria-hidden="true"></i>
+                    </div>
+                    <span class="mx-2"> ---- </span> 
+                    <div class="d-flex justify-content-center" style="align-items: baseline">
+                        <h6>Trưởng bộ môn: {{tbm.name}}</h6>
+                        <i v-b-modal.modal class="fa fa-pencil-square text-warning ml-2" aria-hidden="true"></i>
+                    </div>
+                    </div>
+                    <!-- modal tldt-->
+                    <b-modal ref="modal" id="modal-tldt" centered size="sm" hide-header hide-footer>
+                        <b-form @submit.stop.prevent>
+                            <div class="row">
+                                <h6 class="text-center mt-2 col-10">Chọn trợ lý đào tạo:</h6>
+                                <i @click="hide_modal" class="fa fa-times col-2 text-right" aria-hidden="true"></i>
+                                <b-form-group class="col-md-12 mb-0" label-size="sm" id="fieldset-1" label-for="input-1">
+                                    <select v-model="id_tldt" class="form-control form-control-sm">
+                                        <option value="null">------------</option>
+                                        <option v-for="(item, index) in items" :key="index" :value="item.id">{{item.msgv}} - {{item.name}}</option>
+                                    </select>
+                                </b-form-group>
+                                <!-- end -->
+                                <div class="col-12 text-center mt-2">
+                                    <b-button size="sm" variant="info" @click="postTldt">
+                                        <i class="fa fa-plus-square" aria-hidden="true"></i> Xong
+                                    </b-button>
+                                </div>
+                            </div>
+                        </b-form>
+                        <!-- footer -->
+                    </b-modal>
+                    <!-- end -->
+                    <!-- modal tbm-->
+                    <b-modal ref="modal" id="modal" centered size="sm" hide-header hide-footer>
+                        <b-form @submit.stop.prevent>
+                            <div class="row">
+                                <h6 class="text-center mt-2 col-10">Chọn trưởng bộ môn:</h6>
+                                <i @click="hide_modal" class="fa fa-times col-2 text-right" aria-hidden="true"></i>
+                                <b-form-group class="col-md-12 mb-0" label-size="sm" id="fieldset-1" label-for="input-1">
+                                    <select v-model="id_teacher" class="form-control form-control-sm">
+                                        <option value="null">------------</option>
+                                        <option v-for="(item, index) in items" :key="index" :value="item.id">{{item.msgv}} - {{item.name}}</option>
+                                    </select>
+                                </b-form-group>
+                                <!-- end -->
+                                <div class="col-12 text-center mt-2">
+                                    <b-button size="sm" variant="info" @click="postTbm">
+                                        <i class="fa fa-plus-square" aria-hidden="true"></i> Xong
+                                    </b-button>
+                                </div>
+                            </div>
+                        </b-form>
+                        <!-- footer -->
+                    </b-modal>
+                    <!-- end -->
                     <p class="card-category">Xem thông tin, thêm, sửa, xóa giảng viên</p>
                     <hr width="20%" color="#2980b9">
-                    <div id="sampleTable_length" style="display: inline-block">
-                        <!-- search -->
-                        <label>Bộ môn</label>
-                        <select v-model="select_subject" @change="getData" placeholder aria-controls="sampleTable" class="form-control form-control-sm">
-                            <option v-for="(item,index) in subject" :value="item.id" :key="index">{{item.name}}</option>
-                        </select>
-                        <!-- end search -->
-                    </div>
                 </div>
-                <b-row class="mx-1 my-2 float-y">
-
+                <b-row class="my-2">
                     <!--Tìm kiếm-->
-                    <div>
+                    <div class="col-md-4 col-lg-3 col-6">
                         <b-form-group label-for="filterInput" class="mb-0">
                             <b-input-group size="sm">
                                 <b-form-input v-model="filter" type="search" id="filterInput" placeholder="Tìm kiếm"></b-form-input>
@@ -32,33 +80,41 @@
                         </b-form-group>
                     </div>
                     <!--End Tìm kiếm-->
+                    <div class="col-md-4 col-lg-3 col-6" style="display:-webkit-inline-box">
+                        <!-- search -->
+                        <label class="d-none d-md-block col-form-label-sm">Bộ môn: </label>
+                        <select v-model="select_subject" @change="getData" placeholder aria-controls="sampleTable" class="form-control form-control-sm d-md-inline">
+                            <option v-for="(item,index) in subject" :value="item.id" :key="index">{{item.name}}</option>
+                        </select>
+                        <!-- end search -->
+                    </div>
                     <!-- Thao tác -->
-                    <b-button-group size="sm">
-                        <!-- thêm dữ liệu -->
-                        <b-button title="Thêm mới" v-b-modal.modal-insert variant="primary"><i class="fa fa-lg fa-plus"></i></b-button>
-                        <!--End thêm dữ liệu-->
-                        <!-- import excel -->
-                        <!-- <b-button variant="success" @click="$refs.importExcel.$el.dblclick()"> -->
-                        <vue-xlsx-table title="Import Excel" class="btn p-0" @on-select-file="importExcel">
-                            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
-                        </vue-xlsx-table>
-                        <!-- </b-button> -->
-                        <!--End import excel-->
+                    <div class="col-md-4 col-lg-6 col-12 text-right">
+                        <b-button-group size="sm">
+                            <!-- thêm dữ liệu -->
+                            <b-button title="Thêm mới" v-b-modal.modal-insert variant="primary"><i class="fa fa-lg fa-plus"></i></b-button>
+                            <!--End thêm dữ liệu-->
+                            <!-- import excel -->
+                            <!-- <b-button variant="success" @click="$refs.importExcel.$el.dblclick()"> -->
+                            <vue-xlsx-table title="Import Excel" class="btn p-0" @on-select-file="importExcel">
+                                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                            </vue-xlsx-table>
+                            <!-- </b-button> -->
+                            <!--End import excel-->
 
-                        <!--export execl -->
-                        <b-button title="Exprot Excel" variant="success" @click="$refs.exportExcel.$el.click()">
-                            <i class="icon ion-md-download"></i>
-                            <vue-excel-xlsx class="d-none" ref="exportExcel" :data="items" :columns="fieldsExportExcel" :filename="'Giaovien'" :sheetname="'sheetname'"></vue-excel-xlsx>
-                        </b-button>
-                    </b-button-group>
+                            <!--export execl -->
+                            <b-button title="Exprot Excel" variant="success" @click="$refs.exportExcel.$el.click()">
+                                <i class="icon ion-md-download"></i>
+                                <vue-excel-xlsx class="d-none" ref="exportExcel" :data="items" :columns="fieldsExportExcel" :filename="'Giaovien'" :sheetname="'sheetname'"></vue-excel-xlsx>
+                            </b-button>
+                        </b-button-group>
+                    </div>
                     <!--End Thao tác-->
                 </b-row>
 
                 <!-- modal thêm dữ liệu-->
                 <b-modal id="modal-insert" centered size="lg" title="Thêm dữ liệu">
-
                     <b-form @submit.stop.prevent>
-
                         <div class="row" id="input">
                             <div class="col-md-7">
                                 <div class="row">
@@ -497,6 +553,10 @@ export default {
                 phone: ""
             },
 
+            id_tldt: null,
+            tldt:{},
+            id_teacher: null,
+            tbm: {},
             select_subject: 1,
             subject: [],
             showpassword: false,
@@ -597,6 +657,47 @@ export default {
     },
 
     methods: {
+        postTldt(){
+            this.$http.post("api/teacher/tldt", {
+                new_id: this.id_tldt,
+                old_id: this.tldt.id,
+            }, {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(
+                response => {
+                    this.getAllData();
+                    this.hide_modal();
+                    this.$noty.success("Thành công :)");
+                }, response => {
+                    console.log(response);
+
+                    this.$noty.error("Thất bại :(");
+                }
+            );
+        },
+        postTbm() {
+            this.$http.post("api/teacher/tbm", {
+                new_id: this.id_teacher,
+                old_id: this.tbm.id,
+            }, {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(
+                response => {
+                    this.getAllData();
+                    this.hide_modal();
+                    this.$noty.success("Thành công :)");
+                }, response => {
+                    this.$noty.error("Thất bại :(");
+                }
+            );
+        },
+        hide_modal() {
+            this.$refs['modal'].hide();
+        },
         importExcel(data) {
             console.log(data.body)
         },
@@ -614,6 +715,7 @@ export default {
         getData() {
             // Lấy tất cả giáo viên theo bộ môn
             this.getAllData();
+            this.id_teacher = null;
         },
 
         //start delete row table
@@ -644,10 +746,6 @@ export default {
                     this.$noty.success("Đã thêm một giảng viên thành công!");
                 },
                 response => {
-
-                    console.log(response);
-
-                    console.log(this.user);
                     if (response.body.msgv !== undefined)
                         this.$noty.error(response.body.msgv);
                     else if (response.body.name !== undefined)
@@ -695,8 +793,7 @@ export default {
             );
         },
         getAllData() {
-            // Lấy danh sách doanh nghiệp
-
+            // Lấy danh sách giảng viên
             this.$http.get("api/teacher/" + this.select_subject, {
                 headers: {
                     Authorization: this.$cookie.get('token')
@@ -708,12 +805,30 @@ export default {
                     this.totalRows = this.items.length
                 }
             );
+            this.$http.get("api/teacher/tbm/" + this.select_subject, {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(
+                response => {
+                    this.tbm = response.body;
+                }
+            );
+            this.$http.get("api/teacher/tldt", {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(
+                response => {
+                    this.tldt = response.body;
+                }
+            );
+            this.id_teacher = null;
         }
     },
     created() {
         this.$http.get("api/subject").then(
             response => {
-
                 this.subject = response.body;
                 this.select_subject = this.subject[0].id;
                 this.getAllData();
@@ -730,10 +845,6 @@ export default {
 
 #input {
     padding: 15px;
-}
-
-p {
-    padding-top: 15px;
 }
 
 .card-title {

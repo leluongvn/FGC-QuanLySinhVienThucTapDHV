@@ -49,13 +49,19 @@ class Internship_TopicController extends Controller
 
     public function create(Request $request)
     {
-        Internship_Topic::insert($request->all());
+        $data = new Internship_Topic();
+        $data->id_user = Auth::user()->id;
+        $data->id_topic = $request->id_topic;
+        $data->id_internship_time = $request->id_internship_time;
+
+        $data->save();
         return 1;
+        // Internship_Topic::insert($request->all());
     }
 
     public function edit($id, Request $request)
     {
-
+        
     }
 
     public function destroy($id)

@@ -34,7 +34,7 @@
         </b-row>
 
         <!-- modal thêm dữ liệu-->
-        <b-modal id="modal-insert" centered size="lg" title="Thêm dữ liệu">
+        <b-modal id="modal-insert" centered size="lg" title="Nhập điểm">
             <b-form @submit.stop.prevent>
 
             </b-form>
@@ -63,11 +63,8 @@
                 </template>
 
                 <template v-slot:row-details="data">
-                    <!-- <b-card> -->
-                    <ul>
-                        <li v-for="(value, key) in data.item" :key="key">{{ key }}: {{ value }}</li>
-                    </ul>
-                    <!-- </b-card> -->
+                    Nhận xét của giảng viên: {{data.item.teacher_comment}} <br>
+                    Nhận xét của của công ty: {{data.item.company_comment}}
                 </template>
             </b-table>
         </b-row>
@@ -89,18 +86,35 @@
         <!-- kết thúc dữ liệu table -->
 
         <!-- modal sửa dữ liệu-->
-        <b-modal id="modal-update" centered size="lg" title="Sửa dữ liệu">
+        <b-modal ref="modal" id="modal-update" centered size="md" hide-header hide-footer>
             <b-form @submit.stop.prevent>
-
+                <div class="row">
+                    <h6 class="text-center mt-2 col-10">cập nhật điểm sinh viên</h6>
+                    <i @click="hide_modal" class="fa fa-times col-2 text-right" aria-hidden="true"></i>
+                    <hr class="my-1" width="90%">
+                </div>
+                <div class="row">
+                    <b-form-group class="col-4" label-size="sm" label="Điểm giáo viên:" label-for="input-1">
+                        <b-form-input v-model="update.teacher_point" type="number" size="sm" trim></b-form-input>
+                    </b-form-group>
+                    <!-- end -->
+                    <b-form-group class="col-4" label-size="sm" label="Điểm công ty:" label-for="input-1">
+                        <b-form-input v-model="update.company_point" type="number" size="sm" trim></b-form-input>
+                    </b-form-group>
+                    <!-- end -->
+                    <b-form-group class="col-4" label-size="sm" label="Điểm tổng:" label-for="input-1">
+                        <b-form-input v-model="update.total_point" type="number" size="sm" trim></b-form-input>
+                    </b-form-group>
+                    <!-- end -->
+                    <div class="col-12 text-center mt-2">
+                        <b-button size="sm" type="submit" variant="warning" @click="postUpdate(getUpdate.id)">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Xong
+                        </b-button>
+                    </div>
+                </div>
             </b-form>
-            <!-- footer -->
-            <template v-slot:modal-footer="{ ok, cancel, hide }">
-                <b-button size="sm" variant="info" @click="update">
-                    <i class="fa fa-plus-square" aria-hidden="true"></i> Xong
-                </b-button>
-            </template>
         </b-modal>
-        <!-- kết thúc modal thêm dữ liệu -->
+        <!-- kết thúc modal sửa dữ liệu -->
     </b-container>
     <!-- ============================================================================================ -->
     <!-- ============================================================================================ -->
@@ -112,6 +126,11 @@ export default {
     data() {
         return {
             id: this.$route.params.id,
+            update: {
+                teacher_point: 0,
+                company_point: 0,
+                total_point: 0
+            },
             items: [],
             fields: [{
                 field: 'index',
@@ -122,6 +141,15 @@ export default {
                     color: '#fff',
                     background: '#2980b9'
                 }
+            }, {
+                key: 'actions',
+                label: 'Chọn',
+                class: 'text-center',
+                thStyle: {
+                    color: '#fff',
+                    background: '#2980b9'
+                },
+                thClass: 'text-center'
             }, {
                 field: 'mssv',
                 key: 'mssv',
@@ -190,7 +218,10 @@ export default {
                     background: '#2980b9',
                     minWidth: '35px'
                 },
-                thClass: 'text-center'
+                thClass: 'text-center',
+                formatter: (value, key, item) => {
+                    return value === null ? 0 : value
+                }
             }, {
                 field: 'company_point',
                 key: 'company_point',
@@ -202,11 +233,14 @@ export default {
                     background: '#2980b9',
                     minWidth: '35px'
                 },
-                thClass: 'text-center'
+                thClass: 'text-center',
+                formatter: (value, key, item) => {
+                    return value === null ? 0 : value
+                }
             }, , {
                 field: 'total_point',
                 key: 'total_point',
-                label: 'Tổng',
+                label: 'Điểm tổng',
                 class: 'text-center',
                 sortable: true,
                 thStyle: {
@@ -214,16 +248,10 @@ export default {
                     background: '#2980b9',
                     minWidth: '35px'
                 },
-                thClass: 'text-center'
-            }, {
-                key: 'actions',
-                label: 'Chọn',
-                class: 'text-center',
-                thStyle: {
-                    color: '#fff',
-                    background: '#2980b9'
-                },
-                thClass: 'text-center'
+                thClass: 'text-center',
+                formatter: (value, key, item) => {
+                    return value === null ? 0 : value
+                }
             }],
 
             totalRows: 1,
@@ -238,6 +266,10 @@ export default {
         }
     },
     methods: {
+        hide_modal() {
+            //ẩn modal update
+            this.$refs['modal'].hide();
+        },
         importExcel(data) {
             console.log(data.body)
         },
@@ -258,13 +290,21 @@ export default {
             // chèn dữ liệu vào database
         },
         getUpdate(id) {
-            // lấy dữ liệu update
+            this.$http.get('api/internship_point/one/' + id).then(response => {
+                this.update = response.body;
+            });
         },
-        update() {
-            // Sửa dữ liệu
-        },
-        del() {
-            // xóa dữ liệu
+        postUpdate(id) {
+            this.$http.put('api/internship_point/' + id, this.getUpdate, {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(response => {
+                    this.$noty.success("Thành công :)");
+                },
+                response => {
+                    this.$noty.error("Thất bại :(");
+                });
         }
     },
     computed: {

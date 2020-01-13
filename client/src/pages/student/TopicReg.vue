@@ -5,7 +5,7 @@
         <div id="sampleTable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h6>155D4802010135 - NGUYỄN XUÂN HẠNH - Ngành Công nghệ thông tin - K56</h6>
+                    <h6>{{user.mssv}} - {{user.name}} - {{user.class}} - Ngành Công nghệ thông tin</h6>
                     <h4 style="color:#006400">Danh sách đề tài có thể đăng ký trong thực tập</h4>
                     <hr width="20%" color="black" />
                 </div>
@@ -52,7 +52,7 @@
                         <template v-slot:cell(actions)="data">
                             <div class="btn-group">
                                 <a class="badge badge-warning btn-sm btn bg-dark text-light font-weight-light px-2" @click="data.toggleDetails" style="font-size: 13px !important">@</a>
-                                <a class="badge badge-primary btn-sm btn text-light font-weight-light"><i class="fa fa-check-square-o m-0" aria-hidden="true"></i></a>
+                                <a class="badge badge-primary btn-sm btn text-light font-weight-light" @click="regTopic(data.item.topic_id)"><i class="fa fa-check-square-o m-0" aria-hidden="true"></i></a>
                             </div>
                         </template>
                         <template v-slot:row-details="data">
@@ -112,7 +112,7 @@
                         </template>
 
                         <template v-slot:cell(actions)="data">
-                            <a class="badge badge-danger btn-sm btn text-light text-center font-weight-light"><i class="fa fa-times m-0" aria-hidden="true"></i></a>
+                            <a class="badge badge-danger btn-sm btn text-light text-center font-weight-light" @click="del(data.item.reg_id)"><i class="fa fa-times m-0" aria-hidden="true"></i></a>
                         </template>
                     </b-table>
                 </b-row>
@@ -129,6 +129,7 @@ import AppTitle from "../../components/pages/AppTitle";
 export default {
     data() {
         return {
+            user:{},
             selectID: 0,
             bool: true,
             optionType: [],
@@ -222,8 +223,20 @@ export default {
         importExcel(data) {
             console.log(data.body)
         },
-        insert() {
-            // chèn dữ liệu vào database
+        regTopic(id) {
+            if (this.table1.length !== 0) {
+                this.$noty.error('Thất bại, Chỉ được phép đăng ký 1 đề tài :(');
+            } else {
+                this.$http.post('api/internship_point', {
+                    id_student_reg: this.optionType[this.selectID].id_student_reg,
+                    id_internship_topic: id
+                }).then(response => {
+                    this.getOptionType();
+                    this.$noty.success("Thành công :)");
+                }, response => {
+                    this.$noty.error("Thất bại :)");
+                });
+            }
         },
         getUpdate(id) {
             // lấy dữ liệu update
@@ -231,8 +244,13 @@ export default {
         update() {
             // Sửa dữ liệu
         },
-        delete() {
-            // xóa dữ liệu
+        del(id) {
+            this.$http.delete('api/internship_point/' + id).then(response => {
+                this.getOptionType();
+                this.$noty.success("Thành công :)");
+            }, response => {
+                this.$noty.error("Thất bại :)");
+            });
         },
         download(id, name) {
             this.$http.get("api/topic/download/" + id, {
@@ -257,9 +275,17 @@ export default {
         },
         changeSubject() {
             this.getDataTable();
+            this.getDataTable1();
+        },
+        getDataTable1() {
+            this.$http.get('api/topic/reg/' + this.optionType[this.selectID].id_student_reg).then(
+                response => {
+                    this.table1 = response.body;
+                }
+            );
         },
         getDataTable() {
-            this.$http.get('api/topic/reg/' + this.optionType[this.selectID].id_student_reg + '/' + this.optionType[this.selectID].id).then(
+            this.$http.get('api/topic/list/' + this.optionType[this.selectID].id_student_reg + '/' + this.optionType[this.selectID].id).then(
                 response => {
                     this.table = response.body;
                     // Lấy tổng số bản ghi
@@ -277,8 +303,19 @@ export default {
                 response => {
                     this.optionType = response.body;
                     this.getDataTable();
+                    this.getDataTable1();
                 }
             );
+            // lấy thông tin user
+            this.$http.get('api/student/user', {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(response => {
+                this.user = response.body;
+                console.log(response.body);
+
+            });
         }
     },
     created() {

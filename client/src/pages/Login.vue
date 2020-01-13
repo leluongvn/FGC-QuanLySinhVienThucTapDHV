@@ -4,7 +4,6 @@
     <nav class="navbar navbar-expand-sm">
         <a class="navbar-brand ml-auto" href="#"><img src="../assets/logo.png" alt=""> </a>
         <ul class="navbar-nav mr-auto">
-
             <li class="nav-item d-none d-md-block">
                 <h4 class="text-light">
                     <span class="nav-text">
@@ -82,11 +81,8 @@ export default {
                         this.$router.push('/student');
                     } else
                         this.$noty.error("Thất bại, Kiểm tra lại email và mật khẩu :(");
-
                 },
                 response => {
-                    console.log(response);
-
                     this.$noty.error("Thất bại, Kiểm tra lại email và mật khẩu :(");
                 }
             );

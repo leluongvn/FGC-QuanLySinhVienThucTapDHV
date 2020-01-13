@@ -5,12 +5,14 @@
         <div id="sampleTable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h5>155D4802010135 - NGUYỄN XUÂN HẠNH - Ngành Công nghệ thông tin - K56</h5>
+                    <h5>{{user.mssv}} - {{user.name}} - {{user.class}} - Ngành Công nghệ thông tin</h5>
                     <hr width="20%" color="black" />
                 </div>
             </div>
             <div class="row">
-                <h6 class="col-md-12" style="color:#006400">BẢNG ĐIỂM HỌC PHẦN THỰC TẬP TOÀN KHÓA:</h6>
+                <div class="col-md-12">
+                    <h6 style="color:#006400">BẢNG ĐIỂM HỌC PHẦN THỰC TẬP TOÀN KHÓA:</h6>
+                </div>
             </div>
             <b-container fluid>
                 <!-- search -->
@@ -51,6 +53,11 @@
                             {{ data.index + 1 }}
                         </template>
 
+                        <template v-slot:cell(name_type)="data">
+                            {{ data.item.name_type}}<br>
+                            ({{data.item.start_time}} - {{data.item.end_time}})
+                        </template>
+
                         <template v-slot:cell(actions)="data">
                             <div class="btn-group">
                                 <a class="badge badge-warning btn-sm btn bg-dark text-light font-weight-light px-2" @click="data.toggleDetails" style="font-size: 13px !important">@</a>
@@ -58,11 +65,8 @@
                         </template>
 
                         <template v-slot:row-details="data">
-                            <!-- <b-card> -->
-                            <ul>
-                                <li v-for="(value, key) in data.item" :key="key">{{ key }}: {{ value }}</li>
-                            </ul>
-                            <!-- </b-card> -->
+                            Nhận xét của giảng viên: {{data.item.teacher_comment}} <br>
+                            Nhận xét của của công ty: {{data.item.company_comment}}
                         </template>
                     </b-table>
                 </b-row>
@@ -94,29 +98,9 @@
 export default {
     data() {
         return {
+            user: {},
             id: this.$route.params.id,
-            items: [{
-                    id: 1,
-                    name: "Thực tập cơ sở ngành CNTT",
-                    topic: "Quản lý sinh viên thực tập ĐHV",
-                    creator: "Lê Quốc Anh",
-                    note: "Phần mềm quản lý sinh viên thực tập viết bằng ngôn ngữ php + VueJs"
-                },
-                {
-                    id: 2,
-                    name: "Thực tập chuyên ngành CNTT",
-                    topic: "Quản lý xuất nhập kho",
-                    creator: "Phan Anh Phong",
-                    note: "Phần mềm quản lý xuất nhập kho bằng winform c#"
-                },
-                {
-                    id: 3,
-                    name: "Thực tập tốt nghiệp ngành CNTT",
-                    topic: "Website bán hàng",
-                    creator: "Lê Văn Tấn",
-                    note: "Website bán hàng bằng php"
-                }
-            ],
+            items: [],
             fields: [{
                 field: 'index',
                 key: 'index',
@@ -136,8 +120,8 @@ export default {
                 },
                 thClass: 'text-center'
             }, {
-                field: 'name',
-                key: 'name',
+                field: 'name_type',
+                key: 'name_type',
                 sortDirection: 'desc',
                 label: 'Học phần',
                 sortable: true,
@@ -148,8 +132,8 @@ export default {
                 },
                 thClass: 'text-center'
             }, {
-                field: 'topic',
-                key: 'topic',
+                field: 'topic_name',
+                key: 'topic_name',
                 label: 'Tên đề tài',
                 sortable: true,
                 thStyle: {
@@ -159,8 +143,8 @@ export default {
                 },
                 thClass: 'text-center'
             }, {
-                field: 'gvhd',
-                key: 'gvhd',
+                field: 'teacher_name',
+                key: 'teacher_name',
                 label: 'GVHD',
                 sortable: true,
                 thStyle: {
@@ -170,8 +154,8 @@ export default {
                 },
                 thClass: 'text-center'
             }, {
-                field: 'dnhd',
-                key: 'dnhd',
+                field: 'company_name',
+                key: 'company_name',
                 label: 'DNHD',
                 sortable: true,
                 thStyle: {
@@ -191,7 +175,10 @@ export default {
                     background: '#2980b9',
                     minWidth: '35px'
                 },
-                thClass: 'text-center'
+                thClass: 'text-center',
+                formatter: (value, key, item) => {
+                    return value === null ? 0 : value
+                }
             }, {
                 field: 'company_point',
                 key: 'company_point',
@@ -203,7 +190,10 @@ export default {
                     background: '#2980b9',
                     minWidth: '35px'
                 },
-                thClass: 'text-center'
+                thClass: 'text-center',
+                formatter: (value, key, item) => {
+                    return value === null ? 0 : value
+                }
             }, {
                 field: 'total_point',
                 key: 'total_point',
@@ -215,7 +205,10 @@ export default {
                     background: '#2980b9',
                     minWidth: '35px'
                 },
-                thClass: 'text-center'
+                thClass: 'text-center',
+                formatter: (value, key, item) => {
+                    return value === null ? 0 : value
+                }
             }],
 
             totalRows: 1,
@@ -233,17 +226,27 @@ export default {
         importExcel(data) {
             console.log(data.body)
         },
-        insert() {
-            // chèn dữ liệu vào database
-        },
-        getUpdate(id) {
-            // lấy dữ liệu update
-        },
-        update() {
-            // Sửa dữ liệu
-        },
-        del() {
-            // xóa dữ liệu
+        getDataTable() {
+            // lấy thông tin user
+            this.$http.get('api/student/user', {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(response => {
+                this.user = response.body;
+                // lấy data
+                this.$http.get('api/internship_point/' + this.user.id, {
+                    headers: {
+                        Authorization: this.$cookie.get('token')
+                    }
+                }).then(
+                    response => {
+                        console.log(response.body);
+
+                        this.items = response.body;
+                    }
+                );
+            });
         }
     },
     computed: {
@@ -264,7 +267,7 @@ export default {
         this.totalRows = this.items.length
     },
     created() {
-
+        this.getDataTable();
     }
 }
 </script>

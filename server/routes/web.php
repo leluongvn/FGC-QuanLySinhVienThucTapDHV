@@ -42,9 +42,16 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     // code phần giáo viên
     $router->group(['prefix' => 'teacher'], function () use ($router) {
-        $router->get('/{subject}', ['middleware' => 'auth', 'uses' => 'Teacher\UserController@showAllTeachers']);
+        $router->get('/{subject:[0-9]+}', ['middleware' => 'auth', 'uses' => 'Teacher\UserController@showAllTeachers']);
         $router->get('/', ['middleware' => 'auth', 'uses' => 'Teacher\UserController@getTeachers']);
-        $router->get('one/{id:[0-9]+}', 'Teacher\UserController@showOneTeachers');
+
+        $router->get('tldt', ['uses' => 'Teacher\UserController@getTldt']);
+        $router->post('tldt', ['middleware' => 'auth', 'uses' => 'Teacher\UserController@postTldt']);
+
+        $router->get('tbm/{id:[0-9]+}', ['middleware' => 'auth', 'uses' => 'Teacher\UserController@getTbm']);
+        $router->post('tbm', ['middleware' => 'auth', 'uses' => 'Teacher\UserController@postTbm']);
+        $router->get('one/{id:[0-9]+}', ['uses' => 'Teacher\UserController@showOneTeachers']);
+        $router->get('user', ['middleware' => 'auth', 'uses' => 'Teacher\UserController@getUser']);
         $router->post('/', 'Teacher\UserController@create');
         $router->put('/{id:[0-9]+}', 'Teacher\UserController@update');
         $router->delete('/{id:[0-9]+}', 'Teacher\UserController@delete');
@@ -103,10 +110,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     //đăng ký sinh viên
     $router->group(['prefix' => 'student'], function () use ($router) {
         $router->get('/', ['uses' => 'Student\UserController@getAll']);
-        $router->get('/{id}', 'Student\UserController@getSingle');
+        $router->get('/{id:[0-9]+}', 'Student\UserController@getSingle');
+        $router->get('user', ['middleware' => 'auth', 'uses' =>'Student\UserController@getUser']);
         $router->post('/', 'Student\UserController@create');
-        $router->put('{id}', 'Student\UserController@update');
-        $router->delete('{id}', 'Student\UserController@delete');
+        $router->put('{id:[0-9]+}', 'Student\UserController@update');
+        $router->delete('{id:[0-9]+}', 'Student\UserController@delete');
 
         // sinh vien dang ky thuc tap lọc qua internship_time
         $router->get('reg/{time}/{subject}', 'Student\StudentController@getAll');
@@ -131,7 +139,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->delete('/{id: [0-9]+}', ['uses' => 'Topic\TopicController@destroy']);
 
         // Đăng ký thực tập
-        $router->get('reg/{reg:[0-9]+}/{time:[0-9]+}',['uses' => 'Topic\RegController@show']);
+        $router->get('list/{reg:[0-9]+}/{time:[0-9]+}',['uses' => 'Topic\RegController@getListReg']);
+        $router->get('reg/{reg:[0-9]+}',['uses' => 'Topic\RegController@getReg']);
     });
 
     //code phần loại thực tập
@@ -157,18 +166,23 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['prefix' => 'internship_topic'], function () use ($router) {
         $router->get('/{id}', ['middleware' => 'auth', 'uses' => 'Internship\Internship_TopicController@show']);
         $router->get('getCreate/{id}', ['uses' => 'Internship\Internship_TopicController@getTopic']);
-        $router->post('/', ['uses' => 'Internship\Internship_TopicController@create']);
+        $router->post('/', ['middleware' => 'auth','uses' => 'Internship\Internship_TopicController@create']);
         $router->put('/{id:[0-9]+}', ['uses' => 'Internship\Internship_TopicController@edit']);
         $router->delete('/{id}', ['uses' => 'Internship\Internship_TopicController@destroy']);
     });
 
     //Đề tài thực tập
     $router->group(['prefix' => 'internship_point'], function () use ($router) {
-        $router->get('/{id:[0-9]+}', ['uses' => 'Internship\Internship_PointController@show']);
+        $router->get('/{id:[0-9]+}', ['middleware' => 'auth', 'uses' => 'Internship\Internship_PointController@show']);
+        $router->get('one/{id:[0-9]+}', ['uses' => 'Internship\Internship_PointController@showOne']);
+        $router->post('/', ['middleware' => 'auth','uses' => 'Internship\Internship_PointController@create']);
+        $router->put('/{id:[0-9]+}', ['middleware' => 'auth','uses' => 'Internship\Internship_PointController@update']);
+        $router->delete('/{id:[0-9]+}', ['uses' => 'Internship\Internship_PointController@delete']);
     });
 
     //  Xác thực User
     $router->group(['prefix' => 'user'], function () use ($router) {
+        $router->get('/',['middleware' => 'auth','uses' => 'Auth\AuthController@check']);
         $router->post('/login', ['uses' => 'Auth\AuthController@login']);
     });
 

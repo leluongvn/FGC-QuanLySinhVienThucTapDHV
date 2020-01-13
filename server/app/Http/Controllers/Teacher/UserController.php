@@ -13,6 +13,67 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+    public function getUser()
+    {
+        // return Auth::user()->id;
+        $data = DB::table('users as u')
+            ->select('t.id', 't.msgv', 't.id_user', 't.id_subject', 'u.name', 'u.password', 'u.email', 'u.phone', 't.fields', 'u.status', 'u.note')
+            ->join('teachers as t', 't.id_user', 'u.id')
+            ->where('u.id', Auth::user()->id) 
+            ->first();
+        return response()->json($data);
+    }
+
+    public function getTldt()
+    {
+        $data = DB::table('users as u')
+            ->select('u.id','u.name')
+            ->join('teachers as t', 't.id_user', 'u.id')
+            ->where('u.id_role',2)
+            ->first();
+        return response()->json($data);
+    }
+
+    public function postTldt(Request $request)
+    {
+        if(isset($request->old_id)){
+            $old_user = User::find($request->old_id);
+            $old_user->id_role = 4;
+            $old_user->save();
+        }
+        $new_user = User::find(Teacher::find($request->new_id)->id_user);
+
+        $new_user->id_role = 2;
+        $new_user->save();
+        return 1;
+    }
+
+    public function getTbm($id){
+        $data = DB::table('users as u')
+            ->select('u.id','u.name')
+            ->join('teachers as t', 't.id_user', 'u.id')
+            ->join('subjects as s', 't.id_subject', 's.id')
+            ->where('t.id_subject',$id)
+            ->where('u.id_role',3)
+            ->first();
+        return response()->json($data);
+    }
+
+    public function postTbm(Request $request)
+    {
+        if(isset($request->old_id)){
+            $old_user = User::find($request->old_id);
+
+            $old_user->id_role = 4;
+            $old_user->save();
+        }
+        $new_user = User::find(Teacher::find($request->new_id)->id_user);
+
+        $new_user->id_role = 3;
+        $new_user->save();
+        return 1;
+    }
+
     public function getTeachers(){
         $role = Role::find(Auth::user()->id_role);
         if ($role->name === "Trưởng bộ môn") {

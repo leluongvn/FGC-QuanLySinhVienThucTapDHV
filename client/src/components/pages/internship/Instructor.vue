@@ -18,7 +18,7 @@
             <!--  -->
             <div class="col-md-4 col-lg-6 col-6" style="display:-webkit-inline-box">
                 <label class="d-none d-md-block col-form-label-sm">Giảng viên:</label>
-                <select v-model="insert_instructor.id_teacher" placeholder aria-controls="sampleTable" class="form-control form-control-sm d-md-inline">
+                <select v-model="insert_instructor.id_teacher" @change="changeTeacher" placeholder aria-controls="sampleTable" class="form-control form-control-sm d-md-inline">
                     <option v-for="(item, index) in option_teacher" :key="index" :value="item.id">{{item.msgv}} - {{item.name}}</option>
                 </select>
             </div>
@@ -49,9 +49,9 @@
         <b-modal ref="modal-instructor" id="modal-insert" centered size="sm" hide-header hide-footer>
             <b-form @submit.stop.prevent>
                 <div class="row">
-                    <h6 class="text-center mt-2 col-10">Sinh viên hưỡng dẫn</h6>
+                    <h6 class="text-center mt-2 col-10">Chọn sinh viên hưỡng dẫn</h6>
                     <i @click="hide_modal" class="fa fa-times col-2 text-right" aria-hidden="true"></i>
-                    <b-form-group class="col-md-12 mb-0" label-size="sm" id="fieldset-1" label="Chọn sinh viên:" label-for="input-1">
+                    <b-form-group class="col-md-12 mb-0" label-size="sm" id="fieldset-1" label-for="input-1">
                         <select v-model="insert_instructor.id_student_reg" class="form-control form-control-sm">
                             <option value="null">------------</option>
                             <option v-for="(item, index) in option_student_instructor" :key="index" :value="item.id">{{item.mssv}} - {{item.name}}</option>
@@ -67,7 +67,6 @@
             </b-form>
             <!-- footer -->
         </b-modal>
-        </b-modal>
         <!-- kết thúc modal thêm dữ liệu -->
 
         <!-- table hiển thị dữ liệu -->
@@ -80,7 +79,7 @@
                 <template v-slot:cell(actions)="data">
                     <div class="btn-group">
                         <a class="badge badge-warning btn-sm btn bg-dark text-light font-weight-light px-2" @click="data.toggleDetails" style="font-size: 13px !important">@</a>
-                        <a class="badge badge-warning btn-sm btn" v-b-modal.modal-update @click="getUpdate(data.value.id)"><i class="fa fa-lg fa-edit"></i></a>
+                        <a class="badge badge-warning btn-sm btn" v-b-modal.modal-update @click="getUpdate(data.item.id)"><i class="fa fa-lg fa-edit"></i></a>
                         <a class="badge badge-danger btn-sm btn text-black font-weight-light" @click="delInstructor(data.item.id)"><i class="fa fa-lg fa-trash"></i></a>
                     </div>
                 </template>
@@ -115,17 +114,16 @@
         <b-modal ref="modal-instructor" id="modal-update" centered size="sm" hide-footer hide-header>
             <b-form @submit.stop.prevent>
                 <div class="row">
-                    <h6 class="text-center mt-2 col-10">Sinh viên hưỡng dẫn</h6>
+                    <h6 class="text-center mt-2 col-10">Chọn giáo viên hưỡng dẫn:</h6>
                     <i @click="hide_modal" class="fa fa-times col-2 text-right" aria-hidden="true"></i>
-                    <!-- <b-form-group class="col-md-12 mb-0" label-size="sm" id="fieldset-1" label="Chọn sinh viên:" label-for="input-1">
-                    <select v-model="insert_instructor.id_student_reg" class="form-control form-control-sm">
-                        <option value="null">------------</option>
-                        <option v-for="(item, index) in option_student_instructor" :key="index" :value="item.id">{{item.mssv}} - {{item.name}}</option>
-                    </select>
-                </b-form-group> -->
+                    <b-form-group class="col-12 mb-0" label-size="sm" id="fieldset-1" label-for="input-1">
+                        <select v-model="update.id_teacher" placeholder aria-controls="sampleTable" class="form-control form-control-sm">
+                            <option v-for="(item, index) in option_teacher" :key="index" :value="item.id">{{item.msgv}} - {{item.name}}</option>
+                        </select>
+                    </b-form-group>
                     <!-- end -->
                     <div class="col-12 text-center mt-2">
-                        <b-button size="sm" variant="warning">
+                        <b-button size="sm" variant="warning" @click="postUpdate">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Xong
                         </b-button>
                     </div>
@@ -151,6 +149,7 @@ export default {
                 id_student_reg: null,
             },
             instructor: [],
+            update: {},
             // ----------------------------------------
             fields: [{
                 field: 'index',
@@ -282,6 +281,32 @@ export default {
         hide_modal() {
             this.$refs['modal-instructor'].hide();
         },
+        changeTeacher() {
+            this.getInstructor();
+        },
+        getUpdate(id) {
+            this.$http.get('api/instructor/' + id, {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(response => {
+                this.update = response.body;
+                console.log(response.body);
+
+            });
+        },
+        postUpdate() {
+            this.$http.put('api/instructor/' + this.update.id, this.update, {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(response => {
+                this.getInstructor();
+                this.$noty.success("Thành công :)");
+            }, response => {
+                this.$noty.error("Thất bại :(");
+            });
+        },
         insertInstructor() {
             if (this.insert_instructor.id_student_reg == null || this.insert_instructor.id_student_reg == 'null')
                 this.$noty.error("Thất bại, Mời chọn sinh viên hưỡng dẫn :(");
@@ -311,7 +336,11 @@ export default {
         },
         getInstructor() {
             //lấy danh sách sinh viên của giáo viên hưỡng dẫn
-            this.$http.get("api/instructor/" + this.insert_instructor.id_teacher + "/" + this.$route.params.id).then(
+            this.$http.get("api/instructor/" + this.insert_instructor.id_teacher + "/" + this.$route.params.id, {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(
                 response => {
                     this.instructor = response.body;
                     // Lấy tổng số bản ghi
@@ -341,23 +370,7 @@ export default {
                 this.option_teacher = response.body;
                 this.insert_instructor.id_teacher = this.option_teacher[0].id;
                 //lấy danh sách sinh viên của giáo viên hưỡng dẫn
-                this.$http.get("api/instructor/" + this.insert_instructor.id_teacher + "/" + this.$route.params.id, {
-                    headers: {
-                        Authorization: this.$cookie.get('token')
-                    }
-                }).then(
-                    response => {
-                        this.instructor = response.body;
-                        // Lấy tổng số bản ghi
-                        this.totalRows = this.instructor.length;
-                    }
-                );
-            }
-        );
-        //lấy danh sách sinh viên của hệ thống thông tin
-        this.$http.get("api/student/not-instructor/" + this.$route.params.id + "/" + 1).then(
-            response => {
-                this.option_student_instructor = response.body;
+                this.getInstructor();
             }
         );
     }

@@ -8,12 +8,38 @@
     <div class="mx-3" style="display: -webkit-inline-box">
         <label class="col-form-label-sm">Hồ sơ:</label>
         <select @change="selectRouter" placeholder aria-controls="sampleTable" class="form-control form-control-sm">
-            <option value="1">Sinh viên đăng ký</option>
-            <option value="2">Doanh nghiệp đăng ký</option>
-            <option value="3">Hồ sơ điểm</option>
-            <option value="4">Phân GVHD</option>
-            <option value="5">Cập nhật đề tài</option>
-            <option value="6">Sinh viên hưỡng dẫn</option>
+            <!-- Admin -->
+            <template v-if="role == 'Admin'">
+                <option value="1">Sinh viên đăng ký</option>
+                <option value="2">Doanh nghiệp đăng ký</option>
+                <option value="3">Hồ sơ điểm</option>
+                <option value="4">Phân GVHD</option>
+                <option value="5">Cập nhật đề tài</option>
+            </template>
+            <!-- Trợ lý đào tạo -->
+            <template v-if="role == 'Trợ lý đào tạo'">
+                <option value="1">Sinh viên đăng ký</option>
+                <option value="2">Doanh nghiệp đăng ký</option>
+                <option value="3">Hồ sơ điểm</option>
+                <option value="5">Cập nhật đề tài</option>
+                <option value="6">Sinh viên hưỡng dẫn</option>
+            </template>
+            <!-- Trưởng bộ môn -->
+            <template v-if="role == 'Trưởng bộ môn'">
+                <option value="4">Phân GVHD</option>
+                <option value="5">Cập nhật đề tài</option>
+                <option value="6">Sinh viên hưỡng dẫn</option>
+            </template>
+            <!-- Giảng viên -->
+            <template v-if="role == 'Giảng viên'">
+                <option value="5">Cập nhật đề tài</option>
+                <option value="6">Sinh viên hưỡng dẫn</option>
+            </template>
+            <!-- Doanh nghiệp -->
+            <template v-if="role == 'Doanh nghiệp'">
+                <option value="5">Cập nhật đề tài</option>
+                <option value="6">Sinh viên hưỡng dẫn</option>
+            </template>
         </select>
     </div>
     <hr width="100%">
@@ -30,14 +56,7 @@ export default {
             id: this.$route.params.id,
             time: {},
             type: {},
-            role: {
-                sr: false,
-                cr: false,
-                ip: false,
-                i: false,
-                it: false,
-                si: false
-            }
+            role: this.$cookie.get('role')
         };
     },
     methods: {
@@ -62,8 +81,6 @@ export default {
                 case '6':
                     this.$router.push('/teacher/create/internship/guide-student/' + this.id);
                     break;
-                    // default:
-                    //     this.$router.push('/teacher/create/internship/student-reg/' + this.id);
             }
         }
     },
@@ -71,16 +88,15 @@ export default {
         // Lấp thông tin thực tập
         this.$http.get("api/internship_time/one/" + this.$route.params.id).then(
             response => {
-                // console.log(response.body);
                 this.time = response.body[0];
                 this.$http.get("api/internship_type/" + this.time.id_internship_type).then(
                     response => {
-                        // console.log(response.body);
                         this.type = response.body;
                     }
                 );
             }
         );
+        this.selectRouter(event);
     }
 };
 </script>

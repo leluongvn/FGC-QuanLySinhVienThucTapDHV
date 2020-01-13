@@ -21,80 +21,46 @@
     </div>
     <div class="col-md-9">
         <div class="tab-content">
-
             <div class="tab-pane fade active show" id="user-settings">
                 <div class="tile user-settings">
-
                     <form>
-                        <div class="row mb-4">
+                        <div class="row">
                             <!--Mã gv-->
-                            <input width="50%" type="hidden" class="form-control" v-model.trim="$v.userUpdate.msgv.$model" :class="{
-                    'is-invalid': $v.userUpdate.msgv.$error}" />
-                            <div class="col-md-6">
-                                <label>Họ & Tên:</label>
-                                <input width="50%" type="text" class="form-control" v-model.trim="$v.userUpdate.name.$model" :class="{
-                            'is-invalid': $v.userUpdate.name.$error}" />
-
-                                <div class="invalid-feedback">
-                                    <span v-if="!$v.userUpdate.name.required">Yêu cầu nhập thông tin họ tên!</span>
-                                </div>
+                            <div class="col-md-4">
+                                <label class="col-form-label-sm">Mã giảng viên:</label>
+                                <input disabled width="50%" :value="teacher.msgv" type="text" class="form-control form-control-sm" />
                             </div>
-                            <div class="col-md-6">
-                                <label>Bộ môn:</label>
-                                <select v-model="select_subject" @change="getData" placeholder aria-controls="sampleTable" class="form-control form-control-sm">
+                            <div class="col-md-4">
+                                <label class="col-form-label-sm">Họ & Tên:</label>
+                                <input disabled width="50%" :value="teacher.name" type="text" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="col-form-label-sm">Bộ môn:</label>
+                                <select disabled placeholder :value="teacher.id_subject" aria-controls="sampleTable" class="form-control form-control-sm">
                                     <option v-for="(item,index) in subject" :value="item.id" :key="index">{{item.name}}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 mb-1">
-                                <label>Email:</label>
-                                <input width="50%" type="text" class="form-control" v-model.trim="$v.userUpdate.email.$model" :class="{
-                          'is-invalid': $v.userUpdate.email.$error }" />
-
-                                <div class="invalid-feedback">
-                                    <span v-if="!$v.userUpdate.email.required">Yêu cầu nhập Email!</span>
-                                    <span v-if="!$v.userUpdate.email.isUnique">Yêu cầu ... @gmail.com</span>
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-1">
-                                <label>Mật khẩu:</label>
-                                <input width="50%" type="password" id="password" class="form-control" v-model.trim="$v.userUpdate.password.$model" :class="{
-                          'is-invalid': $v.userUpdate.password.$error }" />
-
-                                <div class="invalid-feedback">
-                                    <span v-if="!$v.userUpdate.password.required">Yêu cầu nhập Mật khẩu!</span>
-                                    <span v-if="!$v.userUpdate.password.minLength">
-                                        Độ dài phải lớn hơn
-                                        {{$v.userUpdate.password.$params.minLength.min}} ký tự!
-                                    </span>
-                                </div>
-                                <div>
-                                    <input type="checkbox" id="showpassword" @click="toggleShowPassword" v-model="showpassword" />
-                                    <label class="form-check-label pd-top-10" form="showpassword">Hiện mật khẩu</label>
-                                </div>
+                            <div class="col-md-6">
+                                <label class="col-form-label-sm">Email:</label>
+                                <input disabled :value="teacher.email" width="50%" type="text" class="form-control form-control-sm" />
                             </div>
                             <div class="clearfix"></div>
-                            <div class="col-md-3 mb-1">
-                                <label>Số điện thoại:</label>
-                                <input width="50%" type="text" class="form-control" v-model.trim="$v.userUpdate.phone.$model" :class="{'is-invalid': $v.userUpdate.phone.$error }" />
-
-                                <div class="invalid-feedback">
-                                    <span v-if="!$v.userUpdate.phone.required">Yêu cầu bạn nhập số điện thoại!</span>
-                                </div>
+                            <div class="col-md-3">
+                                <label class="col-form-label-sm">Số điện thoại:</label>
+                                <input v-model="teacher.phone" width="50%" type="text" class="form-control form-control-sm" />
                             </div>
                         </div>
                         <div class="row mb-4">
                             <div class="col-md-12">
-                                <label>Thông tin giới thiệu:</label>
-                                <textarea rows="4" width="50%" type="text" class="form-control" v-model.trim="$v.user.fields.$model" :class="{
-                    'is-invalid': $v.user.fields.$error, 'is-valid':!$v.user.fields.$invalid }" />
-                                <div class="valid-feedback">Giới thiệu có thể bỏ trống</div>
-                            </div>
+                                <label class="col-form-label-sm">lĩnh vực chuyên ngành:</label>
+                                <textarea v-model="teacher.fields" rows="4" width="50%" type="text" class="form-control form-control-sm" />
+                                </div>
                         </div>
                         <div class="row mb-10">
                             <div class="col-md-12 text-center">
-                                <button class="btn btn-primary" @click="putData()" type="button"><i class="fa fa-fw fa-lg fa-check-circle"></i> Save</button>
+                                <button class="btn btn-primary" @click="save" type="button"><i class="fa fa-fw fa-lg fa-check-circle"></i> Lưu thông tin</button>
                             </div>
                         </div>
                     </form>
@@ -106,179 +72,46 @@
 </template>
 
 <script>
-import {
-    required,
-    minLength,
-    maxLength,
-    between,
-    email,
-    sameAs
-} from "vuelidate/lib/validators";
-
-import AppTitle from "../../components/pages/AppTitle.vue";
-import datatables from "datatables";
-import $ from "jquery";
-
-const tableColumns = [
-    "STT",
-    "Mã gv",
-    "Họ tên",
-    "Email",
-    "Số điện thoại",
-    "Lĩnh vực",
-    "Thao tác"
-];
-
 export default {
     name: "Giaovien",
-    components: {
-        datatables,
-        AppTitle
-    },
     data() {
         return {
-            title: "Quản lý giảng viên",
-            select_subject: 1,
             subject: [],
+            teacher: {},
 
-            table1: {
-                columns: [...tableColumns]
-            },
-            teacher: [],
-
-            user: {
-                msgv: "",
-                name: "",
-                password: "123456",
-                id_subject: "",
-                email: "",
-                fields: "",
-                phone: "",
-                note: ""
-            },
-            userUpdate: {
-                msgv: "",
-                name: "",
-                password: "",
-                id_subject: "",
-                email: "",
-                fields: "",
-                phone: "",
-                note: ""
-            },
-            showpassword: false
-        };
-    },
-    validations: {
-        user: {
-            msgv: {
-                required,
-                minLength: minLength(10),
-                maxLength: maxLength(20)
-            },
-            name: {
-                required
-            },
-            password: {
-                required,
-                minLength: minLength(6)
-            },
-            email: {
-                required,
-                isUnique(value) {
-                    // standalone validator ideally should not assume a field is required
-                    if (value === "") return true;
-                    var email_regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                    // simulate async call, fail for all logins with even length
-                    return new Promise(resolve => {
-                        setTimeout(() => {
-                            resolve(email_regex.test(value));
-                        }, 350 + Math.random() * 300);
-                    });
-                }
-            },
-            fields: {
-
-            },
-            phone: {
-                required
-            },
-            note: {}
-        },
-        userUpdate: {
-            msgv: {
-                required,
-                minLength: minLength(10),
-                maxLength: maxLength(20)
-            },
-            name: {
-                required
-            },
-            password: {
-                required,
-                minLength: minLength(6)
-            },
-            email: {
-                required,
-                isUnique(value) {
-                    // standalone validator ideally should not assume a field is required
-                    if (value === "") return true;
-                    var email_regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                    // simulate async call, fail for all logins with even length
-                    return new Promise(resolve => {
-                        setTimeout(() => {
-                            resolve(email_regex.test(value));
-                        }, 350 + Math.random() * 300);
-                    });
-                }
-            },
-            fields: {
-
-            },
-            phone: {
-                required
-            },
-            note: {}
         }
     },
     methods: {
-        //datatable
-
-        //enad modal
-        //show password
-        toggleShowPassword() {
-            var show = document.getElementById("password");
-            if (this.showpassword == false) {
-                this.showpassword = true;
-                show.type = "text";
-            } else {
-                this.showpassword = false;
-                show.type = "password";
-            }
-        },
-        //end showpassword
-
-        getOne(id) {
-            this.$http.get("api/teacher/one/" + id).then(
+        getData() {
+            // lấy danh sách bộ môn
+            this.$http.get("api/subject").then(
                 response => {
-                    this.userUpdate = response.body[0];
+                    this.subject = response.body;
+                }
+            );
+            // lấy thông tin user
+            this.$http.get("api/teacher/user", {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(
+                response => {
+                    this.teacher = response.body;
                 }
             );
         },
-        getData() {
-            // Lấy tất cả giáo viên theo bộ môn
-            this.getAllData();
-        },
-        //update table
-        putData() {
-            this.userUpdate.id_subject = this.select_subject;
-            this.$http.put("api/teacher/" + this.userUpdate.id, this.userUpdate).then(
+        save() {
+            // lấy thông tin user
+            this.$http.put("api/teacher/" + this.teacher.id, this.teacher, {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(
                 response => {
-                    this.$noty.success("Đã cập nhật một giảng viên thành công!");
-                    this.getAllData();
-                },
-                response => {
-                    if (response.body.msgv !== undefined)
+                    this.getData();
+                    this.$noty.success("Thành công :)");
+                },response=>{
+                     if (response.body.msgv !== undefined)
                         this.$noty.error(response.body.msgv);
                     else if (response.body.name !== undefined)
                         this.$noty.error(response.body.name);
@@ -289,33 +122,13 @@ export default {
                     else if (response.body.id_subject !== undefined)
                         this.$noty.error(response.body.password);
                     else
-                        this.$noty.error("Thất bại cập nhật một giảng viên!");
-                }
-            );
-        },
-        getAllData() {
-            // Lấy tất cả giáo viên theo bộ môn
-
-            this.$http.get("api/teacher/" + this.select_subject).then(
-                response => {
-                    // get body data
-                    this.teacher = response.body;
-
+                        this.$noty.error("Thất bại :(");
                 }
             );
         }
     },
-    //end methor
-    //start getall table
     created() {
-        // lấy danh sách bộ môn
-        this.$http.get("api/subject").then(
-            response => {
-                this.subject = response.body;
-                this.getAllData();
-                this.getOne(5);
-            }
-        );
+        this.getData();
     }
 };
 </script>

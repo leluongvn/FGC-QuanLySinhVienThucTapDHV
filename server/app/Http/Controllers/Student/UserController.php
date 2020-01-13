@@ -56,6 +56,17 @@ class UserController extends Controller
         return $data;
     }
 
+    public function getUser()
+    {
+        $data = DB::table('users as u')
+            ->select('s.id', 's.id_user', 'u.name', 'u.password', 'u.email', 'u.phone', 's.mssv', 's.birthday', 's.class', 'u.status', 'u.note')
+            ->join('students as s', 's.id_user', 'u.id')
+            ->where('u.id', Auth::user()->id)
+            ->first();
+
+        return response()->json($data);
+    }
+
     public function create(Request $request)
     {
         /**

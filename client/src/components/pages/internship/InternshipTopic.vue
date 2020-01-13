@@ -114,7 +114,7 @@
                         <!-- file đính kèm -->
                         <div class="input-group input-group-sm">
                             <div class="custom-file">
-                                <input browser="chọn" type="file" ref="file" v-on:change="onChangeFileUpload()" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                                <input browser="chọn" accept=".zip,.rar" type="file" ref="file" v-on:change="onChangeFileUpload()" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
                                 <label class="custom-file-label " for="inputGroupFile01">{{ file ? newFile : oldFile }}</label>
                             </div>
                         </div>
@@ -147,7 +147,6 @@ export default {
             topics: [],
             optionCreate: [],
             postTopic: {
-                id_user: 4,
                 id_internship_time: this.$route.params.id,
                 id_topic: null
             },
@@ -358,7 +357,11 @@ export default {
             if (this.postTopic.id_topic == 'null' || this.postTopic.id_topic == null) {
                 this.$noty.error('Thất bại, Mời chọn đề tài');
             } else {
-                this.$http.post("api/internship_topic", this.postTopic).then(
+                this.$http.post("api/internship_topic", this.postTopic, {
+                    headers: {
+                        Authorization: this.$cookie.get('token')
+                    }
+                }).then(
                     response => {
                         this.$noty.success('Thành công :)');
                         this.postTopic.id_topic = null;

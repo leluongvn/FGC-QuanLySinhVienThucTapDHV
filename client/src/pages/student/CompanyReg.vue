@@ -4,7 +4,7 @@
         <div id="sampleTable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h6>155D4802010135 - NGUYỄN XUÂN HẠNH - Ngành Công nghệ thông tin - K56</h6>
+                    <h6>{{user.mssv}} - {{user.name}} - {{user.class}} - Ngành Công nghệ thông tin</h6>
                     <h4 style="color:#006400">Danh sách doanh nghiệp có thể đăng ký thực tập</h4>
                     <hr width="20%" />
                 </div>
@@ -115,6 +115,7 @@
 export default {
     data() {
         return {
+            user:{},
             selectID: 0,
             bool: true,
             reg: {},
@@ -260,7 +261,7 @@ export default {
                 }
             );
         },
-        changeSubject(){
+        changeSubject() {
             this.getDataTable();
         },
         getDataTable() {
@@ -305,7 +306,16 @@ export default {
                     console.log(Response.body);
                 }
             );
+            // lấy thông tin user
+            this.$http.get('api/student/user', {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(response => {
+                this.user = response.body;
+                console.log(response.body);
 
+            });
         }
     },
     created() {

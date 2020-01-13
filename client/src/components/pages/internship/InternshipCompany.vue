@@ -142,7 +142,7 @@ export default {
             postCreateCompany: {
                 id_company: null,
                 id_internship_time: this.$route.params.id,
-                limit: null
+                limit: 0
             },
             // ---------------------------------------------
             fields: [{

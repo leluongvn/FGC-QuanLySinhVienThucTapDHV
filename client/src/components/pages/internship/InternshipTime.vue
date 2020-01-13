@@ -221,8 +221,24 @@ export default {
     },
     methods: {
         pushReg(id) {
-            this.$router.push("internship/student-reg/" + id);
-            // alert(id)
+            var role = this.$cookie.get('role');
+            switch (role) {
+                case 'Admin':
+                    this.$router.push("internship/student-reg/" + id);
+                    break;
+                case 'Trợ lý đào tạo':
+                   this.$router.push("internship/student-reg/" + id);
+                    break;
+                case 'Giảng viên':
+                    this.$router.push('internship/topic-reg/' + id);
+                    break;
+                case 'Doanh nghiệp':
+                    this.$router.push('internship/topic-reg/' + id);
+                    break;
+                case 'Trưởng bộ môn':
+                    this.$router.push("internship/instructor/" + id);
+                    break;
+            }
         },
         pushID(e) {
             this.$router.push("/teacher/create/" + e.target.value);
@@ -231,7 +247,6 @@ export default {
             this.$http
                 .get("api/internship_time/one/" + id)
                 .then(response => {
-                    console.log(response.body);
                     this.update_time = response.body[0];
                 });
         },
@@ -289,8 +304,7 @@ export default {
                 response => {
                     // console.log(response.body);
                     this.inter_time = response.body;
-                },
-                response => {}
+                }
             );
             this.init_time.id_internship_type = this.$route.params.id;
         }
@@ -309,8 +323,7 @@ export default {
             response => {
                 // console.log(response.body);
                 this.inter_type = response.body;
-            },
-            response => {}
+            }
         );
     }
 };

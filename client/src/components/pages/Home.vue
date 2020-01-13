@@ -154,7 +154,15 @@
 
 <script>
 export default {
-
+    created() {
+        if (this.$cookie.get('role') === "Admin" || this.$cookie.get('role') === "Trợ lý đào tạo" || this.$cookie.get('role') === "Trưởng bộ môn" || this.$cookie.get('role') === "Giảng viên") {
+            this.$router.push('/teacher');
+        } else if (this.$cookie.get('role') === "Doanh nghiệp") {
+            this.$router.push('/company');
+        } else if (this.$cookie.get('role') === "Sinh viên") {
+            this.$router.push('/student');
+        }
+    }
 }
 </script>
 
@@ -162,10 +170,11 @@ export default {
 /* content */
 
 /* header content */
-.content div h4{
+.content div h4 {
     font-size: 18px;
     padding-top: 20px;
 }
+
 .ct_header1 {
     width: 50%;
     background: #2980b9;
@@ -174,12 +183,15 @@ export default {
     padding: 5px 10px 5px 10px;
     color: white;
 }
-ul li{
+
+ul li {
     padding-top: 7px;
 }
-ul li a{
+
+ul li a {
     font-size: 14px;
 }
+
 .ct_header2 {
     text-align: right;
     width: 50%;
@@ -193,9 +205,11 @@ ul li a{
     color: white;
     font-size: 12px;
 }
-.ct_header1 b{
+
+.ct_header1 b {
     font-size: 14px;
 }
+
 .ct_header2 a:hover {
     text-decoration: none;
     color: 1c148d;
@@ -212,7 +226,7 @@ ul li a{
 }
 
 .content div h4 {
-    margin-top: 5px; 
+    margin-top: 5px;
     color: red;
     text-align: center;
 }

@@ -33,9 +33,129 @@
     </b-row>
 
     <!-- modal thêm dữ liệu-->
-    <b-modal id="modal-insert" centered size="lg" title="Thêm dữ liệu">
+    <b-modal id="modal-insert" centered size="xl" title="Thêm dữ liệu">
         <b-form @submit.stop.prevent>
+            <div class="row">
+                <div class="col-5 pr-0">
+                    <b-row class="my-2">
+                        <div class="col-md-6 col-12">
+                            <b-form-group label-for="filterInput" class="mb-0">
+                                <b-input-group size="sm">
+                                    <b-form-input v-model="filter" type="search" id="filterInput" placeholder="Tìm kiếm"></b-form-input>
+                                    <b-input-group-append>
+                                        <b-button :disabled="!filter" @click="filter = ''"><i class="icon ion-md-backspace"></i></b-button>
+                                    </b-input-group-append>
+                                </b-input-group>
+                            </b-form-group>
+                        </div>
+                    </b-row>
+                    <!-- table hiển thị dữ liệu -->
+                    <b-row>
+                        <b-table sticky-header class="col-md-12 table" show-empty small striped bordered responsive :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" :filterIncludedFields="filterOn" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection">
+                            <template v-slot:cell(index)="data">
+                                {{ data.index + 1 }}
+                            </template>
 
+                            <template v-slot:cell(name)="data">
+                                {{ data.value.first }} {{ data.value.last }}
+                            </template>
+
+                            <template v-slot:cell(actions)="data">
+                                <div class="btn-group">
+                                    <a class="badge badge-warning btn-sm btn bg-dark text-light font-weight-light px-2" @click="data.toggleDetails" style="font-size: 13px !important">@</a>
+                                    <a class="badge badge-warning btn-sm btn" v-b-modal.modal-update @click="getUpdate(data.item.id)"><i class="fa fa-lg fa-edit"></i></a>
+                                    <a class="badge badge-danger btn-sm btn text-black font-weight-light" @click="del(data.item.id)"><i class="fa fa-lg fa-trash"></i></a>
+                                </div>
+                            </template>
+
+                            <template v-slot:row-details="data">
+                                <!-- <b-card> -->
+                                <ul>
+                                    <li v-for="(value, key) in data.item" :key="key">{{ key }}: {{ value }}</li>
+                                </ul>
+                                <!-- </b-card> -->
+                            </template>
+                        </b-table>
+                    </b-row>
+                    <!-- Phân trang hiện thị -->
+                    <b-row class="mx-1 my-2 float-y">
+                        <!-- Số dòng hiển thị -->
+                        <div>
+                            <b-form-group label="Hiển thị: " label-size="sm" label-for="perPageSelect" class="mb-0 form-row">
+                                <b-form-select v-model="perPage" id="perPageSelect" size="sm" :options="pageOptions"></b-form-select>
+                            </b-form-group>
+                        </div>
+                        <!-- end -->
+                        <!-- phân trang -->
+                        <div>
+                            <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" align="fill" size="sm" class="my-0"></b-pagination>
+                        </div>
+                        <!-- phân trang -->
+                    </b-row>
+                    <!-- kết thúc dữ liệu table -->
+                </div>
+                <div class="col-2 text-center m-auto">
+                    <button class="btn btn-primary"><i class="fa fa-chevron-right mr-0" aria-hidden="true"></i></button>
+                </div>
+                <div class="col-5 pl-0">
+                    <b-row class="my-2">
+                        <div class="col-12 col-md-6">
+                            <b-form-group label-for="filterInput" class="mb-0">
+                                <b-input-group size="sm">
+                                    <b-form-input v-model="filter" type="search" id="filterInput" placeholder="Tìm kiếm"></b-form-input>
+                                    <b-input-group-append>
+                                        <b-button :disabled="!filter" @click="filter = ''"><i class="icon ion-md-backspace"></i></b-button>
+                                    </b-input-group-append>
+                                </b-input-group>
+                            </b-form-group>
+                        </div>
+                    </b-row>
+                    <!-- table hiển thị dữ liệu -->
+                    <b-row>
+                        <b-table sticky-header class="col-md-12 table" show-empty small striped bordered responsive :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" :filterIncludedFields="filterOn" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection">
+                            <template v-slot:cell(index)="data">
+                                {{ data.index + 1 }}
+                            </template>
+
+                            <template v-slot:cell(name)="data">
+                                {{ data.value.first }} {{ data.value.last }}
+                            </template>
+
+                            <template v-slot:cell(actions)="data">
+                                <div class="btn-group">
+                                    <a class="badge badge-warning btn-sm btn bg-dark text-light font-weight-light px-2" @click="data.toggleDetails" style="font-size: 13px !important">@</a>
+                                    <a class="badge badge-warning btn-sm btn" v-b-modal.modal-update @click="getUpdate(data.item.id)"><i class="fa fa-lg fa-edit"></i></a>
+                                    <a class="badge badge-danger btn-sm btn text-black font-weight-light" @click="del(data.item.id)"><i class="fa fa-lg fa-trash"></i></a>
+                                </div>
+                            </template>
+
+                            <template v-slot:row-details="data">
+                                <!-- <b-card> -->
+                                <ul>
+                                    <li v-for="(value, key) in data.item" :key="key">{{ key }}: {{ value }}</li>
+                                </ul>
+                                <!-- </b-card> -->
+                            </template>
+                        </b-table>
+                    </b-row>
+                    <!-- Phân trang hiện thị -->
+                    <b-row class="mx-1 my-2 float-y">
+                        <!-- Số dòng hiển thị -->
+                        <div>
+                            <b-form-group label="Hiển thị: " label-size="sm" label-for="perPageSelect" class="mb-0 form-row">
+                                <b-form-select v-model="perPage" id="perPageSelect" size="sm" :options="pageOptions"></b-form-select>
+                            </b-form-group>
+                        </div>
+                        <!-- end -->
+                        <!-- phân trang -->
+                        <div>
+                            <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" align="fill" size="sm" class="my-0"></b-pagination>
+                        </div>
+                        <!-- phân trang -->
+                    </b-row>
+                    <!-- kết thúc dữ liệu table -->
+                </div>
+            </div>
         </b-form>
         <!-- footer -->
         <template v-slot:modal-footer="{ ok, cancel, hide }">
