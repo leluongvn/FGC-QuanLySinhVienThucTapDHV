@@ -31,7 +31,10 @@
         <div class="col-sm-12 col-md-6">
             <div id="sampleTable_filter" class="dataTables_filter">
                 <!-- btn modal -->
-                <b-button v-b-modal.modal-lg-add size="sm" variant="info">
+                <b-button v-if="this.$cookie.get('role') == 'Trợ lý đào tạo'" v-b-modal.modal-lg-add size="sm" variant="info">
+                    <i class="fa fa-plus-square" aria-hidden="true"></i> Thêm mới
+                </b-button>
+                <b-button v-if="this.$cookie.get('role') == 'Admin'" v-b-modal.modal-lg-add size="sm" variant="info">
                     <i class="fa fa-plus-square" aria-hidden="true"></i> Thêm mới
                 </b-button>
                 <!-- modal add-->
@@ -108,9 +111,11 @@
             <div class="widget-small primary coloured-icon">
                 <i class="icon fa fa-users fa-3x"></i>
                 <!-- btn modal update -->
-                <i class="btn-warning fa fa-pencil-square-o abs-top" v-b-modal.modal-xl-update aria-hidden="true" @click="getData(item.id)"></i>
+                <i  v-if="role == 'Admin'"  class="btn-warning fa fa-pencil-square-o abs-top" v-b-modal.modal-xl-update aria-hidden="true" @click="getData(item.id)"></i>
+                <i  v-if="role == 'Trợ lý đào tạo'"  class="btn-warning fa fa-pencil-square-o abs-top" v-b-modal.modal-xl-update aria-hidden="true" @click="getData(item.id)"></i>
                 <!-- btn delete -->
-                <i class="btn-danger fa fa-trash-o abs-bottom" @click="del(item.id)" aria-hidden="true"></i>
+                <i v-if="role == 'Trợ lý đào tạo'" class="btn-danger fa fa-trash-o abs-bottom" @click="del(item.id)" aria-hidden="true"></i>
+                <i v-if="role == 'Admin'" class="btn-danger fa fa-trash-o abs-bottom" @click="del(item.id)" aria-hidden="true"></i>
 
                 <div class="info" @click="pushReg(item.id)">
                     <h5>Khóa: {{item.course}}</h5>
@@ -202,6 +207,7 @@
 export default {
     data() {
         return {
+            role:  this.$cookie.get('role'),
             inter_time: [],
             init_time: {
                 id_internship_type: this.$route.params.id,

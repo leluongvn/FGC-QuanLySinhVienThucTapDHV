@@ -400,7 +400,8 @@ export default {
                     field: 'msgv',
                     key: 'msgv',
                     label: 'Mã giáo viên',
-                    // sortable: true,
+                    sortDirection: 'desc',
+                    sortable: true,
                     class: 'text-center',
                     thStyle: {
                         color: '#fff',
@@ -412,7 +413,8 @@ export default {
                     field: 'name',
                     key: 'name',
                     label: 'Họ tên',
-                    // sortable: true,
+                    sortDirection: 'desc',
+                    sortable: true,
                     class: 'text-center',
                     thStyle: {
                         color: '#fff',
@@ -425,7 +427,8 @@ export default {
                     field: 'email',
                     key: 'email',
                     label: 'Email',
-                    // sortable: true,
+                    sortDirection: 'desc',
+                    sortable: true,
                     class: 'text-center',
                     thStyle: {
                         color: '#fff',
@@ -437,7 +440,8 @@ export default {
                     field: 'phone',
                     key: 'phone',
                     label: 'Số điện thoại',
-                    // sortable: true,
+                    sortDirection: 'desc',
+                    sortable: true,
                     class: 'text-center',
                     thStyle: {
                         color: '#fff',
@@ -449,7 +453,8 @@ export default {
                     field: 'fields',
                     key: 'fields',
                     label: 'Lĩnh vực',
-                    // sortable: true,
+                    sortDirection: 'desc',
+                    sortable: true,
                     class: 'text-center',
                     thStyle: {
                         color: '#fff',
@@ -699,7 +704,11 @@ export default {
             this.$refs['modal'].hide();
         },
         importExcel(data) {
-            console.log(data.body)
+            this.$http.post('api/teacher/excel/'+ this.select_subject,data.body).then(response => {
+                console.log(response.body);
+            }, response => {
+                console.log(response.body);
+            });
         },
         //show password
         toggleShowPassword() {

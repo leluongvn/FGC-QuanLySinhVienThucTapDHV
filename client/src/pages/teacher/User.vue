@@ -26,19 +26,60 @@
                     <form>
                         <div class="row">
                             <!--Mã gv-->
-                            <div class="col-md-4">
+                            <div class="col-md-4" v-if="this.$cookie.get('role') == 'Trợ lý đào tạo'">
                                 <label class="col-form-label-sm">Mã giảng viên:</label>
                                 <input disabled width="50%" :value="teacher.msgv" type="text" class="form-control form-control-sm" />
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" v-if="this.$cookie.get('role') == 'Trưởng bộ môn'">
+                                <label class="col-form-label-sm">Mã giảng viên:</label>
+                                <input disabled width="50%" :value="teacher.msgv" type="text" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-md-4" v-if="this.$cookie.get('role') == 'Giảng viên'">
+                                <label class="col-form-label-sm">Mã giảng viên:</label>
+                                <input disabled width="50%" :value="teacher.msgv" type="text" class="form-control form-control-sm" />
+                            </div>
+                            <!--  -->
+                            <div class="col-md-4" v-if="this.$cookie.get('role') == 'Trưởng bộ môn'">
                                 <label class="col-form-label-sm">Họ & Tên:</label>
                                 <input disabled width="50%" :value="teacher.name" type="text" class="form-control form-control-sm" />
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" v-if="this.$cookie.get('role') == 'Giảng viên'">
+                                <label class="col-form-label-sm">Họ & Tên:</label>
+                                <input disabled width="50%" :value="teacher.name" type="text" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-md-4" v-if="this.$cookie.get('role') == 'Trợ lý đào tạo'">
+                                <label class="col-form-label-sm">Họ & Tên:</label>
+                                <input disabled width="50%" :value="teacher.name" type="text" class="form-control form-control-sm" />
+                            </div>
+                            <!--  -->
+                            <div class="col-md-4" v-if="this.$cookie.get('role') == 'Trưởng bộ môn'">
                                 <label class="col-form-label-sm">Bộ môn:</label>
                                 <select disabled placeholder :value="teacher.id_subject" aria-controls="sampleTable" class="form-control form-control-sm">
                                     <option v-for="(item,index) in subject" :value="item.id" :key="index">{{item.name}}</option>
                                 </select>
+                            </div>
+                            <div class="col-md-4" v-if="this.$cookie.get('role') == 'Giảng viên'">
+                                <label class="col-form-label-sm">Bộ môn:</label>
+                                <select disabled placeholder :value="teacher.id_subject" aria-controls="sampleTable" class="form-control form-control-sm">
+                                    <option v-for="(item,index) in subject" :value="item.id" :key="index">{{item.name}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4" v-if="this.$cookie.get('role') == 'Trợ lý đào tạo'">
+                                <label class="col-form-label-sm">Bộ môn:</label>
+                                <select disabled placeholder :value="teacher.id_subject" aria-controls="sampleTable" class="form-control form-control-sm">
+                                    <option v-for="(item,index) in subject" :value="item.id" :key="index">{{item.name}}</option>
+                                </select>
+                            </div>
+                            <!--  -->
+                        </div>
+                        <div class="row" v-if="this.$cookie.get('role') == 'Doanh nghiệp'">
+                            <div class="col-md-6">
+                                <label class="col-form-label-sm">Tên công ty:</label>
+                                <input disabled :value="teacher.name" width="50%" type="text" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="col-form-label-sm">Địa chỉ:</label>
+                                <input :value="teacher.address" width="50%" type="text" class="form-control form-control-sm" />
                             </div>
                         </div>
                         <div class="row">
@@ -83,48 +124,85 @@ export default {
     },
     methods: {
         getData() {
-            // lấy danh sách bộ môn
-            this.$http.get("api/subject").then(
-                response => {
-                    this.subject = response.body;
-                }
-            );
-            // lấy thông tin user
-            this.$http.get("api/teacher/user", {
-                headers: {
-                    Authorization: this.$cookie.get('token')
-                }
-            }).then(
-                response => {
-                    this.teacher = response.body;
-                }
-            );
+            if (this.$cookie.get('role') === "Trợ lý đào tạo" || this.$cookie.get('role') === "Trưởng bộ môn" || this.$cookie.get('role') === "Giảng viên") {
+
+                // lấy danh sách bộ môn
+                this.$http.get("api/subject").then(
+                    response => {
+                        this.subject = response.body;
+                    }
+                );
+                // lấy thông tin user
+                this.$http.get("api/teacher/user", {
+                    headers: {
+                        Authorization: this.$cookie.get('token')
+                    }
+                }).then(
+                    response => {
+                        this.teacher = response.body;
+                    }
+                );
+            } else if (this.$cookie.get('role') === "Doanh nghiệp") {
+                // lấy thông tin user
+                this.$http.get("api/company/user", {
+                    headers: {
+                        Authorization: this.$cookie.get('token')
+                    }
+                }).then(
+                    response => {
+                        this.teacher = response.body;
+                    }
+                );
+            }
         },
         save() {
-            // lấy thông tin user
-            this.$http.put("api/teacher/" + this.teacher.id, this.teacher, {
-                headers: {
-                    Authorization: this.$cookie.get('token')
-                }
-            }).then(
-                response => {
-                    this.getData();
-                    this.$noty.success("Thành công :)");
-                },response=>{
-                     if (response.body.msgv !== undefined)
-                        this.$noty.error(response.body.msgv);
-                    else if (response.body.name !== undefined)
-                        this.$noty.error(response.body.name);
-                    else if (response.body.email !== undefined)
-                        this.$noty.error(response.body.email);
-                    else if (response.body.password !== undefined)
-                        this.$noty.error(response.body.password);
-                    else if (response.body.id_subject !== undefined)
-                        this.$noty.error(response.body.password);
-                    else
-                        this.$noty.error("Thất bại :(");
-                }
-            );
+            if (this.$cookie.get('role') === "Trợ lý đào tạo" || this.$cookie.get('role') === "Trưởng bộ môn" || this.$cookie.get('role') === "Giảng viên") {
+                // lấy thông tin user
+                this.$http.put("api/teacher/" + this.teacher.id, this.teacher, {
+                    headers: {
+                        Authorization: this.$cookie.get('token')
+                    }
+                }).then(
+                    response => {
+                        this.getData();
+                        this.$noty.success("Thành công :)");
+                    }, response => {
+                        if (response.body.msgv !== undefined)
+                            this.$noty.error(response.body.msgv);
+                        else if (response.body.name !== undefined)
+                            this.$noty.error(response.body.name);
+                        else if (response.body.email !== undefined)
+                            this.$noty.error(response.body.email);
+                        else if (response.body.password !== undefined)
+                            this.$noty.error(response.body.password);
+                        else if (response.body.id_subject !== undefined)
+                            this.$noty.error(response.body.password);
+                        else
+                            this.$noty.error("Thất bại :(");
+                    }
+                );
+            } else if (this.$cookie.get('role') === "Doanh nghiệp") {
+                this.$http.put("api/company/" + this.teacher.id, this.teacher, {
+                    headers: {
+                        Authorization: this.$cookie.get('token')
+                    }
+                }).then(
+                    response => {
+                        this.getData();
+                        this.$noty.success("Thành công :)");
+                    },
+                    response => {
+                        if (response.body.name !== undefined)
+                            this.$noty.error(response.body.name);
+                        else if (response.body.email !== undefined)
+                            this.$noty.error(response.body.email);
+                        else if (response.body.password !== undefined)
+                            this.$noty.error(response.body.password);
+                        else
+                            this.$noty.error("Thất bại :(");
+                    }
+                );
+            }
         }
     },
     created() {

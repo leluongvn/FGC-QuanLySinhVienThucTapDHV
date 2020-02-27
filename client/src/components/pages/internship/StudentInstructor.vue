@@ -58,7 +58,7 @@
                     <div class="btn-group">
                         <a class="badge badge-warning btn-sm btn bg-dark text-light font-weight-light px-2" @click="data.toggleDetails" style="font-size: 13px !important">@</a>
                         <a class="badge badge-warning btn-sm btn" v-b-modal.modal-update @click="getUpdate(data.item.id)"><i class="fa fa-lg fa-edit"></i></a>
-                        <a class="badge badge-danger btn-sm btn text-black font-weight-light" @click="del(data.item.id)"><i class="fa fa-lg fa-trash"></i></a>
+                        <!-- <a class="badge badge-danger btn-sm btn text-black font-weight-light" @click="del(data.item.id)"><i class="fa fa-lg fa-trash"></i></a> -->
                     </div>
                 </template>
 
@@ -86,7 +86,7 @@
         <!-- kết thúc dữ liệu table -->
 
         <!-- modal sửa dữ liệu-->
-        <b-modal ref="modal" id="modal-update" centered size="md" hide-header hide-footer>
+        <b-modal ref="modal" id="modal-update" centered size="sm" hide-header hide-footer>
             <b-form @submit.stop.prevent>
                 <div class="row">
                     <h6 class="text-center mt-2 col-10">cập nhật điểm sinh viên</h6>
@@ -94,18 +94,20 @@
                     <hr class="my-1" width="90%">
                 </div>
                 <div class="row">
-                    <b-form-group class="col-4" label-size="sm" label="Điểm giáo viên:" label-for="input-1">
+                    <!-- this.$cookie.get('role') === "Trợ lý đào tạo" || this.$cookie.get('role') === "Trưởng bộ môn" || this.$cookie.get('role') === "Giảng viên" -->
+                    <b-form-group v-if="this.$cookie.get('role') == 'Trợ lý đào tạo'" class="col-12" label-size="sm" label="Điểm giáo viên:" label-for="input-1">
+                        <b-form-input v-model="update.teacher_point" type="number" size="sm" trim></b-form-input>
+                    </b-form-group>
+                    <b-form-group v-if="this.$cookie.get('role') == 'Trưởng bộ môn'" class="col-12" label-size="sm" label="Điểm giáo viên:" label-for="input-1">
+                        <b-form-input v-model="update.teacher_point" type="number" size="sm" trim></b-form-input>
+                    </b-form-group>
+                    <b-form-group v-if="this.$cookie.get('role') == 'Giảng viên'" class="col-12" label-size="sm" label="Điểm giáo viên:" label-for="input-1">
                         <b-form-input v-model="update.teacher_point" type="number" size="sm" trim></b-form-input>
                     </b-form-group>
                     <!-- end -->
-                    <b-form-group class="col-4" label-size="sm" label="Điểm công ty:" label-for="input-1">
+                    <b-form-group v-if="this.$cookie.get('role') == 'Doanh nghiệp'" class="col-12" label-size="sm" label="Điểm công ty:" label-for="input-1">
                         <b-form-input v-model="update.company_point" type="number" size="sm" trim></b-form-input>
                     </b-form-group>
-                    <!-- end -->
-                    <b-form-group class="col-4" label-size="sm" label="Điểm tổng:" label-for="input-1">
-                        <b-form-input v-model="update.total_point" type="number" size="sm" trim></b-form-input>
-                    </b-form-group>
-                    <!-- end -->
                     <div class="col-12 text-center mt-2">
                         <b-button size="sm" type="submit" variant="warning" @click="postUpdate(update.id)">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Xong

@@ -341,7 +341,8 @@ export default {
                     field: 'name',
                     key: 'name',
                     label: 'Tên doanh nghiệp',
-                    // sortable: true,
+                    sortDirection: 'desc',
+                    sortable: true,
                     class: 'text-center',
                     thStyle: {
                         color: '#fff',
@@ -355,7 +356,8 @@ export default {
                     field: 'email',
                     key: 'email',
                     label: 'Email',
-                    // sortable: true,
+                    sortDirection: 'desc',
+                    sortable: true,
                     class: 'text-center',
                     thStyle: {
                         color: '#fff',
@@ -369,6 +371,8 @@ export default {
                     key: 'phone',
                     class: 'text-center',
                     label: 'Số điện thoại',
+                    sortDirection: 'desc',
+                    sortable: true,
                     thStyle: {
                         color: '#fff',
                         background: '#2980b9',
@@ -380,6 +384,8 @@ export default {
                     field: 'address',
                     key: 'address',
                     class: 'text-center',
+                    sortDirection: 'desc',
+                    sortable: true,
                     label: 'Địa chỉ',
                     thStyle: {
                         color: '#fff',
@@ -392,6 +398,8 @@ export default {
                     field: 'fields',
                     key: 'fields',
                     class: 'text-center',
+                    sortDirection: 'desc',
+                    sortable: true,
                     label: 'Lĩnh vực',
                     thStyle: {
                         color: '#fff',
@@ -404,6 +412,8 @@ export default {
                     field: 'introduce',
                     key: 'introduce',
                     class: 'text-center',
+                    sortDirection: 'desc',
+                    sortable: true,
                     label: 'Giới thiệu',
                     thStyle: {
                         color: '#fff',
