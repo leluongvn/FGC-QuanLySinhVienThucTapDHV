@@ -26,7 +26,7 @@ class Internship_PointController extends Controller
             LEFT JOIN topics t ON t.id = it.id_topic
             WHERE sr.id_internship_time = ?', [$id]);
         }
-        else if($role->name === "Giảng viên" || $role->name === "Doanh nghiệp" || $role->name === "Trưởng bộ môn"){
+        else if($role->name === "Giảng viên" || $role->name === "Trưởng bộ môn"){
             $data = DB::select('SELECT ip.product,ip.id,s.mssv,u.name,t.name as topic_name,v.teacher_name,v.company_name,ip.teacher_point,ip.company_comment,ip.company_point,ip.total_point 
             FROM users u 
             JOIN students s ON s.id_user = u.id 
@@ -36,6 +36,16 @@ class Internship_PointController extends Controller
             LEFT JOIN internship_topic it ON it.id = ip.id_internship_topic
             LEFT JOIN topics t ON t.id = it.id_topic
             WHERE sr.id_internship_time = ? and v.teacher_id = ?', [$id,Auth::user()->id]);
+        }else if($role->name === "Doanh nghiệp"){
+            $data = DB::select('SELECT ip.product,ip.id,s.mssv,u.name,t.name as topic_name,v.teacher_name,v.company_name,ip.teacher_point,ip.company_comment,ip.company_point,ip.total_point 
+            FROM users u 
+            JOIN students s ON s.id_user = u.id 
+            JOIN student_reg sr ON sr.id_student = s.id 
+            LEFT JOIN view_profile v ON v.id = sr.id 
+            LEFT JOIN internship_point ip on ip.id_student_reg = sr.id
+            LEFT JOIN internship_topic it ON it.id = ip.id_internship_topic
+            LEFT JOIN topics t ON t.id = it.id_topic
+            WHERE sr.id_internship_time = ? and v.company_id = ?', [$id,Auth::user()->id]);
         }else if($role->name === "Sinh viên"){
             $data = DB::select('SELECT ip.product,ip.id,s.mssv,u.name, itype.name as name_type,DATE_FORMAT(itime.start_time, "%d/%m/%Y") as start_time,DATE_FORMAT(itime.end_time, "%d/%m/%Y") as end_time,t.name as topic_name,v.teacher_name,v.company_name,ip.teacher_point,ip.company_comment,ip.company_point,ip.total_point 
             FROM users u 

@@ -7,9 +7,20 @@ use App\Model\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function getUser()
+    {
+        // return Auth::user()->id;
+        $data = DB::table('users as u')
+            ->select('t.id', 't.id_user', 'u.name', 'u.password','t.address', 'u.email', 'u.phone', 't.fields', 'u.status', 'u.note')
+            ->join('companies as t', 't.id_user', 'u.id')
+            ->where('u.id', Auth::user()->id) 
+            ->first();
+        return response()->json($data);
+    }
 
     public function show()
     {

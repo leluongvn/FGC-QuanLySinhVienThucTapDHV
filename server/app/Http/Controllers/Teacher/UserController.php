@@ -13,6 +13,31 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+    public function excel($id, Request $request){
+        foreach($request as $item){
+            return response()->json($item);
+            // $user = new User();
+            // $user->name = $item->name;
+            // $user->email = $item->email;
+            // $user->password = app('hash')->make(123456);
+            // $user->phone = $item->phone;
+            // $user->id_role = 4;
+            // $user->note = $item->note;
+
+            // $user->save();
+
+            // $teacher = new Teacher();
+            // $teacher->msgv = $item->msgv;
+            // $teacher->id_subject = $id;
+            // $teacher->id_user = $user->id;
+            // $teacher->fields = $item->fields;
+
+            // $teacher->save();
+        }
+        
+
+        return 1;
+    }
     public function getUser()
     {
         // return Auth::user()->id;

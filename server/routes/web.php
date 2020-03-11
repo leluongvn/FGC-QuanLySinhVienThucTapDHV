@@ -53,6 +53,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('one/{id:[0-9]+}', ['uses' => 'Teacher\UserController@showOneTeachers']);
         $router->get('user', ['middleware' => 'auth', 'uses' => 'Teacher\UserController@getUser']);
         $router->post('/', 'Teacher\UserController@create');
+        $router->post('excel/{id:[0-9]+}', 'Teacher\UserController@excel');
         $router->put('/{id:[0-9]+}', 'Teacher\UserController@update');
         $router->delete('/{id:[0-9]+}', 'Teacher\UserController@delete');
 
@@ -85,6 +86,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     // code phần doanh nghiệp
     $router->group(['prefix' => 'company'], function () use ($router) {
         $router->get('/', 'Company\UserController@show');
+        $router->get('user',['middleware' => 'auth', 'uses' => 'Company\UserController@getUser']);
         $router->get('/{id}', 'Company\UserController@showOne');
         $router->post('/', 'Company\UserController@create');
         $router->put('{id}', 'Company\UserController@update');

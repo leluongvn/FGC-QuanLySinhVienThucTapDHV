@@ -368,7 +368,8 @@ export default {
                     field: 'mssv',
                     key: 'mssv',
                     label: 'Mã sinh viên',
-                    // sortable: true,
+                    sortDirection: 'desc',
+                    sortable: true,
                     class: 'text-center',
                     thStyle: {
                         color: '#fff',
@@ -380,7 +381,8 @@ export default {
                     field: 'name',
                     key: 'name',
                     label: 'Tên doanh nghiệp',
-                    // sortable: true,
+                    sortDirection: 'desc',
+                    sortable: true,
                     class: 'text-center',
                     thStyle: {
                         color: '#fff',
@@ -392,7 +394,8 @@ export default {
                     field: 'birthday',
                     key: 'birthday',
                     label: 'Ngày sinh',
-                    // sortable: true,
+                    sortDirection: 'desc',
+                    sortable: true,
                     class: 'text-center',
                     thStyle: {
                         color: '#fff',
@@ -404,7 +407,8 @@ export default {
                     field: 'class',
                     key: 'class',
                     label: 'Lớp',
-                    // sortable: true,
+                    sortDirection: 'desc',
+                    sortable: true,
                     class: 'text-center',
                     thStyle: {
                         color: '#fff',
@@ -416,7 +420,8 @@ export default {
                     field: 'email',
                     key: 'email',
                     label: 'Email',
-                    // sortable: true,
+                    sortDirection: 'desc',
+                    sortable: true,
                     class: 'text-center',
                     thStyle: {
                         color: '#fff',
@@ -428,7 +433,8 @@ export default {
                     field: 'phone',
                     key: 'phone',
                     label: 'Số điện thoại',
-                    // sortable: true,
+                    sortDirection: 'desc',
+                    sortable: true,
                     class: 'text-center',
                     thStyle: {
                         color: '#fff',
@@ -647,12 +653,12 @@ export default {
 
     methods: {
         mounted() {
-
             // Lấy tổng số bản ghi
             this.totalRows = this.items.length
         },
         importExcel(data) {
-            console.log(data.body)
+            console.log(data.body);
+            
         },
         priceFormat(value) {
             return '$ ' + value;
