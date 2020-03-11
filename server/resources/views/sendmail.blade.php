@@ -1,16 +1,19 @@
-Website: QUẢN LÝ THỰC TẬP TRƯỜNG ĐẠI HỌC VINH
+--------------------------WEBSITE--------------------------
 <br>
----------------------------------------------
+QUẢN LÝ THỰC TẬP TRƯỜNG ĐẠI HỌC VINH
 <br>
-Xin chào bạn.
+-----------------------------------------------------------------
+<br>
+Xin chào: {{$gui['name']}}
 <br>
 Thông tin tài khoản của bạn là:
 <br>
-Tài khoản là : {{$gui['user']}}
+Mssv: 155D4802010135 - Tên sinh viên: {{$gui['name']}}
 <br>
-Password là :{{$gui['password']}}
+Email(username): {{$gui['email']}}
 <br>
---------------------------------------------
+Mật khẩu(password): {{$gui['password']}}
 <br>
-Cảm ơn các bạn !!!
-
+-----------------------------------------------------------------
+<br>
+Cảm ơn các bạn đã sử dụng hệ thống !!!
