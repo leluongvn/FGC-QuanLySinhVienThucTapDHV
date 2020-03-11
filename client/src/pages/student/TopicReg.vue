@@ -230,7 +230,12 @@ export default {
                 this.$http.post('api/internship_point', {
                     id_student_reg: this.optionType[this.selectID].id_student_reg,
                     id_internship_topic: id
-                }).then(response => {
+                },{
+                    headers: {
+                    Authorization: this.$cookie.get('token')
+                    }
+                }
+                ).then(response => {
                     this.getOptionType();
                     this.$noty.success("Thành công :)");
                 }, response => {
