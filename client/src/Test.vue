@@ -158,7 +158,7 @@
             </div>
         </b-form>
         <!-- footer -->
-        <template v-slot:modal-footer="{ ok, cancel, hide }">
+        <template v-slot:modal-footer="{ insert }">
             <b-button size="sm" variant="info" @click="insert">
                 <i class="fa fa-plus-square" aria-hidden="true"></i> Xong
             </b-button>
@@ -217,7 +217,7 @@
 
         </b-form>
         <!-- footer -->
-        <template v-slot:modal-footer="{ ok, cancel, hide }">
+        <template v-slot:modal-footer="{ update }">
             <b-button size="sm" variant="info" @click="update">
                 <i class="fa fa-plus-square" aria-hidden="true"></i> Xong
             </b-button>
@@ -422,6 +422,10 @@ export default {
         }
     },
     mounted() {
+        console.log(this.$cookie.get('role'));
+        
+        console.log(this.$http.headers.common['Authorization']);
+        
         // Lấy tổng số bản ghi
         this.totalRows = this.items.length
     },

@@ -51,11 +51,13 @@
                 <div class="row">
                     <h6 class="text-center mt-2 col-10">Chọn sinh viên hưỡng dẫn</h6>
                     <i @click="hide_modal" class="fa fa-times col-2 text-right" aria-hidden="true"></i>
-                    <b-form-group class="col-md-12 mb-0" label-size="sm" id="fieldset-1" label-for="input-1">
-                        <select v-model="insert_instructor.id_student_reg" class="form-control form-control-sm">
+                    <b-form-group class="col-md-12 mb-0" label-size="sm" label-for="input-1">
+                        <v-select multiple v-model="insert_instructor.id_student_reg" :reduce="name => name.id" :options="option_student_instructor.length <= 0?[{name: ''}]:option_student_instructor" label="name"></v-select>
+
+                        <!-- <select v-model="insert_instructor.id_student_reg" class="form-control form-control-sm">
                             <option value="null">------------</option>
                             <option v-for="(item, index) in option_student_instructor" :key="index" :value="item.id">{{item.mssv}} - {{item.name}}</option>
-                        </select>
+                        </select> -->
                     </b-form-group>
                     <!-- end -->
                     <div class="col-12 text-center mt-2">
@@ -146,7 +148,7 @@ export default {
             option_student_instructor: [],
             insert_instructor: {
                 id_teacher: null,
-                id_student_reg: null,
+                id_student_reg: [],
             },
             instructor: [],
             update: {},
@@ -308,13 +310,13 @@ export default {
             });
         },
         insertInstructor() {
-            if (this.insert_instructor.id_student_reg == null || this.insert_instructor.id_student_reg == 'null')
+            if (this.insert_instructor.id_student_reg.length <= 0)
                 this.$noty.error("Thất bại, Mời chọn sinh viên hưỡng dẫn :(");
             else {
                 this.$http.post('api/instructor', this.insert_instructor).then(
                     response => {
                         this.getInstructor();
-                        this.insert_instructor.id_student_reg = null;
+                        this.insert_instructor.id_student_reg = [];
                         this.$noty.success("Thành công :)");
                     },
                     response => {
@@ -324,17 +326,30 @@ export default {
             }
         },
         delInstructor(id) {
-            this.$http.delete('api/instructor/' + id).then(
-                response => {
-                    this.getInstructor();
-                    this.$noty.success("Thành công :)");
-                },
-                response => {
-                    this.$noty.error("Thất bại :(");
+            this.$swal({
+                text: 'Đồng ý xóa?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy',
+                showCloseButton: true,
+                showLoaderOnConfirm: true
+            }).then((result) => {
+                if (result.value) {
+                    this.$http.delete('api/instructor/' + id).then(
+                        response => {
+                            this.getInstructor();
+                            this.$noty.success("Thành công :)");
+                        },
+                        response => {
+                            this.$noty.error("Thất bại :(");
+                        }
+                    );
                 }
-            );
+            })
         },
         getInstructor() {
+            $("#overlay").fadeIn(300);
             //lấy danh sách sinh viên của giáo viên hưỡng dẫn
             this.$http.get("api/instructor/" + this.insert_instructor.id_teacher + "/" + this.$route.params.id, {
                 headers: {
@@ -342,9 +357,12 @@ export default {
                 }
             }).then(
                 response => {
+                    $("#overlay").fadeOut(300);
                     this.instructor = response.body;
                     // Lấy tổng số bản ghi
                     this.totalRows = this.instructor.length
+                }, response => {
+                    $("#overlay").fadeOut(300);
                 }
             );
             //lấy danh sách sinh viên của hệ thống thông tin chưa có giáo viên hưỡng dẫn
@@ -360,6 +378,7 @@ export default {
         }
     },
     created() {
+        $("#overlay").fadeIn(300);
         // lấy danh sách giáo viên của hệ thống thông tin
         this.$http.get('api/teacher', {
             headers: {

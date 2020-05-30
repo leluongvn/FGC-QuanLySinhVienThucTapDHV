@@ -8,7 +8,7 @@ Xin chào: {{$gui['name']}}
 <br>
 Thông tin tài khoản của bạn là:
 <br>
-Mssv: 155D4802010135 - Tên sinh viên: {{$gui['name']}}
+Mssv: {{$gui['mssv']}} - Tên sinh viên: {{$gui['name']}}
 <br>
 Email(username): {{$gui['email']}}
 <br>

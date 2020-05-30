@@ -1,5 +1,10 @@
 <template>
 <div>
+    <div id="overlay">
+        <div class="cv-spinner">
+            <span class="spinner"></span>
+        </div>
+    </div>
     <!-- header -->
     <nav class="navbar navbar-expand-sm">
         <a class="navbar-brand ml-auto" href="#"><img src="../assets/logo.png" alt=""> </a>
@@ -17,33 +22,35 @@
     <!-- login -->
     <div class="login-content">
         <div class="login login-box">
-            <h4 class="text-center">Đăng nhập</h4>
-            <hr class="mt-0" width="100%">
-            <div class="input-group mb-3 ">
-                <div class="input-group-prepend ">
-                    <span class="input-group-text " id="basic-addon1 ">
-                        <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    </span>
+            <form v-on:submit.prevent="login">
+                <h4 class="text-center">Đăng nhập</h4>
+                <hr class="mt-0" width="100%">
+                <div class="input-group mb-3 ">
+                    <div class="input-group-prepend ">
+                        <span class="input-group-text " id="basic-addon1 ">
+                            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <input v-model="user.email" value="" class="form-control" type="text" placeholder="Email" autofocus>
                 </div>
-                <input v-model="user.email" value="" class="form-control" type="text" placeholder="Email" autofocus>
-            </div>
 
-            <div class="input-group mb-3 ">
-                <div class="input-group-prepend ">
-                    <span class="input-group-text " id="basic-addon1 ">
-                        <i class="fa fa-key" aria-hidden="true"></i>
+                <div class="input-group mb-3 ">
+                    <div class="input-group-prepend ">
+                        <span class="input-group-text " id="basic-addon1 ">
+                            <i class="fa fa-key" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <input v-model="user.password" value="123456" class="form-control" type="password" placeholder="Mật khẩu">
+                </div>
+                <div class="clearfix ">
+                    <span class="float-left"><a href="#" style="text-decoration:none">Quên mật khẩu</a></span>
+                    <span class="float-right">
+                        <button class="btn text-light" style="background:#2980b9">Đăng nhập</button>
                     </span>
                 </div>
-                <input v-model="user.password" value="123456" class="form-control" type="password" placeholder="Mật khẩu">
-            </div>
-            <div class="clearfix ">
-                <span class="float-left"><a href="#" style="text-decoration:none">Quên mật khẩu</a></span>
-                <span class="float-right">
-                    <button class="btn text-light" style="background:#2980b9" @click="login">Đăng nhập</button>
-                </span>
-            </div>
-            <hr>
-            <div class="text-center"><span class="mx-auto ">Email hỗ trợ: sv.internship@vinhuni.edu.vn</span></div>
+                <hr>
+                <div class="text-center"><span class="mx-auto ">Email hỗ trợ: sv.internship@vinhuni.edu.vn</span></div>
+            </form>
         </div>
     </div>
 </div>
@@ -62,30 +69,29 @@ export default {
     },
     methods: {
         login() {
+            $("#overlay").fadeIn(300);
             this.$http.post('api/user/login', this.user).then(
                 response => {
-                    if (response.body.role === "Admin" || response.body.role === "Trợ lý đào tạo" || response.body.role === "Trưởng bộ môn" || response.body.role === "Giảng viên") {
-                        this.str = response.body.token_type + response.body.token;
-                        this.$cookie.set('token', this.str, 1);
-                        this.$cookie.set('role', response.body.role, 1);
-                        this.$router.push('/teacher');
-                    } else if (response.body.role === "Doanh nghiệp") {
-                        this.str = response.body.token_type + response.body.token;
-                        this.$cookie.set('token', this.str, 1);
-                        this.$cookie.set('role', response.body.role, 1);
-                        this.$router.push('/company');
+                    $("#overlay").fadeOut(300);
+                    this.$http.headers.common['Authorization'] = 'bearer' + response.body.token;
+                    if (response.body.role === "Admin" || response.body.role === "Trợ lý đào tạo" || response.body.role === "Trưởng bộ môn" || response.body.role === "Giảng viên" || response.body.role === "Doanh nghiệp") {
+                        this.control('/teacher', response);
                     } else if (response.body.role === "Sinh viên") {
-                        this.str = response.body.token_type + response.body.token;
-                        this.$cookie.set('token', this.str, 1);
-                        this.$cookie.set('role', response.body.role, 1);
-                        this.$router.push('/student');
+                        this.control('/student', response);
                     } else
                         this.$noty.error("Thất bại, Kiểm tra lại email và mật khẩu :(");
-                },
-                response => {
+                }, response => {
+                    $("#overlay").fadeOut(300);
                     this.$noty.error("Thất bại, Kiểm tra lại email và mật khẩu :(");
                 }
             );
+        },
+        control(route, data) {
+            this.str = 'bearer' + data.body.token;
+            this.$cookie.set('token', this.str, 1);
+            this.$cookie.set('role', data.body.role, 1);
+            this.$cookie.set('user', data.body.user, 1);
+            this.$router.push(route);
         }
     },
     created() {

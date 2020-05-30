@@ -16,7 +16,7 @@
             <!-- controls -->
             <b-button-group size="sm">
                 <!-- button mở modal thêm dữ liệu -->
-                <b-button v-b-modal.modal-insert variant="primary"><i class="fa fa-lg fa-plus"></i></b-button>
+                <!-- <b-button v-b-modal.modal-insert variant="primary"><i class="fa fa-lg fa-plus"></i></b-button> -->
 
                 <!-- button import excel -->
                 <!-- <b-button variant="success" @click="$refs.importExcel.$el.dblclick()"> -->
@@ -34,17 +34,17 @@
         </b-row>
 
         <!-- modal thêm dữ liệu-->
-        <b-modal id="modal-insert" centered size="lg" title="Nhập điểm">
+        <!-- <b-modal id="modal-insert" centered size="lg" title="Nhập điểm">
             <b-form @submit.stop.prevent>
 
-            </b-form>
-            <!-- footer -->
-            <template v-slot:modal-footer="{ ok, cancel, hide }">
+            </b-form> -->
+        <!-- footer -->
+        <!-- <template v-slot:modal-footer="{ ok, cancel, hide }">
                 <b-button size="sm" variant="info" @click="insert">
                     <i class="fa fa-plus-square" aria-hidden="true"></i> Xong
                 </b-button>
             </template>
-        </b-modal>
+        </b-modal> -->
         <!-- kết thúc modal thêm dữ liệu -->
 
         <!-- table hiển thị dữ liệu -->
@@ -57,7 +57,7 @@
                 <template v-slot:cell(actions)="data">
                     <div class="btn-group">
                         <a class="badge badge-warning btn-sm btn bg-dark text-light font-weight-light px-2" @click="data.toggleDetails" style="font-size: 13px !important">@</a>
-                        <a class="badge badge-warning btn-sm btn" v-b-modal.modal-update @click="getUpdate(data.item.id)"><i class="fa fa-lg fa-edit"></i></a>
+                        <a class="badge badge-warning btn-sm btn" @click="getUpdate(data.item.id)"><i class="fa fa-lg fa-edit"></i></a>
                         <a class="badge badge-danger btn-sm btn text-black font-weight-light" @click="del(data.item.id)"><i class="fa fa-lg fa-trash"></i></a>
                     </div>
                 </template>
@@ -107,7 +107,7 @@
                     </b-form-group>
                     <!-- end -->
                     <div class="col-12 text-center mt-2">
-                        <b-button size="sm" type="submit" variant="warning" @click="postUpdate(getUpdate.id)">
+                        <b-button size="sm" type="submit" variant="warning" @click="postUpdate(update.id)">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Xong
                         </b-button>
                     </div>
@@ -199,7 +199,7 @@ export default {
             }, {
                 field: 'company_name',
                 key: 'company_name',
-                label: 'DNHD',
+                label: 'Doanh nghiệp',
                 sortable: true,
                 thStyle: {
                     color: '#fff',
@@ -274,15 +274,17 @@ export default {
             console.log(data.body)
         },
         getDataTable() {
+            $("#overlay").fadeIn(300);
             this.$http.get('api/internship_point/' + this.id, {
                 headers: {
                     Authorization: this.$cookie.get('token')
                 }
             }).then(
                 response => {
+                    $("#overlay").fadeOut(300);
                     this.items = response.body;
                 }, response => {
-
+                    $("#overlay").fadeOut(300);
                 }
             );
         },
@@ -290,21 +292,28 @@ export default {
             // chèn dữ liệu vào database
         },
         getUpdate(id) {
+            if (id == null) {
+                this.$noty.error("Sinh viên này chưa nhận đề tài :(");
+                return;
+            }
+            this.$refs['modal'].show();
             this.$http.get('api/internship_point/one/' + id).then(response => {
                 this.update = response.body;
             });
         },
         postUpdate(id) {
-            this.$http.put('api/internship_point/' + id, this.getUpdate, {
+            this.$http.put('api/internship_point/' + id, this.update, {
                 headers: {
                     Authorization: this.$cookie.get('token')
                 }
             }).then(response => {
+                    this.getDataTable();
                     this.$noty.success("Thành công :)");
                 },
                 response => {
                     this.$noty.error("Thất bại :(");
-                });
+                }
+            );
         }
     },
     computed: {

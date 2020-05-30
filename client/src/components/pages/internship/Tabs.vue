@@ -1,8 +1,9 @@
 <template>
 <div class="content">
     <div class="text-center">
-        <h4 style="color: rgb(41, 128, 185);text-transform: uppercase;">{{type.name}} - khóa {{time.course}} - ngành công nghệ thông tin</h4>
-        <p>Thời gian: {{time.start_time}} - {{time.end_time}}</p>
+        <h4 style="color: rgb(41, 128, 185);text-transform: uppercase;">
+            {{type.name}} - khóa {{time.course}} - ngành công nghệ thông tin</h4>
+        <p>Học kỳ: {{time.semester}} - Năm học: {{time.year}} - Thời gian: {{time.start_time}} - {{time.end_time}}</p>
         <hr class="mb-0" width="10%">
     </div>
     <div class="mx-3" style="display: -webkit-inline-box">
@@ -88,7 +89,7 @@ export default {
         // Lấp thông tin thực tập
         this.$http.get("api/internship_time/one/" + this.$route.params.id).then(
             response => {
-                this.time = response.body[0];
+                this.time = response.body;
                 this.$http.get("api/internship_type/" + this.time.id_internship_type).then(
                     response => {
                         this.type = response.body;

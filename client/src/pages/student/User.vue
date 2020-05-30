@@ -2,9 +2,12 @@
 <div class="row user">
     <div class="col-md-12">
         <div class="profile">
-            <div class="info"><img class="user-img" src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg">
-                <h4>John Doe</h4>
-                <p>FrontEnd Developer</p>
+            <div class="info">
+                <!-- <img class="user-img" src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg"> -->
+                <img class="user-img" style="width: 45px;heghth: 45px" src="https://www.kodefork.com/static/users/images/user.png" alt="User Image" />
+
+                <h4>{{this.$cookie.get('user')}}</h4>
+                <!-- <p>FrontEnd Developer</p> -->
             </div>
             <div class="cover-image"></div>
         </div>
@@ -75,21 +78,27 @@ export default {
     },
     methods: {
         getData() {
+            $('#overlay').fadeIn(300);
             this.$http.get('api/student/user', {
                 headers: {
                     Authorization: this.$cookie.get('token')
                 }
             }).then(response => {
+                $('#overlay').fadeOut(300);
                 this.student = response.body;
+            }, response => {
+                $('#overlay').fadeOut(300);
             });
         },
         save() {
+            $('#overlay').fadeIn(300);
             this.$http.put("api/student/" + this.student.id, this.student).then(
                 response => {
                     this.$noty.success("Thành công :)");
                     this.getData();
                 },
                 response => {
+                    $('#overlay').fadeOut(300);
                     if (response.body.mssv !== undefined)
                         this.$noty.error(response.body.mssv);
                     else if (response.body.name !== undefined)

@@ -18,7 +18,7 @@ class Internship_TopicController extends Controller
         $role = Role::find(Auth::user()->id_role);
         if ($role->name === "Admin") {
             $data = DB::table('users as u')
-                ->select('it.id','it.id_topic', 't.name','u.name as create_by', 't.note', 't.file')
+                ->select('it.id', 'it.id_topic', 't.name', 'u.name as create_by', 't.note', 't.file')
                 ->join('internship_topic as it', 'it.id_user', 'u.id')
                 ->join('topics as t', 't.id', 'it.id_topic')
                 ->where('it.id_internship_time', $id)
@@ -26,12 +26,12 @@ class Internship_TopicController extends Controller
             return $data;
         } else if ($role->name !== "Sinh viên") {
             $data = DB::table('users as u')
-                ->select('it.id','it.id_topic', 't.name','u.name as create_by', 't.note', 't.file')
+                ->select('it.id', 'it.id_topic', 't.name', 'u.name as create_by', 't.note', 't.file')
                 ->join('internship_topic as it', 'it.id_user', 'u.id')
                 ->join('topics as t', 't.id', 'it.id_topic')
                 ->where('it.id_internship_time', $id)
                 ->where('it.id_user', Auth::user()->id)
-                ->orWhere('u.name','Admin')
+                ->orWhere('u.name', 'Admin')
                 ->get();
             return $data;
         }
@@ -49,19 +49,21 @@ class Internship_TopicController extends Controller
 
     public function create(Request $request)
     {
-        $data = new Internship_Topic();
-        $data->id_user = Auth::user()->id;
-        $data->id_topic = $request->id_topic;
-        $data->id_internship_time = $request->id_internship_time;
+        foreach ($request->id_topic as $item) {
+            $data = new Internship_Topic();
+            $data->id_user = Auth::user()->id;
+            $data->id_topic = $item;
+            $data->id_internship_time = $request->id_internship_time;
 
-        $data->save();
+            $data->save();
+        }
         return 1;
         // Internship_Topic::insert($request->all());
     }
 
     public function edit($id, Request $request)
     {
-        
+
     }
 
     public function destroy($id)

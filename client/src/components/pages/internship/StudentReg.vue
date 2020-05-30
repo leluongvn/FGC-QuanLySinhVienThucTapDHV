@@ -46,23 +46,22 @@
         </b-row>
 
         <!-- modal thêm dữ liệu-->
-        <b-modal id="modal-insert" centered size="lg" title="Thêm dữ liệu">
+        <b-modal id="modal-insert" ref="modal" centered size="lg" hide-footer hide-header>
             <b-form @submit.stop.prevent>
                 <div class="row">
+                    <h6 class="text-center mt-2 col-10">Thêm sinh viên đăng ký:</h6>
+                    <i @click="hide_modal" class="fa fa-times col-2 text-right" aria-hidden="true"></i>
+                    <hr class="col-12">
                     <div class="col-md-12 col-lg-4">
                         <h6 class="text-center mt-2">
-                            <mark>- Sinh viên đăng ký -</mark>
+                            <mark>- Chọn sinh viên đăng ký -</mark>
                         </h6>
                         <div class="row" style="border-right: 1px solid #dee2e6">
-                            <!-- v-if="insert_info_reg.mssv === '' || insert_info_reg.mssv === null" -->
-                            <b-form-group class="col-md-12 mb-0" label-size="sm" label="Chọn sinh viên:" label-for="input-1">
-                                <select v-model.trim="insert_reg.id_student" class="form-control form-control-sm">
-                                    <option value="null">----------</option>
-                                    <option v-for="(item, index) in option_student" :key="index" :value="item.id">{{item.mssv}} - {{item.name}}</option>
-                                </select>
+                            <b-form-group class="col-md-12 mb-0"  label-size="sm" label="Chọn sinh viên:" label-for="input-1">
+                                <v-select multiple v-model="insert_reg.id_student" :reduce="name => name.id" :options="option_student.length <= 0?[{name: ''}]:option_student" label="name"></v-select>
                             </b-form-group>
                             <!-- end -->
-                            <b-form-group class="col-md-12 mb-0" label-size="sm"label="Điểm hệ 4:" label-for="input-1">
+                            <b-form-group class="col-md-12 mb-0" label-size="sm" label="Điểm hệ 4:" label-for="input-1">
                                 <b-form-input v-model.trim="insert_reg.total_point" placeholder="3.20" type="number" size="sm" trim></b-form-input>
                             </b-form-group>
                         </div>
@@ -70,7 +69,7 @@
                     <!-- v-if="insert_reg.id_student === 'null' || insert_reg.id_student === null" -->
                     <div class="col-md-12 col-lg-8">
                         <h6 class="text-center mt-2">
-                            <mark>- Thông tin sinh viên -</mark>
+                            <mark>-Thêm sinh viên mới -</mark>
                         </h6>
                         <div class="row">
                             <b-form-group class="col-md-6 mb-0" label-size="sm" label="Mssv:" label-for="input-1">
@@ -95,14 +94,13 @@
                             <!-- end -->
                         </div>
                     </div>
+                    <div class="text-center col-12">
+                        <b-button size="sm" variant="info" @click="insertReg">
+                            <i class="fa fa-plus-square" aria-hidden="true"></i> Xong
+                        </b-button>
+                    </div>
                 </div>
             </b-form>
-            <!-- footer -->
-            <template v-slot:modal-footer="{ ok, cancel, hide }">
-                <b-button size="sm" variant="info" @click="insertReg">
-                    <i class="fa fa-plus-square" aria-hidden="true"></i> Xong
-                </b-button>
-            </template>
         </b-modal>
         <!-- kết thúc modal thêm dữ liệu -->
 
@@ -121,13 +119,13 @@
                     </div>
                 </template>
 
-                <template v-slot:row-details="data">
-                    <!-- <b-card> -->
-                    <!-- <ul>
+                <!-- <template v-slot:row-details="data"> -->
+                <!-- <b-card> -->
+                <!-- <ul>
                         <li v-for="(value, key) in data.item" :key="key">{{ key }}: {{ value }}</li>
                     </ul> -->
-                    <!-- </b-card> -->
-                </template>
+                <!-- </b-card> -->
+                <!-- </template> -->
             </b-table>
         </b-row>
         <!-- Phân trang hiện thị -->
@@ -151,16 +149,16 @@
         <b-modal ref="modal-update" id="modal-update" centered size="sm" title="Sửa dữ liệu" hide-footer hide-header>
             <b-form @submit.stop.prevent>
                 <div class="row">
-                    <h6 class="text-center mt-2 col-10">Sinh viên đăng ký</h6>
-                    <i @click="hide_modal_reg" class="fa fa-times col-2 text-right" aria-hidden="true"></i>
-                    <b-form-group class="col-md-12 mb-0" label-size="sm" id="fieldset-1" label="Sinh viên:" label-for="input-1">
-                        <select class="form-control form-control-sm" v-model.trim="update_reg.id_student">
-                            <option :value="update_reg.id_student">{{update_reg.mssv}} - {{update_reg.name}}</option>
-                            <option v-for="(item, index) in option_student" :key="index" :value="item.id">{{item.mssv}} - {{item.name}}</option>
-                        </select>
-                    </b-form-group>
+                    <!-- <h6 class="text-center mt-2 col-10">Sinh viên đăng ký</h6> -->
+                    <i @click="hide_modal_reg" class="fa fa-times col-12 text-right" aria-hidden="true"></i>
+                    <!-- <hr class="col-12"> -->
+                    <div class="col-12 text-center">
+                        <p class="m-0">{{update_reg.mssv}}</p>
+                        <p class="m-0">{{update_reg.name}}</p>
+                        <hr width="50px" class="my-0">
+                    </div>
                     <!-- end -->
-                    <b-form-group class="col-md-12 mb-0" label-size="sm" id="fieldset-1" label="Điểm hệ 4:" label-for="input-1">
+                    <b-form-group class="col-md-12 mb-0 text-center" label-size="sm" id="fieldset-1" label="Điểm hệ 4:" label-for="input-1">
                         <b-form-input v-model.trim="update_reg.total_point" placeholder="3.20" type="number" id="input-1" size="sm" trim></b-form-input>
                     </b-form-group>
                     <div class="col-12 text-center mt-2">
@@ -180,6 +178,11 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import vSelect from 'vue-select'
+
+Vue.component('v-select', vSelect);
+import 'vue-select/dist/vue-select.css';
 export default {
     data() {
         return {
@@ -189,7 +192,7 @@ export default {
             reg: [],
             insert_reg: {
                 id_subject: null,
-                id_student: null,
+                id_student: [],
                 id_internship_time: this.$route.params.id,
                 total_point: 0
             },
@@ -327,6 +330,9 @@ export default {
         }
     },
     methods: {
+        hide_modal() {
+            this.$refs['modal'].hide();
+        },
         importExcel(data) {
             console.log(data.body)
         },
@@ -337,22 +343,34 @@ export default {
             this.$refs['modal-update'].hide();
         },
         deleteReg(id) {
-            this.$http.delete("api/student/reg/" + id).then(
-                response => {
-                    this.$noty.success("Thành công :)");
-                    this.getAllDataStudentReg();
-                },
-                response => {
-                    this.$noty.error("Thất bại :(");
+            this.$swal({
+                text: 'Đồng ý xóa?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy',
+                showCloseButton: true,
+                showLoaderOnConfirm: true
+            }).then((result) => {
+                if (result.value) {
+                    this.$http.delete("api/student/reg/" + id).then(
+                        response => {
+                            this.$noty.success("Thành công :)");
+                            this.getAllDataStudentReg();
+                        },
+                        response => {
+                            this.$noty.error("Thất bại :(");
+                        }
+                    );
                 }
-            );
+            })
         },
         putRegUpdate() {
             this.$http.put("api/student/reg/" + this.update_reg.id, this.update_reg).then(
                 respone => {
+                    this.hide_modal_reg();
                     this.getAllDataStudentReg();
                     this.$noty.success("Thành công :)");
-                    this.$refs['modal-update-reg'].hide();
                 },
                 response => {
                     this.$noty.error("Thất bại :(");
@@ -379,8 +397,6 @@ export default {
                     this.$noty.error("Thất bại, Bạn chưa nhập ngày sinh :(");
                 else if (this.insert_info_reg.birthday === null || this.insert_info_reg.birthday === '')
                     this.$noty.error("Thất bại, Bạn chưa nhập email :(");
-                else if (this.insert_reg.total_point === null || this.insert_reg.total_point === '')
-                    this.$noty.error("Thất bại, Bạn chưa nhập điểm sinh viên :(");
                 else {
                     // Nhập thông tin sinh viên khi chưa có dữ liệu
                     this.$http.post("api/student", this.insert_info_reg).then(
@@ -388,7 +404,6 @@ export default {
                             this.insert_info_reg = {
                                 mssv: null,
                                 name: null,
-                                password: 123456,
                                 class: null,
                                 birthday: null,
                                 email: null
@@ -428,8 +443,6 @@ export default {
 
                 },
                 response => {
-                    console.log(this.insert_reg);
-
                     // echo validate server
                     if (response.body.id_student !== undefined)
                         this.$noty.error(response.body.id_student);
@@ -441,24 +454,29 @@ export default {
             );
         },
         getAllDataStudentReg() {
+            $("#overlay").fadeIn(300);
             // lấy tất cả sinh viên đã đăng ký thực tập
             this.$http.get("api/student/reg/" + this.$route.params.id + "/" + this.insert_reg.id_subject).then(
                 response => {
+                    $("#overlay").fadeOut(300);
                     this.reg = response.body;
                     // Lấy tổng số bản ghi
                     this.totalRows = this.reg.length
+                }, response => {
+                    $("#overlay").fadeOut(300);
                 }
             );
             // Lấy tất cả sinh viên chưa đăng ký thực tập
             this.$http.get("api/student/not-reg/" + this.$route.params.id).then(
                 response => {
-                    this.option_student = response.body;
+                    this.option_student = response.data;
                 }
             );
         }
     },
     created() {
         //Lấy thông tin bộ môn
+        $("#overlay").fadeIn(300);
         this.$http.get("api/subject").then(
             response => {
                 this.insert_reg.id_subject = response.body[0].id;

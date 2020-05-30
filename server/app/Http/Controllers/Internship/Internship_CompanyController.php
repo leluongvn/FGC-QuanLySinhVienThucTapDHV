@@ -15,14 +15,19 @@ class Internship_CompanyController extends Controller
         $this->validate(
             $request,
             [
-                'limit' => 'required'
-
+                'id_company' => 'required'
             ],
             [
-                'limit.required' => 'Thất bại, Mời nhập sĩ số của doanh nghiệp'
+                'id_company.required' => 'Thất bại, Mời nhập chọn doanh nghiệp'
             ]
         );
-        Internship_Company::create($request->all());
+
+        foreach ($request->id_company as $item) {
+            Internship_Company::create([
+                'id_company' => $item,
+                'id_internship_time' => $request->id_internship_time
+            ]);
+        }
 
         return 1;
         // return response()->json($results, 201);
@@ -87,8 +92,13 @@ class Internship_CompanyController extends Controller
 
     public function delete($id)
     {
-        Internship_Company::findOrFail($id)->delete();
-        return response('Xóa thành công', 200);
+        $ktr = Internship_Company::with('reg')->find($id);
+        if ($ktr->reg <= 0) {
+            Internship_Company::findOrFail($id)->delete();
+            return response('Xóa thành công', 200);
+        } else {
+            return response('Lỗi', 422);
+        }
     }
 
     /*

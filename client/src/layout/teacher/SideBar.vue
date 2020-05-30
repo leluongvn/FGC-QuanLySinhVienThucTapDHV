@@ -3,10 +3,11 @@
     <!-- <div class="app-sidebar__overlay" data-toggle="sidebar"></div> -->
     <aside class="app-sidebar" id="sidebar">
         <div class="app-sidebar__user">
-            <img class="app-sidebar__user-avatar" src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg" alt="User Image" />
+            <!-- <i class="fa fa-user-circle-o" aria-hidden="true"></i> -->
+            <img class="app-sidebar__user-avatar" style="width: 45px;heghth: 45px" src="https://www.kodefork.com/static/users/images/user.png" alt="User Image" />
             <div>
-                <p class="app-sidebar__user-name">John Doe</p>
-                <p class="app-sidebar__user-designation">Frontend Developer</p>
+                <p class="app-sidebar__user-name"> {{this.$cookie.get('user')}}</p>
+                <!-- <p class="app-sidebar__user-designation">Frontend Developer</p> -->
             </div>
         </div>
         <ul class="app-menu">

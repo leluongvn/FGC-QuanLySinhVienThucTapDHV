@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="text-center col-12">
                     <h4 class="card-title m-0"> Quản lý đề tài</h4>
-                    <p class="card-category">Xem thông tin, thêm, sửa, xóa doanh nghiệp</p>
+                    <p class="card-category">Xem thông tin, thêm, sửa, xóa đề tài</p>
                     <hr width="20%" color="#2980b9">
                 </div>
             </div>
@@ -123,11 +123,9 @@
                             </div>
                         </template>
                         <template v-slot:row-details="data">
-                            <!-- <b-card> -->
-                            <ul>
-                                <li v-for="(value, key) in data.item" :key="key">{{ key }}: {{ value }}</li>
-                            </ul>
-                            <!-- </b-card> -->
+                            <b-card>
+                                Mô tả: {{data.item.note}}
+                            </b-card>
                         </template>
                     </b-table>
                 </b-row>
@@ -375,6 +373,7 @@ export default {
             );
         },
         changeStatus(id, tus) {
+            $("#overlay").fadeIn(300);
             this.$http.put('api/topic/status/' + id, {
                 status: tus
             }).then(
@@ -396,16 +395,28 @@ export default {
         },
         //start delete row table
         delTopic(id) {
-            if (confirm("Bạn có chắc chắn muốn xóa?"))
-                this.$http.delete("api/topic/" + id).then(
-                    response => {
-                        this.getAllData();
-                        this.$noty.success("Thành công :)");
-                    },
-                    response => {
-                        this.$noty.error("Thất bại :(");
-                    }
-                );
+            this.$swal({
+                text: 'Đồng ý xóa?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy',
+                showCloseButton: true,
+                showLoaderOnConfirm: true
+            }).then((result) => {
+                if (result.value) {
+                    this.$http.delete("api/topic/" + id).then(
+                        response => {
+                            this.getAllData();
+                            this.$noty.success("Thành công :)");
+                        },
+                        response => {
+                            this.$noty.error("Thất bại :(");
+                        }
+                    );
+                }
+            })
+
         },
         //add row table
         addData() {
@@ -505,13 +516,17 @@ export default {
             );
         },
         getAllData() {
+            $("#overlay").fadeIn(300);
             //Lấy thông tin đề tài theo từng loại thực tập
             this.$http.get("api/topic/" + this.type_id).then(
                 response => {
+                    $("#overlay").fadeOut(300);
                     // get body data
                     this.topics = response.body;
                     // Lấy tổng số bản ghi
                     this.totalRows = this.topics.length
+                }, response => {
+                    $("#overlay").fadeOut(300);
                 }
             );
         }

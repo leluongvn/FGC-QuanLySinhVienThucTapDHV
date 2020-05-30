@@ -16,7 +16,7 @@
             <!-- controls -->
             <b-button-group size="sm">
                 <!-- button mở modal thêm dữ liệu -->
-                <b-button v-b-modal.modal-insert variant="primary"><i class="fa fa-lg fa-plus"></i></b-button>
+                <!-- <b-button v-b-modal.modal-insert variant="primary"><i class="fa fa-lg fa-plus"></i></b-button> -->
 
                 <!-- button import excel -->
                 <!-- <b-button variant="success" @click="$refs.importExcel.$el.dblclick()"> -->
@@ -34,17 +34,17 @@
         </b-row>
 
         <!-- modal thêm dữ liệu-->
-        <b-modal id="modal-insert" centered size="lg" title="Nhập điểm">
+        <!-- <b-modal id="modal-insert" centered size="lg" title="Nhập điểm">
             <b-form @submit.stop.prevent>
 
-            </b-form>
-            <!-- footer -->
-            <template v-slot:modal-footer="{ ok, cancel, hide }">
+            </b-form> -->
+        <!-- footer -->
+        <!-- <template v-slot:modal-footer="{ ok, cancel, hide }">
                 <b-button size="sm" variant="info" @click="insert">
                     <i class="fa fa-plus-square" aria-hidden="true"></i> Xong
                 </b-button>
             </template>
-        </b-modal>
+        </b-modal> -->
         <!-- kết thúc modal thêm dữ liệu -->
 
         <!-- table hiển thị dữ liệu -->
@@ -57,7 +57,7 @@
                 <template v-slot:cell(actions)="data">
                     <div class="btn-group">
                         <a class="badge badge-warning btn-sm btn bg-dark text-light font-weight-light px-2" @click="data.toggleDetails" style="font-size: 13px !important">@</a>
-                        <a class="badge badge-warning btn-sm btn" v-b-modal.modal-update @click="getUpdate(data.item.id)"><i class="fa fa-lg fa-edit"></i></a>
+                        <a class="badge badge-warning btn-sm btn" @click="getUpdate(data.item.id)"><i class="fa fa-lg fa-edit"></i></a>
                         <!-- <a class="badge badge-danger btn-sm btn text-black font-weight-light" @click="del(data.item.id)"><i class="fa fa-lg fa-trash"></i></a> -->
                     </div>
                 </template>
@@ -95,19 +95,26 @@
                 </div>
                 <div class="row">
                     <!-- this.$cookie.get('role') === "Trợ lý đào tạo" || this.$cookie.get('role') === "Trưởng bộ môn" || this.$cookie.get('role') === "Giảng viên" -->
-                    <b-form-group v-if="this.$cookie.get('role') == 'Trợ lý đào tạo'" class="col-12" label-size="sm" label="Điểm giáo viên:" label-for="input-1">
+                    <b-form-group v-if="this.$cookie.get('role') == 'Trợ lý đào tạo' || this.$cookie.get('role') == 'Trưởng bộ môn' || this.$cookie.get('role') == 'Giảng viên'" class="col-12" label-size="sm" label="Điểm giáo viên:" label-for="input-1">
                         <b-form-input v-model="update.teacher_point" type="number" size="sm" trim></b-form-input>
                     </b-form-group>
-                    <b-form-group v-if="this.$cookie.get('role') == 'Trưởng bộ môn'" class="col-12" label-size="sm" label="Điểm giáo viên:" label-for="input-1">
+                    <b-form-group v-if="this.$cookie.get('role') == 'Trợ lý đào tạo' || this.$cookie.get('role') == 'Trưởng bộ môn' || this.$cookie.get('role') == 'Giảng viên'" class="col-12" label-size="sm" label="Lời phê:" label-for="input-1">
+                        <textarea v-model="update.teacher_comment" rows="4" width="50%" type="text" class="form-control form-control-sm"></textarea>
+                    </b-form-group>
+                    <!-- <b-form-group v-if="this.$cookie.get('role') == 'Trưởng bộ môn'" class="col-12" label-size="sm" label="Điểm giáo viên:" label-for="input-1">
                         <b-form-input v-model="update.teacher_point" type="number" size="sm" trim></b-form-input>
                     </b-form-group>
                     <b-form-group v-if="this.$cookie.get('role') == 'Giảng viên'" class="col-12" label-size="sm" label="Điểm giáo viên:" label-for="input-1">
                         <b-form-input v-model="update.teacher_point" type="number" size="sm" trim></b-form-input>
-                    </b-form-group>
+                    </b-form-group> -->
                     <!-- end -->
                     <b-form-group v-if="this.$cookie.get('role') == 'Doanh nghiệp'" class="col-12" label-size="sm" label="Điểm công ty:" label-for="input-1">
                         <b-form-input v-model="update.company_point" type="number" size="sm" trim></b-form-input>
                     </b-form-group>
+                    <b-form-group v-if="this.$cookie.get('role') == 'Doanh nghiệp'" class="col-12" label-size="sm" label="Lời phê:" label-for="input-1">
+                        <textarea v-model="update.company_comment" rows="4" width="50%" type="text" class="form-control form-control-sm"></textarea>
+                    </b-form-group>
+
                     <div class="col-12 text-center mt-2">
                         <b-button size="sm" type="submit" variant="warning" @click="postUpdate(update.id)">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Xong
@@ -129,6 +136,8 @@ export default {
         return {
             id: this.$route.params.id,
             update: {
+                teacher_comment: "",
+                company_comment: "",
                 teacher_point: 0,
                 company_point: 0,
                 total_point: 0
@@ -276,15 +285,17 @@ export default {
             console.log(data.body)
         },
         getDataTable() {
+            $("#overlay").fadeIn(300);
             this.$http.get('api/internship_point/' + this.id, {
                 headers: {
                     Authorization: this.$cookie.get('token')
                 }
             }).then(
                 response => {
+                    $("#overlay").fadeOut(300);
                     this.items = response.body;
                 }, response => {
-
+                    $("#overlay").fadeOut(300);
                 }
             );
         },
@@ -292,6 +303,11 @@ export default {
             // chèn dữ liệu vào database
         },
         getUpdate(id) {
+            if (id == null) {
+                this.$noty.error("Sinh viên này chưa nhận đề tài :(");
+                return;
+            }
+            this.$refs['modal'].show();
             this.$http.get('api/internship_point/one/' + id, {
                 headers: {
                     Authorization: this.$cookie.get('token')
@@ -315,7 +331,28 @@ export default {
             );
         },
         del() {
-            // xóa dữ liệu
+            this.$swal({
+                text: 'Đồng ý xóa?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy',
+                showCloseButton: true,
+                showLoaderOnConfirm: true
+            }).then((result) => {
+                if (result.value) {
+                    // this.$http.delete("api/internship_topic/" + id).then(
+                    //     response => {
+                    //         this.$noty.success("Thành công :)");
+                    //         this.postTopic.id_topic = null;
+                    //         this.getAllTopic();
+                    //     },
+                    //     response => {
+                    //         this.$noty.error('Thất bại :(');
+                    //     }
+                    // );
+                }
+            })
         }
     },
     computed: {

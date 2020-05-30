@@ -15,4 +15,18 @@ class Student_Reg extends Model
      */
     protected $fillable = ['id_student', 'id_subject', 'id_internship_time', 'total_point'];
 
+    public function profile()
+    {
+        return $this->hasOne(View_Profile::class, 'id', 'id');
+    }
+
+    public function point()
+    {
+        return $this->hasOne(Internship_Point::class, 'id_student_reg', 'id');
+    }
+
+    public function internship()
+    {
+        return $this->belongsTo(Internship_Time::class, 'id_internship_time', 'id');
+    }
 }

@@ -48,8 +48,13 @@ class InstructorController extends Controller
 
     public function create(Request $request)
     {
-        $instructor = Instructor::create($request->all());
-        return response()->json($instructor, 201);
+        foreach ($request->id_student_reg as $item) {
+            $instructor = Instructor::create([
+                'id_student_reg' => $item,
+                'id_teacher' => $request->id_teacher
+            ]);
+        }
+        return response()->json($instructor, 200);
     }
 
     public function update($id, Request $request)

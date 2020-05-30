@@ -1,6 +1,6 @@
 <template>
 <header class="app-header">
-    <a class="app-header__logo" href="index.html">
+    <a class="app-header__logo" href="/">
         <img style="width:40px;margin-bottom: 5px" src="../assets/logo.png" alt />
     </a>
     <!-- <p class="app-header__logo">Cổng thông tin trường đại học vinh</p> -->
@@ -158,9 +158,14 @@ export default {
             element.classList.toggle("sidenav-toggled");
         },
         logout() {
+            $("#overlay").fadeIn(500).fadeOut(500);;
             this.$cookie.delete('token');
             this.$cookie.delete('role');
-            this.$router.push('/login');
+            // this.$router.push('/login');
+
+            setTimeout(function(){
+                location.href = '/login';
+            }, 300);
         }
     },
     watch: {}

@@ -37,17 +37,9 @@
         <b-modal ref="modal-company" id="modal-insert" centered size="sm" hide-footer hide-header>
             <b-form @submit.stop.prevent>
                 <div class="row">
-                    <h6 class="text-center mt-2 col-10">Công ty đăng ký</h6>
-                    <i @click="hide_modal_company" class="fa fa-times col-2 text-right" aria-hidden="true"></i>
+                    <i @click="hide_modal_company" class="fa fa-times col-12 text-right" aria-hidden="true"></i>
                     <b-form-group class="col-12 mb-0" label-size="sm" id="fieldset-1" label="Chọn công ty:" label-for="input-1">
-                        <select v-model="postCreateCompany.id_company" class="form-control form-control-sm">
-                            <option value="null">-----------</option>
-                            <option v-for="(item, index) in getCreateCompany" :key="index" :value="item.id">{{item.name}}</option>
-                        </select>
-                    </b-form-group>
-                    <!-- end -->
-                    <b-form-group class="col-12 mb-0" label-size="sm" id="fieldset-1" label="Sĩ số:" label-for="input-1">
-                        <b-form-input v-model="postCreateCompany.limit" laceholder="20" type="number" id="input-1" size="sm" trim></b-form-input>
+                        <v-select multiple v-model="postCreateCompany.id_company" :reduce="name => name.id" :options="getCreateCompany.length <= 0?[{name: ''}]:getCreateCompany" label="name"></v-select>
                     </b-form-group>
                     <div class="col-12 text-center mt-2">
                         <b-button size="sm" variant="info" @click="insertCompany">
@@ -102,18 +94,15 @@
 
         <!-- modal sửa dữ liệu-->
         <b-modal ref="modal-company" id="modal-update" centered size="sm" hide-header hide-footer>
-            <b-form @submit.stop.prevent>
+            <b-form v-on:submit.prevent="updateCompany">
                 <div class="row">
-                    <h6 class="text-center mt-2 col-10">Công ty đăng ký</h6>
-                    <i @click="hide_modal_company" class="fa fa-times col-2 text-right" aria-hidden="true"></i>
-                    <b-form-group class="col-md-12 mb-0" label-size="sm" id="fieldset-1" label="Tên công ty:" label-for="input-1">
-                        <select class="form-control form-control-sm" v-model="getUpdateCompany.id_company">
-                            <option :value="getUpdateCompany.id_company">{{getUpdateCompany.name}}</option>
-                            <option v-for="(item, index) in getCreateCompany" :key="index" :value="item.id">{{item.name}}</option>
-                        </select>
-                    </b-form-group>
+                    <i @click="hide_modal_company" class="fa fa-times col-12 text-right" aria-hidden="true"></i>
+                    <div class="col-12 text-center">
+                        <p class="m-0">{{getUpdateCompany.name}}</p>
+                        <hr width="50px" class="my-0">
+                    </div>
                     <!-- end -->
-                    <b-form-group class="col-md-12 mb-0" label-size="sm" id="fieldset-1" label="Sĩ số:" label-for="input-1">
+                    <b-form-group class="col-md-12 mb-0 text-center" label-size="sm" id="fieldset-1" label="Sĩ số:" label-for="input-1">
                         <b-form-input v-model="getUpdateCompany.limit" laceholder="20" type="number" id="input-1" size="sm" trim></b-form-input>
                     </b-form-group>
                     <div class="col-12 text-center mt-2">
@@ -132,6 +121,11 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import vSelect from 'vue-select'
+
+Vue.component('v-select', vSelect);
+import 'vue-select/dist/vue-select.css';
 export default {
     data() {
         return {
@@ -140,9 +134,8 @@ export default {
             getCreateCompany: [],
             getUpdateCompany: {},
             postCreateCompany: {
-                id_company: null,
-                id_internship_time: this.$route.params.id,
-                limit: 0
+                id_company: [],
+                id_internship_time: this.$route.params.id
             },
             // ---------------------------------------------
             fields: [{
@@ -213,7 +206,7 @@ export default {
                 thClass: 'text-center'
             }, {
                 field: 'reg',
-                key: 'liregmit',
+                key: 'reg',
                 label: 'Đã ĐK',
                 class: 'text-center',
                 sortable: true,
@@ -254,21 +247,34 @@ export default {
             this.$refs['modal-company'].hide();
         },
         delCompany(id) {
-            //xóa doanh nghiệp ra khỏi ds đăng ký của sinh viên
-            this.$http.delete("api/internship_company/" + id).then(
-                response => {
-                    this.$noty.success("Thành công :)");
-                    this.getAllCompanyReg();
-                },
-                response => {
-                    this.$noty.error("Thất bại :(");
+            this.$swal({
+                text: 'Đồng ý xóa?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy',
+                showCloseButton: true,
+                showLoaderOnConfirm: true
+            }).then((result) => {
+                if (result.value) {
+                    //xóa doanh nghiệp ra khỏi ds đăng ký của sinh viên
+                    this.$http.delete("api/internship_company/" + id).then(
+                        response => {
+                            this.$noty.success("Thành công :)");
+                            this.getAllCompanyReg();
+                        },
+                        response => {
+                            this.$noty.error("Thất bại, Doanh nghiệp đã có người đăng ký :(");
+                        }
+                    );
                 }
-            );
+            })
         },
         updateCompany() {
             // lấy thông tin công ty chưa đăng ký
             this.$http.put("api/internship_company/" + this.getUpdateCompany.id, this.getUpdateCompany).then(
                 response => {
+                    this.hide_modal_company();
                     this.$noty.success("Thành công :)");
                     this.getAllCompanyReg();
                 },
@@ -284,25 +290,27 @@ export default {
             // lấy thông tin công ty chưa đăng ký
             this.$http.get("api/internship_company/one/" + id).then(
                 response => {
-                    console.log(response.body);
                     this.getUpdateCompany = response.body[0];
                 }
             );
         },
         insertCompany() {
-            if (this.postCreateCompany.id_company == null || this.postCreateCompany.id_company == 'null')
-                this.$noty.error("Thất bại, Mời chon doanh nghiệp :(");
+            if (this.postCreateCompany.id_company.length <= 0)
+                this.$noty.error("Thất bại, Mời chọn doanh nghiệp :(");
             else {
+                $("#overlay").fadeIn(300)                
                 //Nhập thông tin doanh nghiệp có thể đăng ký
                 this.$http.post("api/internship_company", this.postCreateCompany).then(
                     response => {
+                        this.hide_modal_company();
                         this.$noty.success("Thành công :)");
-                        this.postCreateCompany.id_company = null;
+                        this.postCreateCompany.id_company = [];
                         this.getAllCompanyReg();
                     },
                     response => {
-                        if (response.body.limit !== undefined)
-                            this.$noty.error(response.body.limit);
+                        $("#overlay").fadeOut(300);
+                        if (response.body.id_company !== undefined)
+                            this.$noty.error(response.body.id_company);
                         else
                             this.$noty.error("Thất bại :(");
                     }
@@ -311,11 +319,18 @@ export default {
         },
         getAllCompanyReg() {
             // lấy thông tin công ty đăng ký
+            $("#overlay").fadeIn(300);
             this.$http.get("api/internship_company/" + this.id).then(
-                respone => {
-                    this.company_reg = respone.body;
+                response => {
+                    $("#overlay").fadeOut(300);
+                    console.log(response);
+
+                    this.company_reg = response.body;
                     // Lấy tổng số bản ghi
                     this.totalRows = this.company_reg.length
+                }, response => {
+                    console.log(response);
+                    $("#overlay").fadeOut(300);
                 }
             );
             // lấy thông tin công ty chưa đăng ký

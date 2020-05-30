@@ -6,8 +6,14 @@
             <div class="row">
                 <div class="col-md-12 text-center">
                     <h6>{{user.mssv}} - {{user.name}} - {{user.class}} - Ngành Công nghệ thông tin</h6>
-                    <h4 style="color:#006400">Danh sách đề tài có thể đăng ký trong thực tập</h4>
+                    <h4 style="color:#006400">Danh sách đề tài có thể đăng ký</h4>
                     <hr width="20%" color="black" />
+                    <h4 style="color:#006400">{{optionType[selectID].name}}</h4>
+                    <span class="d-flex justify-content-around align-items-center">
+                        <p>Thời gian: {{formatDate(optionType[selectID].start_time)}} - {{formatDate(optionType[selectID].end_time)}}</p>
+                        <p v-if="status">Hạn ĐK: {{formatDate(optionType[selectID].start_topic)}} - {{formatDate(optionType[selectID].end_topic)}}</p>
+                        <p v-if="!status">Hạn ĐK: <span class="text-danger">Đã hết hạn</span></p>
+                    </span>
                 </div>
             </div>
             <!-- Ds doanh nghiệp có thể đăng ký -->
@@ -17,7 +23,7 @@
                     <div style="display:-webkit-inline-box">
                         <label class="d-none d-md-block col-form-label-sm">Học phần:</label>
                         <select v-model="selectID" @change="changeSubject" placeholder aria-controls="sampleTable" class="form-control form-control-sm d-md-inline">
-                            <option v-for="(item, index) in optionType" :key="index" :value="index">{{item.name}}({{item.start_time}} - {{item.end_time}})</option>
+                            <option v-for="(item, index) in optionType" :key="index" :value="index">{{item.name}} _ k{{item.course}} _ {{item.year}}_{{item.semester}}</option>
                         </select>
                     </div>
                     <!-- search -->
@@ -52,7 +58,7 @@
                         <template v-slot:cell(actions)="data">
                             <div class="btn-group">
                                 <a class="badge badge-warning btn-sm btn bg-dark text-light font-weight-light px-2" @click="data.toggleDetails" style="font-size: 13px !important">@</a>
-                                <a class="badge badge-primary btn-sm btn text-light font-weight-light" @click="regTopic(data.item.topic_id)"><i class="fa fa-check-square-o m-0" aria-hidden="true"></i></a>
+                                <a v-if="status" class="badge badge-primary btn-sm btn text-light font-weight-light" @click="regTopic(data.item.topic_id)"><i class="fa fa-check-square-o m-0" aria-hidden="true"></i></a>
                             </div>
                         </template>
                         <template v-slot:row-details="data">
@@ -112,7 +118,7 @@
                         </template>
 
                         <template v-slot:cell(actions)="data">
-                            <a class="badge badge-danger btn-sm btn text-light text-center font-weight-light" @click="del(data.item.reg_id)"><i class="fa fa-times m-0" aria-hidden="true"></i></a>
+                            <a v-if="status" class="badge badge-danger btn-sm btn text-light text-center font-weight-light" @click="del(data.item.reg_id)"><i class="fa fa-times m-0" aria-hidden="true"></i></a>
                         </template>
                     </b-table>
                 </b-row>
@@ -129,16 +135,12 @@ import AppTitle from "../../components/pages/AppTitle";
 export default {
     data() {
         return {
-            user:{},
+            user: {},
             selectID: 0,
             bool: true,
             optionType: [],
             table: [],
-            table1: [{
-                id: 1,
-                name: "Quản lý sinh viên thực tập ĐHV",
-                note: "Phần mềm quản lý sinh viên thực tập viết bằng ngôn ngữ php + VueJs"
-            }],
+            table1: [],
             // ----------------------------------
 
             fields: [{
@@ -221,24 +223,27 @@ export default {
     },
     methods: {
         importExcel(data) {
+            //import exel
             console.log(data.body)
         },
         regTopic(id) {
+            //đăng ký đê tài
             if (this.table1.length !== 0) {
                 this.$noty.error('Thất bại, Chỉ được phép đăng ký 1 đề tài :(');
             } else {
+                $('#overlay').fadeIn(300);
                 this.$http.post('api/internship_point', {
                     id_student_reg: this.optionType[this.selectID].id_student_reg,
                     id_internship_topic: id
-                },{
+                }, {
                     headers: {
-                    Authorization: this.$cookie.get('token')
+                        Authorization: this.$cookie.get('token')
                     }
-                }
-                ).then(response => {
+                }).then(response => {
                     this.getOptionType();
                     this.$noty.success("Thành công :)");
                 }, response => {
+                    $('#overlay').fadeOut(300);
                     this.$noty.error("Thất bại :)");
                 });
             }
@@ -250,14 +255,32 @@ export default {
             // Sửa dữ liệu
         },
         del(id) {
-            this.$http.delete('api/internship_point/' + id).then(response => {
-                this.getOptionType();
-                this.$noty.success("Thành công :)");
-            }, response => {
-                this.$noty.error("Thất bại :)");
-            });
+            //hủy đăng ký đề tài
+            this.$swal({
+                text: 'Đồng ý xóa?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy',
+                showCloseButton: true,
+                showLoaderOnConfirm: true
+            }).then((result) => {
+                if (result.value) {
+                    // xóa dữ liệu
+                    $('#overlay').fadeIn(300);
+                    this.$http.delete('api/internship_point/' + id).then(response => {
+                        this.getOptionType();
+                        this.$noty.success("Thành công :)");
+                    }, response => {
+                        $('#overlay').fadeOut(300);
+                        this.$noty.error("Thất bại :)");
+                    });
+                }
+            })
         },
         download(id, name) {
+            //download mô tả đề tài
+            $('#overlay').fadeIn(300);
             this.$http.get("api/topic/download/" + id, {
                 responseType: 'blob'
             }).then(
@@ -271,18 +294,22 @@ export default {
                     document.body.appendChild(fileLink);
 
                     fileLink.click();
+                    $('#overlay').fadeOut(300);
                     this.$noty.success("Thành công :)");
                 },
                 response => {
+                    $('#overlay').fadeOut(300);
                     this.$noty.error("Thất bại :)");
                 }
             );
         },
         changeSubject() {
+            //control change select subject
             this.getDataTable();
             this.getDataTable1();
         },
         getDataTable1() {
+            //get data table topic reg
             this.$http.get('api/topic/reg/' + this.optionType[this.selectID].id_student_reg).then(
                 response => {
                     this.table1 = response.body;
@@ -290,15 +317,22 @@ export default {
             );
         },
         getDataTable() {
+            //get data table list topic
+            $('#overlay').fadeIn(300);
             this.$http.get('api/topic/list/' + this.optionType[this.selectID].id_student_reg + '/' + this.optionType[this.selectID].id).then(
                 response => {
+                    $('#overlay').fadeOut(300);
                     this.table = response.body;
                     // Lấy tổng số bản ghi
                     this.totalRows = this.table.length;
+                }, response => {
+                    $('#overlay').fadeOut(300);
                 }
             );
         },
         getOptionType() {
+            //get data internship time
+            $('#overlay').fadeIn(300);
             // Lấy danh sách học phần thực tập của sinh viên
             this.$http.get('api/internship_time', {
                 headers: {
@@ -309,6 +343,8 @@ export default {
                     this.optionType = response.body;
                     this.getDataTable();
                     this.getDataTable1();
+                }, response => {
+                    $('#overlay').fadeOut(300);
                 }
             );
             // lấy thông tin user
@@ -318,9 +354,58 @@ export default {
                 }
             }).then(response => {
                 this.user = response.body;
-                console.log(response.body);
-
             });
+        },
+        handleDate(a, b) {
+            //handle date
+            a = new Date(a);
+            b = new Date(b);
+
+            if (a.getFullYear() > b.getFullYear()) {
+                return 1;
+            } else if (a.getFullYear() < b.getFullYear()) {
+                return -1;
+            } else {
+                if (a.getMonth() > b.getMonth()) {
+                    return 1;
+                } else if (a.getMonth() < b.getMonth()) {
+                    return -1;
+                } else {
+                    if (a.getDate() > b.getDate()) {
+                        return 1;
+                    } else if (a.getDate() < b.getDate()) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                }
+            }
+        },
+        formatDate(date) {
+            //format date
+            if (date == null) {
+                return;
+            }
+            date = new Date(date);
+            return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+        }
+    },
+    computed: {
+        status() {
+            //control status reg topic
+            var obj = this.optionType[this.selectID];
+            
+            var date = new Date();
+            date = date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + date.getDate();
+            if (obj.start_topic == null || obj.end_topic == null) {
+                return false;
+            } else if (this.handleDate(date, obj.start_topic) == -1) {
+                return false;
+            } else if (this.handleDate(date, obj.end_topic) == 1) {
+                return false;
+            } else {
+                return true;
+            }
         }
     },
     created() {

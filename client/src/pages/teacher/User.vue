@@ -3,8 +3,8 @@
     <div class="col-md-12">
         <div class="profile">
             <div class="info">
-                <img class="user-img" src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg">
-                <h4>John Doe</h4>
+                <img class="user-img" style="width: 45px;heghth: 45px" src="https://www.kodefork.com/static/users/images/user.png" alt="User Image" />
+                <h4>{{this.$cookie.get('user')}}</h4>
                 <p>FrontEnd Developer</p>
             </div>
             <div class="cover-image"></div>
@@ -124,12 +124,15 @@ export default {
     },
     methods: {
         getData() {
+            $("#overlay").fadeIn(300);
             if (this.$cookie.get('role') === "Trợ lý đào tạo" || this.$cookie.get('role') === "Trưởng bộ môn" || this.$cookie.get('role') === "Giảng viên") {
-
                 // lấy danh sách bộ môn
                 this.$http.get("api/subject").then(
                     response => {
+                        $("#overlay").fadeOut(300);
                         this.subject = response.body;
+                    }, response => {
+                        $("#overlay").fadeOut(300);
                     }
                 );
                 // lấy thông tin user
@@ -139,7 +142,10 @@ export default {
                     }
                 }).then(
                     response => {
+                        $("#overlay").fadeOut(300);
                         this.teacher = response.body;
+                    }, response => {
+                        $("#overlay").fadeOut(300);
                     }
                 );
             } else if (this.$cookie.get('role') === "Doanh nghiệp") {
@@ -150,7 +156,10 @@ export default {
                     }
                 }).then(
                     response => {
+                        $("#overlay").fadeOut(300);
                         this.teacher = response.body;
+                    }, response => {
+                        $("#overlay").fadeOut(300);
                     }
                 );
             }

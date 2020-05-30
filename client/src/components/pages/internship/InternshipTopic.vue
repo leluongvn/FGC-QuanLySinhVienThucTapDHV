@@ -40,10 +40,11 @@
                     <h6 class="text-center mt-2 col-10">Cập nhật đề tài</h6>
                     <i @click="hide_modal" class="fa fa-times col-2 text-right" aria-hidden="true"></i>
                     <b-form-group class="col-12 mb-0" label-size="sm" id="fieldset-1" label="Chọn đề tài:" label-for="input-1">
-                        <select v-model="postTopic.id_topic" class="form-control form-control-sm">
+                        <v-select multiple v-model="postTopic.id_topic" :reduce="name => name.id" :options="optionCreate.length <= 0?[{name: ''}]:optionCreate" label="name"></v-select>
+                        <!-- <select v-model="postTopic.id_topic" class="form-control form-control-sm">
                             <option value="null">-----------</option>
                             <option v-for="(item, index) in optionCreate" :key="index" :value="item.id">{{item.name}}</option>
-                        </select>
+                        </select> -->
                     </b-form-group>
                     <div class="col-12 text-center mt-2">
                         <b-button size="sm" variant="info" @click="insertTopic">
@@ -148,7 +149,7 @@ export default {
             optionCreate: [],
             postTopic: {
                 id_internship_time: this.$route.params.id,
-                id_topic: null
+                id_topic: []
             },
             updateTopic: {
                 file: ''
@@ -333,6 +334,7 @@ export default {
             );
         },
         getAllTopic() {
+            $("#overlay").fadeIn(300);
             // Lấy danh sách đề tài của thực tập này
             this.$http.get("api/internship_topic/" + this.$route.params.id, {
                 headers: {
@@ -340,9 +342,12 @@ export default {
                 }
             }).then(
                 response => {
+                    $("#overlay").fadeOut(300);
                     this.topics = response.body;
                     // Lấy tổng số bản ghi
                     this.totalRows = this.topics.length
+                }, response => {
+                    $("#overlay").fadeOut(300);
                 }
             );
             // Lấy danh sách đề tài chưa đăng ký của tt này
@@ -364,7 +369,7 @@ export default {
                 }).then(
                     response => {
                         this.$noty.success('Thành công :)');
-                        this.postTopic.id_topic = null;
+                        this.postTopic.id_topic = [];
                         this.getAllTopic();
                     }, response => {
                         this.$noty.error('Thất bại :(');
@@ -373,16 +378,28 @@ export default {
             }
         },
         delTopic(id) {
-            this.$http.delete("api/internship_topic/" + id).then(
-                response => {
-                    this.$noty.success("Thành công :)");
-                    this.postTopic.id_topic = null;
-                    this.getAllTopic();
-                },
-                response => {
-                    this.$noty.error('Thất bại :(');
+            this.$swal({
+                text: 'Đồng ý xóa?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy',
+                showCloseButton: true,
+                showLoaderOnConfirm: true
+            }).then((result) => {
+                if (result.value) {
+                    this.$http.delete("api/internship_topic/" + id).then(
+                        response => {
+                            this.$noty.success("Thành công :)");
+                            this.postTopic.id_topic = [];
+                            this.getAllTopic();
+                        },
+                        response => {
+                            this.$noty.error('Thất bại :(');
+                        }
+                    );
                 }
-            );
+            })
         }
     },
     created() {

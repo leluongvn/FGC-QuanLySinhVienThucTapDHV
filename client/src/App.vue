@@ -6,6 +6,7 @@
 
 <script>
 import css from "./assets/css/main.css";
+import custom from "./assets/css/custom.css";
 import csss from "./../node_modules/datatables/media/css/jquery.dataTables.min.css";
 export default {
     name: "app",

@@ -55,12 +55,15 @@
 
                         <template v-slot:cell(name_type)="data">
                             {{ data.item.name_type}}<br>
-                            ({{data.item.start_time}} - {{data.item.end_time}})
+                            k{{data.item.course}} _ {{data.item.year}}_{{data.item.semester}}
                         </template>
 
                         <template v-slot:cell(actions)="data">
                             <div class="btn-group">
                                 <a class="badge badge-warning btn-sm btn bg-dark text-light font-weight-light px-2" @click="data.toggleDetails" style="font-size: 13px !important">@</a>
+                                <a v-b-modal.modal-update class="badge badge-success btn-sm btn text-light font-weight-light">
+                                    <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                                </a>
                             </div>
                         </template>
 
@@ -87,6 +90,34 @@
                 </b-row>
                 <!-- kết thúc dữ liệu table -->
             </b-container>
+
+            <!-- modal thêm dữ liệu-->
+            <b-modal id="modal-update" ref="modal" centered size="md" hide-header hide-footer>
+                <b-form @submit.stop.prevent>
+                    <div class="row">
+                        <h6 class="text-center mt-2 col-10">Nạp sản phẩm và báo cáo</h6>
+                        <i @click="hide_modal" class="fa fa-times col-2 text-right" aria-hidden="true"></i>
+                        <hr class="my-1" width="90%">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- file đính kèm -->
+                            <div class="input-group input-group-sm">
+                                <div class="custom-file">
+                                    <input browser="chọn" type="file" ref="file" v-on:change="onChangeFileUpload()" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                                    <label class="custom-file-label " for="inputGroupFile01">{{ file ? newFile : 'chọn file'}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-2 text-center">
+                            <b-button size="sm" variant="info">
+                                <i class="fa fa-plus-square" aria-hidden="true"></i> Xong
+                            </b-button>
+                        </div>
+                    </div>
+                </b-form>
+            </b-modal>
+            <!-- kết thúc modal thêm dữ liệu -->
             <!-- ============================================================================================ -->
             <!-- ============================================================================================ -->
         </div>
@@ -98,6 +129,7 @@
 export default {
     data() {
         return {
+            file: '',
             user: {},
             id: this.$route.params.id,
             items: [],
@@ -223,10 +255,18 @@ export default {
         }
     },
     methods: {
+        hide_modal() {
+            //ẩn modal update
+            this.$refs['modal'].hide();
+        },
+        onChangeFileUpload() {
+            this.file = this.$refs.file.files[0];
+        },
         importExcel(data) {
             console.log(data.body)
         },
         getDataTable() {
+            $('#overlay').fadeIn(300);
             // lấy thông tin user
             this.$http.get('api/student/user', {
                 headers: {
@@ -241,9 +281,10 @@ export default {
                     }
                 }).then(
                     response => {
-                        console.log(response.body);
-
+                        $('#overlay').fadeOut(300);
                         this.items = response.body;
+                    }, response => {
+                        $('#overlay').fadeOut(300);
                     }
                 );
             });
@@ -260,6 +301,14 @@ export default {
                         value: f.key
                     }
                 })
+        },
+        newFile() {
+            var str = this.file.name;
+            return str.substring(0, 30) + ' ...';
+        },
+        oldFile() {
+            var str = this.userUpdate.file;
+            return str.substring(0, 30) + ' ...';
         }
     },
     mounted() {

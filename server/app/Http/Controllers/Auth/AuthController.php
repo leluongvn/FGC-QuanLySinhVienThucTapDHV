@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Model\User;
 use Illuminate\Support\Facades\Hash;
+
 class AuthController extends Controller
 {
     public function __construct()
-    { }
+    {
+    }
 
     public function login(Request $request)
     {
@@ -18,25 +20,29 @@ class AuthController extends Controller
         $this->validate(
             $request,
             [
-                'email'    => 'required',
+                'email' => 'required',
                 'password' => 'required',
             ],
             [
-                'email.required'    => 'Mời nhập email',
+                'email.required' => 'Mời nhập email',
                 'password.required' => 'Mời nhập mật khẩu',
             ]
         );
 
-        $credentials = $request->only(['email', 'password']);
-    
-        if ($token = Auth::attempt($credentials)) {
+        $data = collect($request->all())->merge([
+            'status' => 1
+        ])->toArray();
+//        $credentials = $request->only(['email', 'password']);
+
+        if ($token = Auth::attempt($data)) {
             return $this->respondWithToken($token);
         }
 
         return response()->json(['message' => 'Unauthorized'], 401);
     }
 
-    public function check(){
+    public function check()
+    {
         return Auth::user();
     }
 }

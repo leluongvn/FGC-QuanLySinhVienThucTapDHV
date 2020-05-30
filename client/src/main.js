@@ -17,9 +17,6 @@ import Vuelidate from 'vuelidate'
 import VueNoty from 'vuejs-noty'
 import 'vuejs-noty/dist/vuejs-noty.css'
 
-//vue modal
-import VModal from 'vue-js-modal'
-
 //vue download execl
 import VueExcelXlsx from "vue-excel-xlsx";
 
@@ -28,7 +25,11 @@ import VueCookie from 'vue-cookie'
 
 // vue import execl
 import vueXlsxTable from 'vue-xlsx-table'
+//swall alert
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
+Vue.use(VueSweetalert2);
 Vue.use(vueXlsxTable, {rABS: false})
 Vue.use(VueCookie);
 Vue.use(VueRouter)
@@ -36,7 +37,6 @@ Vue.use(BootstrapVue)
 Vue.use(VueResource)
 Vue.use(Vuelidate)
 Vue.use(VueNoty)
-Vue.use(VModal)
 Vue.use(VueExcelXlsx);
 
 //custom api

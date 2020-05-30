@@ -26,7 +26,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-        // 'password',
+        'password',
     ];
 
 
@@ -48,5 +48,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function roles()
     {
         return $this->belongsToMany('App\Model\Role', 'role_user', 'id_user', 'id_role');
+    }
+
+    public function student()
+    {
+        return $this->hasOne(Student::class, 'id_user', 'id');
     }
 }

@@ -10,12 +10,14 @@ class Controller extends BaseController
 {
     protected function respondWithToken($token)
     {
-        $role = Role::find(Auth::user()->id_role);
+        $user = Auth::user();
+        $role = Role::find($user->id_role);
         return response()->json([
             'token' => $token,
-            'token_type' => 'bearer',
+//            'token_type' => 'bearer',
             'expires_in' => Auth::factory()->getTTL() * 60,
-            'role' => $role->name
+            'role' => $role->name,
+            'user' => $user->name
         ], 200);
     }
 }

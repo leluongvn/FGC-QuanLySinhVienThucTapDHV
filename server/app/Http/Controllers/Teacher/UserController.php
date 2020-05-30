@@ -3,48 +3,64 @@
 namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
+use App\Model\Internship_Time;
+use App\Model\Internship_Topic;
 use App\Model\Role;
+use App\Model\Student;
 use App\Model\Teacher;
 use App\Model\User;
+use App\Model\View_Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class UserController extends Controller
 {
-    public function excel($id, Request $request){
-        foreach($request as $item){
-            return response()->json($item);
-            // $user = new User();
-            // $user->name = $item->name;
-            // $user->email = $item->email;
-            // $user->password = app('hash')->make(123456);
-            // $user->phone = $item->phone;
-            // $user->id_role = 4;
-            // $user->note = $item->note;
+    public function getDetail($id, $time)
+    {
+        $data = View_Profile::with('point')->where('teacher_id', $id)->where('id_internship_time', $time)->get();
 
-            // $user->save();
-
-            // $teacher = new Teacher();
-            // $teacher->msgv = $item->msgv;
-            // $teacher->id_subject = $id;
-            // $teacher->id_user = $user->id;
-            // $teacher->fields = $item->fields;
-
-            // $teacher->save();
+        foreach ($data as $val) {
+            $val['topic'] = is_null($val['point']) ? '' : Internship_Topic::with('topic')->find($val['point']->id_internship_topic)->topic->name;
+            $val['point'] = is_null($val['point']) ? '' : $val['point'];
+            $val['student'] = Student::with('user')->find($val->reg->id_student);
         }
-        
+        return response()->json($data);
+    }
+
+    public function changeStatus(Request $request, $id)
+    {
+        $user = User::find(Teacher::find($id)->id_user);
+        $user->update([
+            'status' => $user->status == 1 ? 0 : 1
+        ]);
 
         return 1;
     }
+
+    public function excel(Request $request, $id)
+    {
+        try {
+            foreach ($request->data as $item) {
+
+                $user = User::updateOrCreate(['email' => $item['email']], ['name' => $item['name'], 'phone' => $item['phone'], 'id_role' => 4, 'password' => app('hash')->make($item['msgv'])]);
+                Teacher::updateOrCreate(['msgv' => $item['msgv']], ['id_subject' => $id, 'id_user' => $user->id, 'fields' => $item['fields']]);
+            }
+            return 1;
+        } catch (\Exception $e) {
+            return 0;
+        }
+    }
+
     public function getUser()
     {
         // return Auth::user()->id;
         $data = DB::table('users as u')
-            ->select('t.id', 't.msgv', 't.id_user', 't.id_subject', 'u.name', 'u.password', 'u.email', 'u.phone', 't.fields', 'u.status', 'u.note')
+            ->select('t.id', 't.msgv', 't.id_user', 't.id_subject', 'u.name', 'u.email', 'u.phone', 't.fields', 'u.status', 'u.note')
             ->join('teachers as t', 't.id_user', 'u.id')
-            ->where('u.id', Auth::user()->id) 
+            ->where('u.id', Auth::user()->id)
             ->first();
         return response()->json($data);
     }
@@ -52,16 +68,16 @@ class UserController extends Controller
     public function getTldt()
     {
         $data = DB::table('users as u')
-            ->select('u.id','u.name')
+            ->select('u.id', 'u.name')
             ->join('teachers as t', 't.id_user', 'u.id')
-            ->where('u.id_role',2)
+            ->where('u.id_role', 2)
             ->first();
         return response()->json($data);
     }
 
     public function postTldt(Request $request)
     {
-        if(isset($request->old_id)){
+        if (isset($request->old_id)) {
             $old_user = User::find($request->old_id);
             $old_user->id_role = 4;
             $old_user->save();
@@ -73,20 +89,21 @@ class UserController extends Controller
         return 1;
     }
 
-    public function getTbm($id){
+    public function getTbm($id)
+    {
         $data = DB::table('users as u')
-            ->select('u.id','u.name')
+            ->select('u.id', 'u.name')
             ->join('teachers as t', 't.id_user', 'u.id')
             ->join('subjects as s', 't.id_subject', 's.id')
-            ->where('t.id_subject',$id)
-            ->where('u.id_role',3)
+            ->where('t.id_subject', $id)
+            ->where('u.id_role', 3)
             ->first();
         return response()->json($data);
     }
 
     public function postTbm(Request $request)
     {
-        if(isset($request->old_id)){
+        if (isset($request->old_id)) {
             $old_user = User::find($request->old_id);
 
             $old_user->id_role = 4;
@@ -99,7 +116,8 @@ class UserController extends Controller
         return 1;
     }
 
-    public function getTeachers(){
+    public function getTeachers()
+    {
         $role = Role::find(Auth::user()->id_role);
         if ($role->name === "Trưởng bộ môn") {
             $sub = Teacher::where('id_user', Auth::user()->id)->get();
@@ -120,14 +138,26 @@ class UserController extends Controller
         }
     }
 
-    public function showAllTeachers($subject)
+    public function all()
+    {
+        $role = Role::find(Auth::user()->id_role);
+        if ($role->name === "Admin") {
+            $data = DB::table('users as u')
+                ->select('t.id', 'u.id as id_user', 't.msgv', 't.id_user', 'u.name', 'u.email', 'u.phone', 't.fields', 'u.status', 'u.note')
+                ->join('teachers as t', 't.id_user', 'u.id')
+                ->where('status', 1)
+                ->get();
+            return $data;
+        }
+    }
+
+    public function showSubjectTeachers($subject)
     {
         $role = Role::find(Auth::user()->id_role);
         if ($role->name === "Admin") {
             $data = DB::table('users as u')
                 ->select('t.id', 't.msgv', 't.id_user', 'u.name', 'u.email', 'u.phone', 't.fields', 'u.status', 'u.note')
                 ->join('teachers as t', 't.id_user', 'u.id')
-                ->where('u.status', 1)
                 ->where('t.id_subject', $subject)
                 ->get();
             return $data;
@@ -137,7 +167,7 @@ class UserController extends Controller
     public function showOneTeachers($id)
     {
         $data = DB::table('users as u')
-            ->select('t.id', 't.msgv', 't.id_user', 't.id_subject', 'u.name', 'u.password', 'u.email', 'u.phone', 't.fields', 'u.status', 'u.note')
+            ->select('t.id', 't.msgv', 't.id_user', 't.id_subject', 'u.name', 'u.email', 'u.phone', 't.fields', 'u.status', 'u.note')
             ->join('teachers as t', 't.id_user', 'u.id')
             ->where('t.id', $id)
             ->get();
@@ -150,7 +180,6 @@ class UserController extends Controller
                 'msgv' => 'required|max:20|min:10|unique:teachers',
                 'name' => 'required',
                 'email' => 'email|unique:users',
-                'password' => 'required',
                 'id_subject' => 'exists:subjects,id'
             ]
             ,
@@ -163,7 +192,6 @@ class UserController extends Controller
                 'email.required' => 'Mời nhập Email',
                 'email.unique' => 'Email đã tồn tại',
                 'email.email' => 'Email không hợp lệ',
-                'password.required' => 'Mời nhập mật khẩu',
                 'id_subject.exists' => 'Bộ môn không tồn tại'
             ]);
 
@@ -171,7 +199,7 @@ class UserController extends Controller
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = app('hash')->make($request->password);
+        $user->password = app('hash')->make($request->msgv);
         $user->phone = $request->phone;
         $user->id_role = 4;
         $user->note = $request->note;
@@ -195,7 +223,6 @@ class UserController extends Controller
             'msgv' => 'required|max:20|min:10',
             'name' => 'required',
             'email' => 'email|required',
-            'password' => 'required',
             'id_subject' => 'exists:subjects,id'
         ],
             [
@@ -205,7 +232,6 @@ class UserController extends Controller
                 'name.required' => 'Mời nhập tên sinh viên',
                 'email.required' => 'Mời nhập Email',
                 'email.email' => 'Email không hợp lệ',
-                'password.required' => 'Mời nhập mật khẩu',
                 'id_subject.exists' => 'Bộ môn không tồn tại'
             ]);
 
@@ -213,7 +239,7 @@ class UserController extends Controller
         $teacher->update($request->only('msgv', 'id_subject', 'id_user', 'fields'));
 
         $user = User::find($request->id_user);
-        $user->update($request->only('name', 'email', 'password', 'phone', 'status'));
+        $user->update($request->only('name', 'email', 'phone', 'status'));
 
         return 1;
     }
