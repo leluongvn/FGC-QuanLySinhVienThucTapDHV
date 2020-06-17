@@ -34,7 +34,7 @@
         </b-row>
 
         <!-- modal thêm dữ liệu-->
-        <b-modal ref="modal-company" id="modal-insert" centered size="sm" hide-footer hide-header>
+        <b-modal ref="modal-company" id="modal-insert" centered size="md" hide-footer hide-header>
             <b-form @submit.stop.prevent>
                 <div class="row">
                     <i @click="hide_modal_company" class="fa fa-times col-12 text-right" aria-hidden="true"></i>

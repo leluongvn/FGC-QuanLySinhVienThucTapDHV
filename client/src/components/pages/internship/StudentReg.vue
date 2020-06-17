@@ -16,15 +16,19 @@
             </div>
             <!-- end search -->
             <!--  -->
-            <div class="col-md-4 col-lg-3 col-6" style="display:-webkit-inline-box">
-                <label class="d-none d-md-block col-form-label-sm">Bộ môn:</label>
-                <select v-model="insert_reg.id_subject" @change="changeOptionSubject" placeholder aria-controls="sampleTable" class="form-control form-control-sm d-md-inline">
+            <div class="col-md-4 col-lg-6 col-6" style="display:-webkit-inline-box">
+                <label class="d-none d-md-block col-form-label-sm">Xem:</label>
+                <select v-model="id_subject" @change="changeOptionSubject" placeholder aria-controls="sampleTable" class="form-control form-control-sm d-md-inline">
+                    <option value="0">Tất cả sinh viên đăng ký</option>
+                    <option value="-1">Sinh viên chưa phân về bộ môn</option>
                     <option v-for="(item,index) in option_subject" :value="item.id" :key="index">{{item.name}}</option>
                 </select>
             </div>
             <!-- controls -->
-            <div class="col-md-4 col-lg-6 col-12 text-right">
+            <div class="col-md-4 col-lg-3 col-12 text-right">
                 <b-button-group size="sm">
+                    <!-- Phân bộ môn -->
+                    <b-button v-if="id_subject == -1" v-b-modal.modal-pbm variant="warning"><i class="fa fa-id-card-o"></i></b-button>
                     <!-- button mở modal thêm dữ liệu -->
                     <b-button v-b-modal.modal-insert variant="primary"><i class="fa fa-lg fa-plus"></i></b-button>
 
@@ -45,32 +49,72 @@
             <!-- end controls -->
         </b-row>
 
+        <!-- modal phân bộ môn-->
+        <b-modal id="modal-pbm" ref="modal" centered size="xl" hide-footer hide-header>
+            <b-form @submit.stop.prevent>
+                <div class="row">
+                    <h6 class="text-center mt-2 col-10">Phân sinh viên về bộ môn:</h6>
+                    <i @click="hide_modal" class="fa fa-times col-2 text-right" aria-hidden="true"></i>
+                    <hr class="col-12">
+                    <!-- header -->
+                    <div class="col-8 pr-0">
+                        <b-row class="my-2">
+                            <div class="col-md-6 col-12">
+                                <b-form-group label-for="filterInput" class="mb-0">
+                                    <b-input-group size="sm">
+                                        <b-form-input v-model="filter" type="search" id="filterInput" placeholder="Tìm kiếm"></b-form-input>
+                                        <b-input-group-append>
+                                            <b-button :disabled="!filter" @click="filter = ''"><i class="icon ion-md-backspace"></i></b-button>
+                                        </b-input-group-append>
+                                    </b-input-group>
+                                </b-form-group>
+                            </div>
+                        </b-row>
+                        <!-- table hiển thị dữ liệu -->
+                        <b-row>
+                            <b-table sticky-header ref="dataTable" selectable @row-selected="onRowSelected" :select-mode="'multi'" class="col-md-12 table" show-empty small striped bordered responsive :items="not_reg" :fields="fields_pbm" :filter="filter" :filterIncludedFields="filterOn" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection">
+                                <template v-slot:cell(index)="data">
+                                    {{ data.index + 1 }}
+                                </template>
+
+                                <template v-slot:head(action)>
+                                    <b-form-checkbox style="padding-left: 30px" @change="changeSelected"></b-form-checkbox>
+                                </template>
+
+                                <template v-slot:cell(action)="data">
+                                    <b-form-checkbox style="padding-left: 30px" v-model="selected" :value="data.item"></b-form-checkbox>
+                                </template>
+                            </b-table>
+                        </b-row>
+                    </div>
+                    <div class="col-1 p-0 text-center m-auto">
+                        <button @click="pbm()" class="btn btn-primary"><i class="fa fa-chevron-right mr-0" aria-hidden="true"></i></button>
+                    </div>
+                    <div class="col-3 pl-0 text-center m-auto">
+                        <label class="d-none d-md-block col-form-label-sm">Bộ môn:</label>
+                        <select v-model="id_subject_pbm" aria-controls="sampleTable" class="form-control form-control-sm d-md-inline">
+                            <option v-for="(item,index) in option_subject" :value="item.id" :key="index">{{item.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </b-form>
+            <!-- footer -->
+            <template v-slot:modal-footer="{ insert }">
+                <b-button size="sm" variant="info" @click="insert">
+                    <i class="fa fa-plus-square" aria-hidden="true"></i> Xong
+                </b-button>
+            </template>
+        </b-modal>
+        <!-- kết thúc modal phân bộ môn -->
+
         <!-- modal thêm dữ liệu-->
-        <b-modal id="modal-insert" ref="modal" centered size="lg" hide-footer hide-header>
+        <b-modal id="modal-insert" ref="modal" centered size="md" hide-footer hide-header>
             <b-form @submit.stop.prevent>
                 <div class="row">
                     <h6 class="text-center mt-2 col-10">Thêm sinh viên đăng ký:</h6>
                     <i @click="hide_modal" class="fa fa-times col-2 text-right" aria-hidden="true"></i>
                     <hr class="col-12">
-                    <div class="col-md-12 col-lg-4">
-                        <h6 class="text-center mt-2">
-                            <mark>- Chọn sinh viên đăng ký -</mark>
-                        </h6>
-                        <div class="row" style="border-right: 1px solid #dee2e6">
-                            <b-form-group class="col-md-12 mb-0"  label-size="sm" label="Chọn sinh viên:" label-for="input-1">
-                                <v-select multiple v-model="insert_reg.id_student" :reduce="name => name.id" :options="option_student.length <= 0?[{name: ''}]:option_student" label="name"></v-select>
-                            </b-form-group>
-                            <!-- end -->
-                            <b-form-group class="col-md-12 mb-0" label-size="sm" label="Điểm hệ 4:" label-for="input-1">
-                                <b-form-input v-model.trim="insert_reg.total_point" placeholder="3.20" type="number" size="sm" trim></b-form-input>
-                            </b-form-group>
-                        </div>
-                    </div>
-                    <!-- v-if="insert_reg.id_student === 'null' || insert_reg.id_student === null" -->
-                    <div class="col-md-12 col-lg-8">
-                        <h6 class="text-center mt-2">
-                            <mark>-Thêm sinh viên mới -</mark>
-                        </h6>
+                    <div class="col-md-12">
                         <div class="row">
                             <b-form-group class="col-md-6 mb-0" label-size="sm" label="Mssv:" label-for="input-1">
                                 <b-form-input v-model.trim="insert_info_reg.mssv" placeholder="155D4802010135" type="text" size="sm" trim></b-form-input>
@@ -186,25 +230,92 @@ import 'vue-select/dist/vue-select.css';
 export default {
     data() {
         return {
+            id_subject_pbm: '',
+            selected: [],
+            not_reg: [],
             id: this.$route.params.id,
             option_subject: [],
             option_student: [],
             reg: [],
-            insert_reg: {
-                id_subject: null,
-                id_student: [],
-                id_internship_time: this.$route.params.id,
-                total_point: 0
-            },
+            id_subject: 0,
             insert_info_reg: {
                 mssv: null,
                 name: null,
-                password: 123456,
                 class: null,
                 birthday: null,
-                email: null
+                email: null,
+                total_point: 0
             },
             update_reg: {},
+            fields_pbm: [{
+                    field: 'index',
+                    key: 'index',
+                    label: 'STT',
+                    class: 'text-center',
+                    thStyle: {
+                        color: '#fff',
+                        background: '#2980b9',
+                    }
+                },
+                {
+                    field: 'action',
+                    key: 'action',
+                    label: 'Chọn',
+                    class: 'text-center',
+                    thStyle: {
+                        color: '#fff',
+                        background: '#2980b9',
+                    }
+                },
+                {
+                    field: 'mssv',
+                    key: 'mssv',
+                    label: 'Mssv',
+                    sortDirection: 'desc',
+                    sortable: true,
+                    thStyle: {
+                        color: '#fff',
+                        background: '#2980b9'
+                    },
+                    thClass: 'text-center'
+                },
+                {
+                    field: 'name',
+                    key: 'name',
+                    label: 'Họ & Tên',
+                    sortable: true,
+                    thStyle: {
+                        color: '#fff',
+                        background: '#2980b9',
+                        minWidth: '190px'
+                    },
+                    thClass: 'text-center'
+                },
+                {
+                    field: 'class',
+                    key: 'class',
+                    class: 'text-center',
+                    label: 'Lớp',
+                    sortable: true,
+                    thStyle: {
+                        color: '#fff',
+                        background: '#2980b9'
+                    },
+                    thClass: 'text-center'
+                }, {
+                    field: 'total_point',
+                    key: 'total_point',
+                    class: 'text-center',
+                    label: 'TBC hệ4',
+                    sortable: true,
+                    thStyle: {
+                        color: '#fff',
+                        background: '#2980b9',
+                        minWidth: '40px'
+                    },
+                    thClass: 'text-center'
+                },
+            ],
             // tên trường và tên cột trong excel
             fields: [{
                 field: 'index',
@@ -330,11 +441,48 @@ export default {
         }
     },
     methods: {
+        pbm() {
+            this.$http.post('api/student/reg-pbm', {
+                id_subject: this.id_subject_pbm,
+                student: this.selected
+            }).then(response => {
+                this.getAllDataStudentReg();
+                this.$noty.success("Thành công :)");
+            }, response => {
+                if (response.body.student !== undefined)
+                    this.$noty.error(response.body.student);
+                else if (response.body.id_subject !== undefined)
+                    this.$noty.error(response.body.id_subject);
+                else
+                    this.$noty.error("Thất bại :(");
+            })
+        },
+        changeSelected(e) {
+            if (e) {
+                this.$refs.dataTable.selectAllRows();
+
+            } else {
+                this.$refs.dataTable.clearSelected();
+            }
+        },
+        onRowSelected(items) {
+            this.selected = items
+        },
         hide_modal() {
             this.$refs['modal'].hide();
         },
         importExcel(data) {
-            console.log(data.body)
+            $("#overlay").fadeIn(300);
+            this.$http.post('api/student/reg-excel/' + this.id, {
+                data: data.body
+            }).then(response => {
+                $("#overlay").fadeOut(300);
+                this.getAllDataStudentReg();
+                this.$noty.success("Thành công :)");
+            }, response => {
+                $("#overlay").fadeOut(300);
+                // this.$noty.error("Thất bại :(");
+            })
         },
         changeOptionSubject() {
             this.getAllDataStudentReg();
@@ -386,61 +534,55 @@ export default {
         },
         insertReg() {
             // validate thông tin sinh viên
-            if (this.insert_reg.id_student == 'null' || this.insert_reg.id_student <= 0) {
-                if (this.insert_info_reg.mssv === null || this.insert_info_reg.mssv === '')
-                    this.$noty.error("Thất bại, Bạn chưa nhập mssv :(");
-                else if (this.insert_info_reg.name === null || this.insert_info_reg.name === '')
-                    this.$noty.error("Thất bại, Bạn chưa nhập họ & tên sinh viên :(");
-                else if (this.insert_info_reg.class === null || this.insert_info_reg.class === '')
-                    this.$noty.error("Thất bại, Bạn chưa nhập lớp :(");
-                else if (this.insert_info_reg.birthday === null || this.insert_info_reg.birthday === '')
-                    this.$noty.error("Thất bại, Bạn chưa nhập ngày sinh :(");
-                else if (this.insert_info_reg.birthday === null || this.insert_info_reg.birthday === '')
-                    this.$noty.error("Thất bại, Bạn chưa nhập email :(");
-                else {
-                    // Nhập thông tin sinh viên khi chưa có dữ liệu
-                    this.$http.post("api/student", this.insert_info_reg).then(
-                        response => {
-                            this.insert_info_reg = {
-                                mssv: null,
-                                name: null,
-                                class: null,
-                                birthday: null,
-                                email: null
-                            };
-                            this.insert_reg.id_student = response.body.id; //Lấy id sinh viên vừa thêm
-                            // nhập sinh viên đăng ký thực tập
-                            this.insert();
-                        },
-                        response => {
-                            if (response.body.mssv !== undefined)
-                                this.$noty.error(response.body.mssv);
-                            else if (response.body.name !== undefined)
-                                this.$noty.error(response.body.name);
-                            else if (response.body.email !== undefined)
-                                this.$noty.error(response.body.email);
-                            else if (response.body.password !== undefined)
-                                this.$noty.error(response.body.password);
-                            else
-                                this.$noty.error("Thất bại :(");
-                        }
-                    );
-                }
-            } else {
-                // nhập sinh viên đăng ký thực tập
-                this.insert();
+            if (this.insert_info_reg.mssv === null || this.insert_info_reg.mssv === '')
+                this.$noty.error("Thất bại, Bạn chưa nhập mssv :(");
+            else if (this.insert_info_reg.name === null || this.insert_info_reg.name === '')
+                this.$noty.error("Thất bại, Bạn chưa nhập họ & tên sinh viên :(");
+            else if (this.insert_info_reg.class === null || this.insert_info_reg.class === '')
+                this.$noty.error("Thất bại, Bạn chưa nhập lớp :(");
+            else if (this.insert_info_reg.birthday === null || this.insert_info_reg.birthday === '')
+                this.$noty.error("Thất bại, Bạn chưa nhập ngày sinh :(");
+            else if (this.insert_info_reg.birthday === null || this.insert_info_reg.birthday === '')
+                this.$noty.error("Thất bại, Bạn chưa nhập email :(");
+            else {
+                // Nhập thông tin sinh viên khi chưa có dữ liệu
+                this.$http.post("api/student", this.insert_info_reg).then(
+                    response => {
+                        this.insert_info_reg = {
+                            mssv: null,
+                            name: null,
+                            class: null,
+                            birthday: null,
+                            email: null
+                        };
+                        // nhập sinh viên đăng ký thực tập
+                        this.insert(response.body.id);
+                    },
+                    response => {
+                        if (response.body.mssv !== undefined)
+                            this.$noty.error(response.body.mssv);
+                        else if (response.body.name !== undefined)
+                            this.$noty.error(response.body.name);
+                        else if (response.body.email !== undefined)
+                            this.$noty.error(response.body.email);
+                        else if (response.body.password !== undefined)
+                            this.$noty.error(response.body.password);
+                        else
+                            this.$noty.error("Thất bại :(");
+                    }
+                );
             }
         },
-        insert() {
+        insert(id) {
             // nhập sinh viên đăng ký thực tập
-            this.$http.post("api/student/reg", this.insert_reg).then(
+            this.$http.post("api/student/reg", {
+                id_student: id,
+                id_internship_time: this.$route.params.id,
+                total_point: 0
+            }).then(
                 response => {
                     this.$noty.success("Thành công :)");
-                    this.insert_reg.id_student = null;
-                    this.insert_reg.id_internship_time = this.$route.params.id;
-                    this.insert_reg.total_point = 0;
                     this.getAllDataStudentReg(); //Load datatable
-
                 },
                 response => {
                     // echo validate server
@@ -456,16 +598,31 @@ export default {
         getAllDataStudentReg() {
             $("#overlay").fadeIn(300);
             // lấy tất cả sinh viên đã đăng ký thực tập
-            this.$http.get("api/student/reg/" + this.$route.params.id + "/" + this.insert_reg.id_subject).then(
-                response => {
-                    $("#overlay").fadeOut(300);
-                    this.reg = response.body;
-                    // Lấy tổng số bản ghi
-                    this.totalRows = this.reg.length
-                }, response => {
-                    $("#overlay").fadeOut(300);
-                }
-            );
+            if (this.id_subject <= -1) {
+                this.$http.get("api/student/not-reg/" + this.$route.params.id).then(
+                    response => {
+                        $("#overlay").fadeOut(300);
+                        this.reg = response.body;
+                        this.not_reg = response.body;
+                        // Lấy tổng số bản ghi
+                        this.totalRows = this.reg.length
+                    }, response => {
+                        $("#overlay").fadeOut(300);
+                    }
+                );
+            } else {
+                this.$http.get("api/student/reg/" + this.$route.params.id + "/" + this.id_subject).then(
+                    response => {
+                        $("#overlay").fadeOut(300);
+                        this.reg = response.body;
+                        // Lấy tổng số bản ghi
+                        this.totalRows = this.reg.length
+                    }, response => {
+                        $("#overlay").fadeOut(300);
+                    }
+                );
+            }
+
             // Lấy tất cả sinh viên chưa đăng ký thực tập
             this.$http.get("api/student/not-reg/" + this.$route.params.id).then(
                 response => {
@@ -477,10 +634,10 @@ export default {
     created() {
         //Lấy thông tin bộ môn
         $("#overlay").fadeIn(300);
-        this.$http.get("api/subject").then(
+        this.$http.get("api/subject/active").then(
             response => {
-                this.insert_reg.id_subject = response.body[0].id;
-                this.option_subject = response.body;
+                this.id_subject_pbm = response.data[0].id;
+                this.option_subject = response.data;
                 this.getAllDataStudentReg();
             }
         );

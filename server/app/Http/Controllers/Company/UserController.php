@@ -15,6 +15,15 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
 
+    public function status($id)
+    {
+        $user = User::find(Company::find($id)->id_user);
+        $user->update([
+            'status' => $user->status == 0 ? 1 : 0
+        ]);
+        return 1;
+    }
+
     public function getDetail($id, $time)
     {
         $data = View_Profile::with('point')->where('company_id', $id)->where('id_internship_time', $time)->get();
@@ -51,7 +60,7 @@ class UserController extends Controller
     public function showOne($id)
     {
         $data = DB::table('users as u')
-            ->select('c.id','c.boss', 'c.id_user', 'c.address', 'u.name', 'u.email', 'u.phone', 'c.fields', 'c.introduce', 'u.status')
+            ->select('c.id', 'c.boss', 'c.id_user', 'c.address', 'u.name', 'u.email', 'u.phone', 'c.fields', 'c.introduce', 'u.status')
             ->join('companies as c', 'c.id_user', 'u.id')
             ->where('c.id', $id)
             ->get();
@@ -134,11 +143,13 @@ class UserController extends Controller
 
     public function delete($id)
     {
-        $company = Company::find($id);
-
-        User::find($company->id_user)->delete();
-        $company->delete();
-
-        return 1;
+        $user = Company::find($id);
+        if (sizeof($user->internship) <= 0) {
+            $user->delete();
+            $user->user()->delete();
+            return response()->json(1, 200);
+        } else {
+            return response()->json(0, 500);
+        }
     }
 }

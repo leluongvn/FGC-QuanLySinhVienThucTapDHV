@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class InstructorController extends Controller
 {
-    public function getAll($id, $time)
+    public function getAll($id, $time, $id_subject)
     {
         $role = Role::find(Auth::user()->id_role);
         if ($role->name === "Trưởng bộ môn") {
@@ -35,6 +35,7 @@ class InstructorController extends Controller
                 ->join('student_reg as sr', 'sr.id_student', 's.id')
                 ->join('instructor as i', 'i.id_student_reg', 'sr.id')
                 ->where('sr.id_internship_time', $time)
+                ->where('sr.id_subject', $id_subject)
                 ->where('i.id_teacher', $id)
                 ->get();
             return response()->json($data);

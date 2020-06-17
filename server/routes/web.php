@@ -31,7 +31,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     // code phần người hướng dẫn
     $router->group(['prefix' => 'instructor'], function () use ($router) {
-        $router->get('/{id}/{time}', ['middleware' => 'auth', 'uses' => 'Instructor\InstructorController@getAll']);
+        $router->get('/{id}/{time}/{id_subject}', ['middleware' => 'auth', 'uses' => 'Instructor\InstructorController@getAll']);
         $router->get('/{id}', 'Instructor\InstructorController@getOne');
         $router->post('/', 'Instructor\InstructorController@create');
         $router->put('/{id}', 'Instructor\InstructorController@update');
@@ -65,10 +65,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     // code phần môn học
     $router->group(['prefix' => 'subject'], function () use ($router) {
         $router->get('/', 'Subject\SubjectController@show');
-        $router->get('/{id}', 'Subject\SubjectController@showOne');
+        $router->get('/active', 'Subject\SubjectController@active');
+        $router->get('/{id:[0-9]+}', 'Subject\SubjectController@showOne');
         $router->post('/', 'Subject\SubjectController@create');
-        $router->put('/{id}', 'Subject\SubjectController@edit');
-        $router->delete('/{id}', 'Subject\SubjectController@destroy');
+        $router->put('/{id:[0-9]+}', 'Subject\SubjectController@update');
+        $router->delete('/{id:[0-9]+}', 'Subject\SubjectController@destroy');
+        //status
+        $router->get('/status/{id:[0-9]+}', 'Subject\SubjectController@status');
 
     });
 
@@ -94,6 +97,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('/', 'Company\UserController@create');
         $router->put('{id}', 'Company\UserController@update');
         $router->delete('{id}', 'Company\UserController@delete');
+
+        //status
+        $router->get('/status/{id:[0-9]+}', 'Company\UserController@status');
 
         //detail
         $router->get('/detail/{id:[0-9]+}/{time:[0-9]+}', ['uses' => 'Company\UserController@getDetail']);
@@ -125,6 +131,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->put('{id:[0-9]+}', 'Student\UserController@update');
         $router->delete('{id:[0-9]+}', 'Student\UserController@delete');
 
+        $router->post('reg-excel/{id}', 'Student\StudentController@regExcel');
+
         $router->post('delete', 'Student\UserController@delMuti');
 
         //get detail
@@ -136,10 +144,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('reg/{time}/{subject}', 'Student\StudentController@getAll');
         $router->get('not-instructor/{time}/{subject}', 'Student\StudentController@getNotInstructor');
         $router->get('reg-one/{id}', 'Student\StudentController@getOne');
-        $router->get('not-reg/{id}', 'Student\UserController@getNotReg');
+        $router->get('not-reg/{time}', 'Student\StudentController@getNotReg');
         $router->post('reg', 'Student\StudentController@create');
         $router->put('reg/{id}', 'Student\StudentController@update');
         $router->delete('reg/{id}', 'Student\StudentController@delete');
+
+        $router->post('reg-pbm', 'Student\StudentController@pbm');
+
     });
 
     // code phần đề tài
@@ -166,6 +177,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('/', ['uses' => 'Internship\Internship_TypeController@create', 'as' => 'admin.internship_type.create']);
         $router->put('/{id:[0-9]+}', ['uses' => 'Internship\Internship_TypeController@edit', 'as' => 'admin.internship_type.edit']);
         $router->delete('/{id: [0-9]+}', ['uses' => 'Internship\Internship_TypeController@destroy', 'as' => 'admin.internship_type.destroy']);
+        //status
+        $router->get('/status/{id:[0-9]+}', 'Internship\Internship_TypeController@status');
+
     });
 
     //thời gian thực tập
@@ -203,6 +217,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['prefix' => 'user'], function () use ($router) {
         $router->get('/', ['middleware' => 'auth', 'uses' => 'Auth\AuthController@check']);
         $router->post('/login', ['uses' => 'Auth\AuthController@login']);
+        $router->post('/password', ['middleware' => 'auth', 'uses' => 'Auth\AuthController@password']);
     });
 
 });

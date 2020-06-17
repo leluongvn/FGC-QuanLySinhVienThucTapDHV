@@ -19,11 +19,17 @@
             </li>
             <li>
                 <router-link active-class="active" class="app-menu__item" to="/teacher/create">
-                    <i class="app-menu__icon fa fa-laptop"></i>
+                    <i class="app-menu__icon fa fa-id-card-o"></i>
                     <span class="app-menu__label">Hồ sơ thực tập</span>
                 </router-link>
             </li>
-            <nav-link :title="title.tctt">
+            <li>
+                <router-link class="app-menu__item" to="/teacher/password">
+                    <i class="app-menu__icon fa fa-key"></i>
+                    <span class="app-menu__label">Đổi mật khẩu?</span>
+                </router-link>
+            </li>
+            <nav-link :title="title.tctt" :icon="'fa fa-share-square-o'">
                 <!-- item -->
                 <li>
                     <router-link v-if="role != 'Admin'" active-class="active" class="treeview-item" to="/teacher/user">
@@ -55,6 +61,20 @@
                     </router-link>
                 </li>
             </nav-link>
+            <nav-link :title="title.qldl" v-if="role == 'Admin'" :icon="'fa fa-address-book-o'">
+                <!-- item -->
+                <li v-if="role == 'Admin'">
+                    <router-link active-class="active" class="treeview-item" to="/teacher/list-subject">
+                        <i class="icon fa fa-circle-o"></i> Quản lý bộ môn
+                    </router-link>
+                </li>
+                <!-- item -->
+                <li v-if="role == 'Admin'">
+                    <router-link active-class="active" class="treeview-item" to="/teacher/list-internship">
+                        <i class="icon fa fa-circle-o"></i> Quản lý học phần
+                    </router-link>
+                </li>
+            </nav-link>
         </ul>
     </aside>
 </div>
@@ -67,7 +87,8 @@ export default {
         return {
             title: {
                 hstt: "Hồ sơ thực tập",
-                tctt: "Tra cứu thông tin"
+                tctt: "Tra cứu thông tin",
+                qldl: "Quản lý dữ liệu"
             },
             role: this.$cookie.get('role')
         };

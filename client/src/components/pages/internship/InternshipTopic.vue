@@ -34,7 +34,7 @@
         </b-row>
 
         <!-- modal thêm dữ liệu-->
-        <b-modal ref="modal" id="modal-insert" centered size="sm" hide-footer hide-header>
+        <b-modal ref="modal" id="modal-insert" centered size="md" hide-footer hide-header>
             <b-form @submit.stop.prevent>
                 <div class="row">
                     <h6 class="text-center mt-2 col-10">Cập nhật đề tài</h6>

@@ -411,7 +411,7 @@ export default {
                             this.$noty.success("Thành công :)");
                         },
                         response => {
-                            this.$noty.error("Thất bại :(");
+                            this.$noty.warning("Thất bại, đề tài này đã được sử dụng :(");
                         }
                     );
                 }

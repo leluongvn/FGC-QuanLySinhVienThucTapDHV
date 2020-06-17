@@ -10,7 +10,12 @@ import ListStudent from "./pages/teacher/Student.vue";
 import ListCompany from "./pages/teacher/Company.vue";
 import ListTeacher from "./pages/teacher/Teacher.vue";
 import ListTopic from "./pages/teacher/Topic.vue";
+import ListSubject from "./pages/teacher/Subject.vue";
+import ListInternship from "./pages/teacher/Internship.vue";
 import Create from "./pages/teacher/CreateInternship.vue";
+
+import Password from "./pages/Password.vue";
+
 // Hồ sơ thực tập
 import Internship from "./components/pages/internship/InternshipTime.vue";
 import Tabs from "./components/pages/internship/Tabs.vue";
@@ -52,6 +57,11 @@ const routes = [
         component: Teacher,
         redirect: "teacher/home",
         children: [
+          {
+            path: "password",
+            name: "password",
+            component: Password
+          },
           {
             path: "home",
             name: "home",
@@ -132,6 +142,16 @@ const routes = [
             path: "list-topic",
             name: "topic",
             component: ListTopic
+          },
+          {
+            path: "list-subject",
+            name: "subject",
+            component: ListSubject
+          },
+          {
+            path: "list-internship",
+            name: "internship",
+            component: ListInternship
           }
         ]
       },
@@ -146,6 +166,11 @@ const routes = [
         component: Student,
         redirect: "student/home",
         children: [
+          {
+            path: "password",
+            name: "password",
+            component: Password
+          },
           {
             path: "home",
             name: "home",

@@ -104,7 +104,7 @@
                             </div>
                             <div class="col-12">
                                 <b-row>
-                                    <div class="col-6 p-0" style="display:-webkit-inline-box">
+                                    <div class="col-8 p-0" style="display:-webkit-inline-box">
                                         <!-- search -->
                                         <label class="d-none d-md-block col-form-label-sm">Học phần: </label>
                                         <select @change="changeTime()" v-model="selectTime" aria-controls="sampleTable" class="form-control form-control-sm d-md-inline">
@@ -113,12 +113,12 @@
                                         <!-- end search -->
                                     </div>
                                     <!-- Thao tác -->
-                                    <div class="col-6 text-right">
+                                    <div class="col-4 text-right">
                                         <b-button-group size="sm">
                                             <!--export execl -->
                                             <b-button title="In ra Excel" variant="success" @click="$refs.exportExcel.$el.click()">
                                                 <i class="icon ion-md-download"></i>
-                                                <vue-excel-xlsx class="d-none" ref="exportExcel" :data="items" :columns="fieldsExportExcel" :filename="'Giaovien'" :sheetname="'sheetname'"></vue-excel-xlsx>
+                                                <vue-excel-xlsx class="d-none" ref="exportExcel" :data="detail" :columns="field_detail" :filename="account.name" :sheetname="'sheetname'"></vue-excel-xlsx>
                                             </b-button>
                                         </b-button-group>
                                     </div>
@@ -134,30 +134,6 @@
                                             {{ data.index + 1 }}
                                         </template>
                                         <!--Số thứ tự-->
-
-                                        <template v-slot:cell(mssv)="data">
-                                            {{ data.item.student.mssv }}
-                                        </template>
-
-                                        <template v-slot:cell(name)="data">
-                                            {{ data.item.student.user.name }}
-                                        </template>
-
-                                        <template v-slot:cell(class)="data">
-                                            {{ data.item.student.class }}
-                                        </template>
-
-                                        <template v-slot:cell(teacher_point)="data">
-                                            {{ data.item.point ? data.item.point.teacher_point:0}}
-                                        </template>
-
-                                        <template v-slot:cell(company_point)="data">
-                                            {{ data.item.point ? data.item.point.company_point: 0}}
-                                        </template>
-
-                                        <template v-slot:cell(total_point)="data">
-                                            {{ data.item.point ? data.item.point.total_point: 0}}
-                                        </template>
 
                                         <!--btn Thao tác-->
                                         <template v-slot:cell(actions)="data">
@@ -195,10 +171,9 @@
                         </template>
 
                         <!--Số thứ tự-->
-
-                        <!-- <template v-slot="data"> -->
-                        <!-- {{ data.value.first }} {{ data.value.last }} -->
-                        <!-- </template> -->
+                        <template v-slot:cell(status)="data">
+                            <b-form-checkbox v-model="data.value" @change="changeStatus(data.item.id)" switch></b-form-checkbox>
+                        </template>
 
                         <!--btn Thao tác-->
                         <template v-slot:cell(actions)="data">
@@ -515,6 +490,22 @@ export default {
 
                 },
                 {
+                    field: 'status',
+                    key: 'status',
+                    label: 'Trạng thái',
+                    class: 'text-center',
+                    thStyle: {
+                        color: '#fff',
+                        background: '#2980b9'
+                    },
+                    formatter: (value, key, item) => {
+                        return value == 1 ? true : false
+                    },
+                    sortable: true,
+                    sortByFormatted: true,
+                    filterByFormatted: true
+                },
+                {
                     field: 'actions',
                     key: 'actions',
                     class: 'text-center',
@@ -639,6 +630,14 @@ export default {
     },
 
     methods: {
+        changeStatus(id) {
+            $("#overlay").fadeIn(300);
+            this.$http.get('api/company/status/' + id).then(response => {
+                this.getAllData();
+            }, response => {
+                $("#overlay").fadeOut(300);
+            })
+        },
         getDetail(obj) {
             this.account = obj;
             this.selectTime = this.time[0].id;
@@ -647,7 +646,17 @@ export default {
             this.$http.get('api/company/detail/' + this.account.id_user + '/' + this.selectTime).then(
                 response => {
                     $("#overlay").fadeOut(300);
-                    this.detail = response.data;
+                    response.data.map((v, i) => (
+                        this.detail = [...this.detail, {
+                            ...v,
+                            mssv: v.student.mssv,
+                            name: v.student.user.name,
+                            class: v.student.class,
+                            teacher_point: v.point ? v.point.teacher_point : 0,
+                            company_point: v.point ? v.point.company_point : 0,
+                            total_point: v.point ? v.point.total_point : 0
+                        }]
+                    ));
                     this.$refs['modal-detail'].show();
                 }, response => {
                     $("#overlay").fadeOut(300);
@@ -677,21 +686,6 @@ export default {
         importExcel(data) {
             console.log(data.body)
         },
-        priceFormat(value) {
-            return '$ ' + value;
-        },
-
-        //show password
-        toggleShowPassword() {
-            var show = document.getElementById("password");
-            if (this.showpassword == false) {
-                this.showpassword = true;
-                show.type = "text";
-            } else {
-                this.showpassword = false;
-                show.type = "password";
-            }
-        },
         //end showpassword
         //start delete row table
         delData(id) {
@@ -713,7 +707,7 @@ export default {
                         },
                         response => {
                             $("#overlay").fadeOut(300);
-                            this.$noty.error("Thất bại :(");
+                            this.$noty.warning("Thất bại, doanh nghiệp này đang có dữ liệu liên quan :(");
                         }
                     );
                 }
@@ -778,6 +772,24 @@ export default {
             $("#overlay").fadeIn(300);
             this.$http.get("api/company").then(
                 response => {
+                    this.user = {
+                        name: "",
+                        address: "",
+                        email: "",
+                        fields: "",
+                        introduce: "",
+                        phone: "",
+                        boss: ""
+                    };
+                    this.userUpdate = {
+                        name: "",
+                        address: "",
+                        email: "",
+                        fields: "",
+                        introduce: "",
+                        phone: "",
+                        boss: ""
+                    }
                     $("#overlay").fadeOut(300);
                     this.items = response.body;
                     this.mounted();

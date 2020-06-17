@@ -108,6 +108,9 @@
                                             {{ data.index + 1 }}
                                         </template>
                                         <!--Số thứ tự-->
+                                        <template v-slot:cell(type)="data">
+                                            {{ data.item.type}}_K{{data.item.internship.course}}_{{data.item.internship.year}}_{{data.item.internship.semester}}
+                                        </template>
 
                                         <template v-slot:cell(teacher_name)="data">
                                             {{ data.item.profile? data.item.profile.teacher_name:"-"}}
@@ -161,7 +164,7 @@
 
                 <!-- table hiển thị dữ liệu -->
                 <b-row>
-                    <b-table ref="dataTable" sticky-header selectable @row-selected="onRowSelected" :select-mode="multi" class="col-md-12 table" show-empty small striped bordered responsive :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" :filterIncludedFields="filterOn" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection">
+                    <b-table ref="dataTable" sticky-header selectable @row-selected="onRowSelected" :select-mode="'multi'" class="col-md-12 table" show-empty small striped bordered responsive :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" :filterIncludedFields="filterOn" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection">
 
                         <!--Số thứ tự-->
                         <template v-slot:cell(index)="data">
@@ -710,26 +713,9 @@ export default {
                 this.$noty.success("Thành công :)");
             }, response => {
                 this.getAllData();
-                this.$noty.error("Thất bại :(");
+                // this.$noty.error("Thất bại :(");
             });
         },
-        priceFormat(value) {
-            return '$ ' + value;
-        },
-
-        //show password
-        toggleShowPassword() {
-            var show = document.getElementById("password");
-            if (this.showpassword == false) {
-                this.showpassword = true;
-                show.type = "text";
-            } else {
-                this.showpassword = false;
-                show.type = "password";
-            }
-        },
-        //end showpassword
-        //start delete row table
         delData(id) {
             this.$swal({
                 text: 'Đồng ý xóa?',
@@ -746,9 +732,8 @@ export default {
                             this.$noty.success("Đã xóa thành công một sinh viên!");
                             this.getAllData();
                         },
-
                         response => {
-                            this.$noty.error("Thất bại khi xóa một sinh viên!");
+                            this.$noty.warning("Thất bại, sinh viên này đang có dữ liệu liên quan :(");
                         }
                     );
                 }

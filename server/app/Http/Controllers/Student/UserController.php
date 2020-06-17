@@ -35,7 +35,7 @@ class UserController extends Controller
             foreach ($request->data as $item) {
 
                 $user = User::updateOrCreate(['email' => $item['Email']], ['name' => $item['Tên sinh viên'], 'id_role' => 6, 'password' => app('hash')->make($item['Mã sinh viên'])]);
-                Student::updateOrCreate(['mssv' => $item['Mã sinh viên']], ['id_user' => $user->id, 'phone' => $item['Số điện thoại'], 'birthday' => $item['Ngày sinh'], 'class' => $item['Lớp']]);
+                Student::updateOrCreate(['mssv' => $item['Mã sinh viên']], ['id_user' => $user->id, 'class' => $item['Lớp']]);
             }
             return 1;
         } catch (\Exception $e) {
@@ -79,24 +79,6 @@ class UserController extends Controller
             ->join('students as s', 's.id_user', 'u.id')
             ->get();
 
-        return $data;
-    }
-
-    public function getNotReg($id)
-    {
-        $reg = DB::table('student_reg')
-            ->select('id_student')
-            ->where('id_internship_time', $id)
-            ->get();
-        $arr = [];
-        foreach ($reg as $r) {
-            array_push($arr, $r->id_student);
-        }
-        $data = DB::table('users as u')
-            ->selectRaw('s.id, s.id_user, concat(s.mssv,"-", u.name) as name, u.email, u.phone, s.birthday, s.class, u.status')
-            ->join('students as s', 's.id_user', 'u.id')
-            ->whereNotIn('s.id', $arr)
-            ->get();
         return $data;
     }
 
@@ -202,11 +184,14 @@ class UserController extends Controller
         /**
          * Xóa sinh viên theo id
          */
-        $student = Student::find($id);
 
-        User::find($student->id_user)->delete();
-        $student->delete();
-
-        return 1;
+        $user = Student::find($id);
+        if (sizeof($user->reg) <= 0) {
+            $user->delete();
+            $user->user()->delete();
+            return response()->json(1, 200);
+        } else {
+            return response()->json(0, 500);
+        }
     }
 }

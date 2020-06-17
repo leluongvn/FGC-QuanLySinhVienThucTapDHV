@@ -12,6 +12,31 @@ class AuthController extends Controller
 {
     public function __construct()
     {
+
+    }
+
+    public function password(Request $request)
+    {
+        $this->validate(
+            $request,
+            [
+                'old' => 'required',
+                'new' => 'required',
+                'config' => 'required',
+            ],
+            [
+                'old.required' => 'Mời nhập mật khẩu cũ',
+                'new.required' => 'Mời nhập mật khẩu mới',
+                'config.required' => 'Mời nhập lại mật khẩu',
+            ]
+        );
+
+        if ($request->new == $request->config && app('hash')->check($request->old, Auth::user()->getAuthPassword())) {
+            User::find(Auth::user()->id)->update(['password' => app('hash')->make($request->new)]);
+            return response()->json(['message' => 'ok'], 200);
+        } else {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
     }
 
     public function login(Request $request)
@@ -32,7 +57,6 @@ class AuthController extends Controller
         $data = collect($request->all())->merge([
             'status' => 1
         ])->toArray();
-//        $credentials = $request->only(['email', 'password']);
 
         if ($token = Auth::attempt($data)) {
             return $this->respondWithToken($token);

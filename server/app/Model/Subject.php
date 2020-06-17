@@ -15,8 +15,8 @@ class Subject extends Model
      */
     protected $fillable = ['id', 'name', 'status'];
 
-    // public function teacher()
-    // {
-    //     return $this->belongsTo('App\Internship_Time');
-    // }
+    public function teacher()
+    {
+        return $this->hasMany(Teacher::class, 'id_subject', 'id');
+    }
 }

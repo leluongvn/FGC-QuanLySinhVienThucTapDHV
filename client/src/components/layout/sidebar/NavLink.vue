@@ -2,7 +2,7 @@
 <li class="treeview" :class="{active:bool}">
     <!-- menu -->
     <a class="app-menu__item" :class="{active:bool}" data-toggle="treeview" @click="show()">
-        <i class="app-menu__icon fa fa-laptop"></i>
+        <i class="app-menu__icon" :class="icon"></i>
         <span class="app-menu__label">{{title}}</span>
         <i class="treeview-indicator fa fa-angle-right" :class="{rotate: bool}"></i>
     </a>
@@ -25,6 +25,10 @@ export default {
         title: {
             type: String,
             default: "default"
+        },
+        icon: {
+            type: String,
+            default: ""
         }
     },
     methods: {

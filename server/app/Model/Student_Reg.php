@@ -29,4 +29,14 @@ class Student_Reg extends Model
     {
         return $this->belongsTo(Internship_Time::class, 'id_internship_time', 'id');
     }
+
+    public function instructor()
+    {
+        return $this->hasOne(Instructor::class, 'id_student_reg', 'id');
+    }
+
+    public function company()
+    {
+        return $this->hasOne(Company_Reg::class, 'id_student_reg', 'id');
+    }
 }

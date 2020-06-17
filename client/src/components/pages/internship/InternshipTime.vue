@@ -7,7 +7,7 @@
             <hr width="10%" class="mt-0 mb-0">
             <div style="display:inline-block">
                 <label>Học phần:</label>
-                <select style="width:200px" v-model="select_id" placeholder aria-controls="sampleTable" class="form-control form-control-sm" @change="pushID($event)">
+                <select v-model="select_id" placeholder aria-controls="sampleTable" class="form-control form-control-sm" @change="pushID($event)">
                     <option v-for="(v,i) in inter_type" :key="i" :value="v.id">{{v.name}}</option>
                 </select>
             </div>

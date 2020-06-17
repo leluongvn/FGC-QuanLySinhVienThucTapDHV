@@ -80,7 +80,7 @@
                         </b-form-group>
                     </div>
                     <!--End Tìm kiếm-->
-                    <div class="col-md-4 col-lg-3 col-6" style="display:-webkit-inline-box">
+                    <div class="col-md-4 col-lg-6 col-6" style="display:-webkit-inline-box">
                         <!-- search -->
                         <label class="d-none d-md-block col-form-label-sm">Bộ môn: </label>
                         <select v-model="select_subject" @change="getData" placeholder aria-controls="sampleTable" class="form-control form-control-sm d-md-inline">
@@ -89,7 +89,7 @@
                         <!-- end search -->
                     </div>
                     <!-- Thao tác -->
-                    <div class="col-md-4 col-lg-6 col-12 text-right">
+                    <div class="col-md-4 col-lg-3 col-12 text-right">
                         <b-button-group size="sm">
                             <!-- thêm dữ liệu -->
                             <b-button title="Thêm mới" v-b-modal.modal-insert variant="primary"><i class="fa fa-lg fa-plus"></i></b-button>
@@ -162,7 +162,7 @@
                             </div>
                             <div class="col-12">
                                 <b-row>
-                                    <div class="col-6 p-0" style="display:-webkit-inline-box">
+                                    <div class="col-8 p-0" style="display:-webkit-inline-box">
                                         <!-- search -->
                                         <label class="d-none d-md-block col-form-label-sm">Học phần: </label>
                                         <select @change="changeTime()" v-model="selectTime" aria-controls="sampleTable" class="form-control form-control-sm d-md-inline">
@@ -171,12 +171,12 @@
                                         <!-- end search -->
                                     </div>
                                     <!-- Thao tác -->
-                                    <div class="col-6 text-right">
+                                    <div class="col-4 text-right">
                                         <b-button-group size="sm">
                                             <!--export execl -->
                                             <b-button title="In ra Excel" variant="success" @click="$refs.exportExcel.$el.click()">
                                                 <i class="icon ion-md-download"></i>
-                                                <vue-excel-xlsx class="d-none" ref="exportExcel" :data="detail" :columns="field_detail" :filename="'Giaovien'" :sheetname="'sheetname'"></vue-excel-xlsx>
+                                                <vue-excel-xlsx class="d-none" ref="exportExcel" :data="detail" :columns="field_detail" :filename="account.name" :sheetname="'sheetname'"></vue-excel-xlsx>
                                             </b-button>
                                         </b-button-group>
                                     </div>
@@ -192,30 +192,6 @@
                                             {{ data.index + 1 }}
                                         </template>
                                         <!--Số thứ tự-->
-
-                                        <template v-slot:cell(mssv)="data">
-                                            {{ data.item.student.mssv }}
-                                        </template>
-
-                                        <template v-slot:cell(name)="data">
-                                            {{ data.item.student.user.name }}
-                                        </template>
-
-                                        <template v-slot:cell(class)="data">
-                                            {{ data.item.student.class }}
-                                        </template>
-
-                                        <template v-slot:cell(teacher_point)="data">
-                                            {{ data.item.point ? data.item.point.teacher_point:0}}
-                                        </template>
-
-                                        <template v-slot:cell(company_point)="data">
-                                            {{ data.item.point ? data.item.point.company_point: 0}}
-                                        </template>
-
-                                        <template v-slot:cell(total_point)="data">
-                                            {{ data.item.point ? data.item.point.total_point: 0}}
-                                        </template>
 
                                         <!--btn Thao tác-->
                                         <template v-slot:cell(actions)="data">
@@ -358,6 +334,11 @@ export default {
                 thStyle: {
                     color: '#fff',
                     background: '#2980b9'
+                },
+                formatter: (value, key, item) => {
+                    console.log(item);
+
+                    return value === 1 ? true : false
                 }
             }, {
                 field: 'actions',
@@ -688,7 +669,18 @@ export default {
             this.$http.get('api/teacher/detail/' + this.account.id_user + '/' + this.selectTime).then(
                 response => {
                     $("#overlay").fadeOut(300);
-                    this.detail = response.data;
+                    response.data.map((v, i) => (
+                        this.detail = [...this.detail, {
+                            ...v,
+                            mssv: v.student.mssv,
+                            name: v.student.user.name,
+                            class: v.student.class,
+                            teacher_point: v.point ? v.point.teacher_point : 0,
+                            company_point: v.point ? v.point.company_point : 0,
+                            total_point: v.point ? v.point.total_point : 0
+                        }]
+                    ));
+
                     this.$refs['modal-detail'].show();
                 }, response => {
                     $("#overlay").fadeOut(300);
@@ -708,7 +700,7 @@ export default {
             );
         },
         changeStatus(id) {
-            $("#overlay").fadeIn(100);
+            $("#overlay").fadeIn(300);
             this.$http.put('api/teacher/status/' + id, {}).then(
                 response => {
                     this.getAllData();
@@ -770,15 +762,16 @@ export default {
             this.$refs['modal-detail'].hide();
         },
         importExcel(data) {
-            $("#overlay").fadeIn(100);
+            $("#overlay").fadeIn(300);
             this.$http.post('api/teacher/excel/' + this.select_subject, {
                 data: data.body
             }).then(response => {
-                $("#overlay").fadeOut(100);
+                this.getAllData();
                 this.$noty.success("Thành công :)");
             }, response => {
-                $("#overlay").fadeOut(100);
-                this.$noty.error("Thất bại :(");
+                this.getAllData();
+
+                // this.$noty.error("Thất bại :(");
             });
         },
         //show password
@@ -811,7 +804,7 @@ export default {
                 showLoaderOnConfirm: true
             }).then((result) => {
                 if (result.value) {
-                    $("#overlay").fadeIn(100);
+                    $("#overlay").fadeIn(300);
                     this.$http.delete("api/teacher/" + id).then(
                         response => {
                             // this.mytablerl();
@@ -819,9 +812,8 @@ export default {
                             this.$noty.success("Thành công :)");
                         },
                         response => {
-                            $("#overlay").fadeOut(100);
-                            this.$noty.error("Thất bại :(");
-                            // error callback
+                            $("#overlay").fadeOut(300);
+                            this.$noty.warning("Thất bại, giảng viên này đang có dữ liệu liên quan :(");
                         }
                     );
                 }
@@ -837,7 +829,7 @@ export default {
                     this.$noty.success("Đã thêm một giảng viên thành công!");
                 },
                 response => {
-                    $("#overlay").fadeOut(100)
+                    $("#overlay").fadeOut(300)
                     if (response.body.msgv !== undefined)
                         this.$noty.error(response.body.msgv);
                     else if (response.body.name !== undefined)
@@ -867,7 +859,7 @@ export default {
                     this.getAllData();
                 },
                 response => {
-                    $("#overlay").fadeOut(100)
+                    $("#overlay").fadeOut(300)
                     if (response.body.msgv !== undefined)
                         this.$noty.error(response.body.msgv);
                     else if (response.body.name !== undefined)
@@ -882,19 +874,19 @@ export default {
             );
         },
         getAllData() {
-            $("#overlay").fadeIn(100);
+            $("#overlay").fadeIn(300);
             // Lấy danh sách giảng viên
             this.$http.get("api/teacher/" + this.select_subject, {
                 headers: {
                     Authorization: this.$cookie.get('token')
                 }
             }).then(response => {
-                $("#overlay").fadeOut(100);
+                $("#overlay").fadeOut(300);
                 this.items = response.body;
                 // Lấy tổng số bản ghi
                 this.totalRows = this.items.length
             }, response => {
-                $("#overlay").fadeOut(100);
+                $("#overlay").fadeOut(300);
             });
 
             //Lấy danh sách thời gian thực tập
@@ -937,7 +929,7 @@ export default {
         }
     },
     created() {
-        $("#overlay").fadeIn(100);
+        $("#overlay").fadeIn(300);
         this.$http.get("api/subject").then(
             response => {
                 this.subject = response.body;

@@ -18,37 +18,38 @@
                     <span class="app-menu__label">Trang chủ</span>
                 </router-link>
             </li>
-            <nav-link :title="title.dktt">
+            <nav-link :title="title.dktt" :icon="'fa fa-history'" v-if="role == 'Sinh viên'">
                 <!-- item -->
                 <li>
                     <router-link active-class="active" class="treeview-item" to="/student/company">
-                        <i class="icon fa fa-circle-o"></i>Đăng ký doanh nghiệp
+                        <i class="icon fa fa-paper-plane-o"></i>Đăng ký doanh nghiệp
                     </router-link>
                 </li>
                 <!-- item -->
                 <li>
                     <router-link active-class="active" class="treeview-item" to="/student/topic">
-                        <i class="icon fa fa-circle-o"></i>Đăng ký đề tài
+                        <i class="icon fa fa-paint-brush"></i>Đăng ký đề tài
                     </router-link>
                 </li>
                 <!-- item -->
-                <!-- <li>
-            <router-link active-class="active" class="treeview-item" to="/">
-              <i class="icon fa fa-circle-o"></i>Lịch sử đăng ký
-            </router-link>
-          </li> -->
             </nav-link>
-            <nav-link :title="title.tctt">
+            <li>
+                <router-link v-if="role == 'Sinh viên'" class="app-menu__item" to="/student/password">
+                    <i class="app-menu__icon fa fa-key"></i>
+                    <span class="app-menu__label">Đổi mật khẩu?</span>
+                </router-link>
+            </li>
+            <nav-link :title="title.tctt" :icon="'fa fa-share-square-o'" v-if="role == 'Sinh viên'">
                 <!-- item -->
                 <li>
                     <router-link active-class="active" class="treeview-item" to="/student/point">
-                        <i class="icon fa fa-circle-o"></i>Tra cứu điểm
+                        <i class="icon fa fa-address-card-o"></i>Tra cứu điểm
                     </router-link>
                 </li>
                 <!-- item -->
                 <li>
                     <router-link active-class="active" class="treeview-item" to="/student/user">
-                        <i class="icon fa fa-circle-o"></i>Thông tin cá nhân
+                        <i class="icon fa fa-user-o"></i>Thông tin cá nhân
                     </router-link>
                 </li>
             </nav-link>
@@ -65,7 +66,8 @@ export default {
             title: {
                 dktt: "Đăng ký thực tập",
                 tctt: "Tra cứu thông tin"
-            }
+            },
+            role: this.$cookie.get('role')
         };
     },
     methods: {},

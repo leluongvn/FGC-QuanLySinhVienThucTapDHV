@@ -45,8 +45,8 @@ class UserController extends Controller
         try {
             foreach ($request->data as $item) {
 
-                $user = User::updateOrCreate(['email' => $item['email']], ['name' => $item['name'], 'phone' => $item['phone'], 'id_role' => 4, 'password' => app('hash')->make($item['msgv'])]);
-                Teacher::updateOrCreate(['msgv' => $item['msgv']], ['id_subject' => $id, 'id_user' => $user->id, 'fields' => $item['fields']]);
+                $user = User::updateOrCreate(['email' => $item['Email']], ['name' => $item['Tên giảng viên'], 'phone' => $item['Điện thoại'], 'id_role' => 4, 'password' => app('hash')->make($item['Mã giảng viên'])]);
+                Teacher::updateOrCreate(['msgv' => $item['Mã giảng viên']], ['id_subject' => $id, 'id_user' => $user->id]);
             }
             return 1;
         } catch (\Exception $e) {
@@ -246,11 +246,13 @@ class UserController extends Controller
 
     public function delete($id)
     {
-        $teacher = Teacher::find($id);
-
-        User::find($teacher->id_user)->delete();
-        $teacher->delete();
-
-        return 1;
+        $user = Teacher::find($id);
+        if (sizeof($user->instructor) <= 0) {
+            $user->delete();
+            $user->user()->delete();
+            return response()->json(1, 200);
+        } else {
+            return response()->json(0, 500);
+        }
     }
 }

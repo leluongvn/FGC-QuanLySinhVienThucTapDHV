@@ -4,7 +4,7 @@
         <!-- search -->
         <b-row class="my-2">
             <!-- search -->
-            <div class="col-md-4 col-lg-3 col-6">
+            <div class="col-md-4 col-lg-4 col-6">
                 <b-form-group label-for="filterInput" class="mb-0">
                     <b-input-group size="sm">
                         <b-form-input v-model="filter" type="search" id="filterInput" placeholder="Tìm kiếm"></b-form-input>
@@ -15,15 +15,22 @@
                 </b-form-group>
             </div>
             <!-- end search -->
+
+            <div v-if="role == 'Admin' || role == 'Trợ lý đào tạo'" style="display:-webkit-inline-box" class="col-md-4">
+                <label class="d-none d-md-block col-form-label-sm">Bộ môn:</label>
+                <select style="width: 250px" v-model="id_subject" @change="changeSubject" aria-controls="sampleTable" class="form-control form-control-sm d-md-inline">
+                    <option v-for="(item,index) in option_subject" :value="item.id" :key="index">{{item.name}}</option>
+                </select>
+            </div>
             <!--  -->
-            <div class="col-md-4 col-lg-6 col-6" style="display:-webkit-inline-box">
+            <div class="col-md-4" style="display:-webkit-inline-box">
                 <label class="d-none d-md-block col-form-label-sm">Giảng viên:</label>
                 <select v-model="insert_instructor.id_teacher" @change="changeTeacher" placeholder aria-controls="sampleTable" class="form-control form-control-sm d-md-inline">
                     <option v-for="(item, index) in option_teacher" :key="index" :value="item.id">{{item.msgv}} - {{item.name}}</option>
                 </select>
             </div>
             <!-- controls -->
-            <div class="col-md-4 col-lg-3 col-12 text-right">
+            <div class="col-12 text-right">
                 <b-button-group size="sm">
                     <!-- button mở modal thêm dữ liệu -->
                     <b-button v-b-modal.modal-insert variant="primary"><i class="fa fa-lg fa-plus"></i></b-button>
@@ -46,7 +53,7 @@
         </b-row>
 
         <!-- modal thêm dữ liệu-->
-        <b-modal ref="modal-instructor" id="modal-insert" centered size="sm" hide-header hide-footer>
+        <b-modal ref="modal-instructor" id="modal-insert" centered size="md" hide-header hide-footer>
             <b-form @submit.stop.prevent>
                 <div class="row">
                     <h6 class="text-center mt-2 col-10">Chọn sinh viên hưỡng dẫn</h6>
@@ -143,6 +150,8 @@
 export default {
     data() {
         return {
+            id_subject: 0,
+            option_subject: [],
             id: this.$route.params.id,
             option_teacher: [],
             option_student_instructor: [],
@@ -150,6 +159,7 @@ export default {
                 id_teacher: null,
                 id_student_reg: [],
             },
+            role: this.$cookie.get('role'),
             instructor: [],
             update: {},
             // ----------------------------------------
@@ -283,21 +293,38 @@ export default {
         hide_modal() {
             this.$refs['modal-instructor'].hide();
         },
+        changeSubject() {
+            $("#overlay").fadeIn(300);
+            // lấy danh sách giáo viên của hệ thống thông tin
+            this.$http.get('api/teacher/' + this.id_subject, {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(
+                response => {
+                    this.option_teacher = response.body;
+                    this.insert_instructor.id_teacher = this.option_teacher[0].id;
+                    //lấy danh sách sinh viên của giáo viên hưỡng dẫn
+                    this.getInstructor();
+                }
+            );
+        },
         changeTeacher() {
             this.getInstructor();
         },
         getUpdate(id) {
+            $("#overlay").fadeIn(300);
             this.$http.get('api/instructor/' + id, {
                 headers: {
                     Authorization: this.$cookie.get('token')
                 }
             }).then(response => {
+                $("#overlay").fadeOut(300);
                 this.update = response.body;
-                console.log(response.body);
-
             });
         },
         postUpdate() {
+            $("#overlay").fadeIn(300);
             this.$http.put('api/instructor/' + this.update.id, this.update, {
                 headers: {
                     Authorization: this.$cookie.get('token')
@@ -306,10 +333,12 @@ export default {
                 this.getInstructor();
                 this.$noty.success("Thành công :)");
             }, response => {
+                $("#overlay").fadeOut(300);
                 this.$noty.error("Thất bại :(");
             });
         },
         insertInstructor() {
+            $("#overlay").fadeIn(300);
             if (this.insert_instructor.id_student_reg.length <= 0)
                 this.$noty.error("Thất bại, Mời chọn sinh viên hưỡng dẫn :(");
             else {
@@ -320,6 +349,7 @@ export default {
                         this.$noty.success("Thành công :)");
                     },
                     response => {
+                        $("#overlay").fadeOut(300);
                         this.$noty.error("Thất bại :(");
                     }
                 );
@@ -336,12 +366,14 @@ export default {
                 showLoaderOnConfirm: true
             }).then((result) => {
                 if (result.value) {
+                    $("#overlay").fadeIn(300);
                     this.$http.delete('api/instructor/' + id).then(
                         response => {
                             this.getInstructor();
                             this.$noty.success("Thành công :)");
                         },
                         response => {
+                            $("#overlay").fadeOut(300);
                             this.$noty.error("Thất bại :(");
                         }
                     );
@@ -349,9 +381,10 @@ export default {
             })
         },
         getInstructor() {
+            this.$refs['modal-instructor'].hide();
             $("#overlay").fadeIn(300);
             //lấy danh sách sinh viên của giáo viên hưỡng dẫn
-            this.$http.get("api/instructor/" + this.insert_instructor.id_teacher + "/" + this.$route.params.id, {
+            this.$http.get("api/instructor/" + this.insert_instructor.id_teacher + "/" + this.$route.params.id + '/' + this.id_subject, {
                 headers: {
                     Authorization: this.$cookie.get('token')
                 }
@@ -366,7 +399,7 @@ export default {
                 }
             );
             //lấy danh sách sinh viên của hệ thống thông tin chưa có giáo viên hưỡng dẫn
-            this.$http.get("api/student/not-instructor/" + this.$route.params.id + "/" + 1, {
+            this.$http.get("api/student/not-instructor/" + this.$route.params.id + "/" + this.id_subject, {
                 headers: {
                     Authorization: this.$cookie.get('token')
                 }
@@ -379,19 +412,43 @@ export default {
     },
     created() {
         $("#overlay").fadeIn(300);
-        // lấy danh sách giáo viên của hệ thống thông tin
-        this.$http.get('api/teacher', {
-            headers: {
-                Authorization: this.$cookie.get('token')
-            }
-        }).then(
-            response => {
-                this.option_teacher = response.body;
-                this.insert_instructor.id_teacher = this.option_teacher[0].id;
-                //lấy danh sách sinh viên của giáo viên hưỡng dẫn
-                this.getInstructor();
-            }
-        );
+        if (this.role == 'Admin') {
+            this.$http.get("api/subject/active").then(
+                response => {
+                    this.id_subject = response.data[0].id;
+                    this.option_subject = response.data;
+
+                    // lấy danh sách giáo viên của hệ thống thông tin
+                    this.$http.get('api/teacher/' + this.id_subject, {
+                        headers: {
+                            Authorization: this.$cookie.get('token')
+                        }
+                    }).then(
+                        response => {
+                            this.option_teacher = response.body;
+                            this.insert_instructor.id_teacher = this.option_teacher[0].id;
+                            //lấy danh sách sinh viên của giáo viên hưỡng dẫn
+                            this.getInstructor();
+                        }
+                    );
+                }
+            );
+        } else {
+            // lấy danh sách giáo viên của hệ thống thông tin
+            this.$http.get('api/teacher', {
+                headers: {
+                    Authorization: this.$cookie.get('token')
+                }
+            }).then(
+                response => {
+                    this.option_teacher = response.body;
+                    this.insert_instructor.id_teacher = this.option_teacher[0].id;
+                    //lấy danh sách sinh viên của giáo viên hưỡng dẫn
+                    this.getInstructor();
+                }
+            );
+        }
+
     }
 };
 </script>

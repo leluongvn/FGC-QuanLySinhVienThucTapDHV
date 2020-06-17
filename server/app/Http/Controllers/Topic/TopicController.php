@@ -127,7 +127,12 @@ class TopicController extends Controller
 
     public function destroy($id)
     {
-        Topic::find($id)->delete();
-        return 1;
+        $data = Topic::find($id);
+        if (sizeof($data->internship) <= 0) {
+            $data->delete();
+            return response()->json(1, 200);
+        } else {
+            return response()->json(0, 500);
+        }
     }
 }
